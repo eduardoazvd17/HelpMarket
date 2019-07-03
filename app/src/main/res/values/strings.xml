@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lista de Compras - HelpMarket</string>
+    <string name="slogan">Um help nas suas compras</string>
+    <string name="registro">Ainda não possui uma conta? <u>Clique aqui</u>.</string>
+</resources>
