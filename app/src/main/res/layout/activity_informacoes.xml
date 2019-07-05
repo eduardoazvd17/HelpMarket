@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListaProdutosActivity"
+    tools:context=".InformacoesActivity"
     android:background="@color/colorWhite">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarListaProdutos"
+            android:id="@+id/toolbarInformacoes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary">
@@ -24,7 +24,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/lp_voltar"
+                    android:id="@+id/info_voltar"
                     android:backgroundTint="@color/colorWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,18 +41,26 @@
                     android:textColor="@color/colorWhite"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
-                    android:text="Nome da Lista Selecionada"/>
+                    android:text="Ajuda e Informações"/>
 
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
-        <ListView
-            android:id="@+id/lvProdutos"
-            android:paddingTop="8dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:text="INFORMAÇÕES E AJUDA AO USUÁRIO..."/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

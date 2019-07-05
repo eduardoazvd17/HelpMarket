@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListaProdutosActivity"
+    tools:context=".GruposFamiliaresActivity"
     android:background="@color/colorWhite">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarListaProdutos"
+            android:id="@+id/toolbarGruposFamiliares"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary">
@@ -24,7 +24,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/lp_voltar"
+                    android:id="@+id/gf_voltar"
                     android:backgroundTint="@color/colorWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -41,18 +41,22 @@
                     android:textColor="@color/colorWhite"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
-                    android:text="Nome da Lista Selecionada"/>
+                    android:text="Grupos Familiares"/>
 
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
-        <ListView
-            android:id="@+id/lvProdutos"
-            android:paddingTop="8dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

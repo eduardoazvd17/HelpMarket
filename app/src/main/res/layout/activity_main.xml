@@ -197,7 +197,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:textAlignment="center"
-                            android:text="Informações"/>
+                            android:text="Ajuda e Informações"/>
 
                     </LinearLayout>
 

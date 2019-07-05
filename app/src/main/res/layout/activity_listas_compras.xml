@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListaComprasActivity"
+    tools:context=".ListasComprasActivity"
     android:background="@color/colorWhite">
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarListaCompras"
+            android:id="@+id/toolbarListasCompras"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary">
@@ -24,6 +24,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/lc_voltar"
                     android:backgroundTint="@color/colorWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 public class ListaProdutosActivity extends AppCompatActivity {
 
@@ -15,6 +17,15 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbarListaProdutos);
         setSupportActionBar(toolbar);
+
+        ImageButton voltar = findViewById(R.id.lp_voltar);
+
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
