@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -46,8 +45,9 @@
                     android:layout_height="match_parent" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp">
+                    android:id="@+id/listasCompras"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:textAlignment="center"
-                            android:text="Minhas Listas"/>
+                            android:text="Listas de Compras"/>
 
                     </LinearLayout>
 
@@ -82,8 +82,9 @@
                     android:layout_height="match_parent" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp">
+                    android:id="@+id/gruposFamiliares"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -95,7 +96,7 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:src="@drawable/add_list"/>
+                            android:src="@drawable/group"/>
 
                         <Space
                             android:layout_width="match_parent"
@@ -106,7 +107,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:textAlignment="center"
-                            android:text="Criar Nova Lista"/>
+                            android:text="Grupos Familiares"/>
 
                     </LinearLayout>
 
@@ -134,8 +135,9 @@
                     android:layout_height="match_parent" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp">
+                    android:id="@+id/verificarProduto"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -170,8 +172,9 @@
                     android:layout_height="match_parent" />
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp">
+                    android:id="@+id/informacoes"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -194,7 +197,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:textAlignment="center"
-                            android:text="Sobre"/>
+                            android:text="Informações"/>
 
                     </LinearLayout>
 

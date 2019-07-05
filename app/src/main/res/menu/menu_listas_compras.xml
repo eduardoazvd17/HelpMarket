@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuListaCompras"
+        android:icon="@drawable/more"
+        android:title=""
+        app:showAsAction="always">
+
+        <menu>
+
+            <item
+                android:id="@+id/nova_lista"
+                android:icon="@drawable/add_list"
+                android:title="Nova Lista"
+                app:showAsAction="ifRoom"/>
+
+            <item
+                android:id="@+id/excluir_listas"
+                android:icon="@drawable/deletef"
+                android:title="Excluir"
+                app:showAsAction="ifRoom"/>
+
+        </menu>
+
+    </item>
+
+</menu>
