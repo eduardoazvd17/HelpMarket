@@ -28,5 +28,5 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dê um help nas suas compras. Quanto mais você usa, mais economiza."/>
+        android:text="@string/slogan"/>
 </LinearLayout>
