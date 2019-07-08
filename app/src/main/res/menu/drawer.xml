@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_inicio"
+            android:icon="@drawable/home"
+            android:title="Início" />
+        <item android:id="@+id/nav_listaCompras"
+            android:icon="@drawable/lists"
+            android:title="Lista de Compras" />
+        <item android:id="@+id/nav_grupos"
+            android:icon="@drawable/group"
+            android:title="Grupos" />
+        <item android:id="@+id/nav_informacoes"
+            android:icon="@drawable/info"
+            android:title="Ajuda e Informações" />
+        <item android:id="@+id/nav_configuracoes"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="Configurações" />
+    </group>
+</menu>

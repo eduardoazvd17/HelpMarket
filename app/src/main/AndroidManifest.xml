@@ -25,7 +25,6 @@
         <activity android:name=".ListasComprasActivity"></activity>
         <activity android:name=".ListaProdutosActivity"></activity>
         <activity android:name=".GruposFamiliaresActivity"></activity>
-        <activity android:name=".VerificarProdutoActivity"></activity>
         <activity android:name=".InformacoesActivity"></activity>
 
     </application>

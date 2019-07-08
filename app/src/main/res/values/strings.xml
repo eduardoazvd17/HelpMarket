@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Lista de Compras - HelpMarket</string>
-    <string name="slogan">Um help nas suas compras</string>
+    <string name="app_name">HelpMarket</string>
+    <string name="slogan">Dê um help nas suas compras</string>
+    <string name="slogan2">Quanto mais você usa, mais economiza</string>
     <string name="registro">Ainda não possui uma conta? <u>Clique aqui</u>.</string>
+    <string name="open_drawer">Abrir</string>
+    <string name="close_drawer">Fechar</string>
 </resources>
