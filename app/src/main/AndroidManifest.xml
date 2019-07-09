@@ -26,6 +26,7 @@
         <activity android:name=".GruposActivity"></activity>
         <activity android:name=".InformacoesActivity"></activity>
         <activity android:name=".ConfiguracoesActivity"></activity>
+        <activity android:name=".NovaListaActivity"></activity>
 
     </application>
 

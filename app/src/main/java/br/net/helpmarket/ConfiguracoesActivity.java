@@ -81,7 +81,7 @@ public class ConfiguracoesActivity extends AppCompatActivity implements Navigati
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            return;
+            super.onBackPressed();
         }
     }
 }

@@ -81,7 +81,7 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            return;
+            super.onBackPressed();
         }
     }
 }

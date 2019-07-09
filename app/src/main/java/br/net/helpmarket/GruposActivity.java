@@ -81,7 +81,7 @@ public class GruposActivity extends AppCompatActivity implements NavigationView.
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            return;
+            super.onBackPressed();
         }
     }
 }
