@@ -1,5 +1,6 @@
 package br.net.helpmarket;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -19,7 +20,7 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grupos);
+        setContentView(R.layout.activity_informacoes);
 
         toolbar = findViewById(R.id.info_toolbar);
         setSupportActionBar(toolbar);
@@ -39,23 +40,28 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_inicio: {
-
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.nav_listaCompras: {
-
+                Intent intent = new Intent(getBaseContext(), ListaComprasActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.nav_grupos: {
-
+                Intent intent = new Intent(getBaseContext(), GruposActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.nav_informacoes: {
-
+                Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.nav_configuracoes: {
-
+                Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
+                startActivity(intent);
                 break;
             }
         }
