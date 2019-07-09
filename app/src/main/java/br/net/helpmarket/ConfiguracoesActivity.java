@@ -32,6 +32,10 @@ public class ConfiguracoesActivity extends AppCompatActivity implements Navigati
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        NavigationView navigationView = findViewById(R.id.config_navView);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(4).setChecked(true);
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -42,26 +46,29 @@ public class ConfiguracoesActivity extends AppCompatActivity implements Navigati
             case R.id.nav_inicio: {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             }
             case R.id.nav_listaCompras: {
                 Intent intent = new Intent(getBaseContext(), ListaComprasActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             }
             case R.id.nav_grupos: {
                 Intent intent = new Intent(getBaseContext(), GruposActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             }
             case R.id.nav_configuracoes: {
-                Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
-                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
                 break;
             }
         }
