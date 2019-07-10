@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/lcitem_bg"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="8dp"
     android:layout_width="match_parent"
@@ -56,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="xx"/>
+                android:text="99"/>
 
         </LinearLayout>
 
@@ -75,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="dia/mes/ano"/>
+                android:text="01/01/2001"/>
 
         </LinearLayout>
 

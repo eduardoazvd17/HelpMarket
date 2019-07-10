@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:textColor="@color/colorWhite"
-                android:text="Listas de Compras"/>
+                android:text="Nova Lista de Compras"/>
 
         </android.support.v7.widget.Toolbar>
 
@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Gasto máximo (Opcional)"/>
+                        android:text="Quanto você pretende gastar? (Opcional)"/>
 
                     <Space
                         android:layout_width="match_parent"
