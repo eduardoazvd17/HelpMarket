@@ -2,8 +2,12 @@ package br.net.helpmarket.database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
+
+import com.google.zxing.common.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.net.helpmarket.modelo.Compra;
@@ -44,8 +48,7 @@ public class DBController {
 
     public List<Produto> selecionarProdutos(Context context) {
         DBHelper db = new DBHelper(context);
-        db.executarSQL("insert into produtos values (12345,'coca-cola','www.google.com')");
-        Cursor cursor = db.executarSQLSelect("select * from produtos");
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM LISTAS");
         List<Produto> produtos = new ArrayList<>();
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
@@ -57,6 +60,63 @@ public class DBController {
             cursor.moveToNext();
         }
         return produtos;
+    }
+
+    public List<Lista> selecionarListas(Context context) {
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM LISTAS");
+        List<Lista> listas = new ArrayList<>();
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            long id = cursor.getLong(cursor.getColumnIndex("ID"));
+            String nome = cursor.getString(cursor.getColumnIndex("NOME"));
+            double gastoMaximo = cursor.getDouble(cursor.getColumnIndex("GASTOMAXIMO"));
+            Date dataCriacao = new Date(cursor.getString(cursor.getColumnIndex("DATACRIACAO")));
+            Boolean terminado = false;
+            if ("true".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex("TERMINADO")))) {
+                terminado = true;
+            }
+            Lista lista = new Lista(id, nome, gastoMaximo, dataCriacao, terminado);
+            listas.add(lista);
+            cursor.moveToNext();
+        }
+        return listas;
+    }
+
+    public List<Compra> selecionarCompras(Context context) {
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS");
+        List<Compra> compras = new ArrayList<>();
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            long id = cursor.getLong(cursor.getColumnIndex("ID"));
+            List<Lista> listas = selecionarListas(context);
+            Lista lista = null;
+            for (Lista l: listas) {
+                if (l.getId().equals(cursor.getLong(cursor.getColumnIndex("ID_LISTA")))) {
+                    lista = l;
+                }
+            }
+            List<Produto> produtos = selecionarProdutos(context);
+            Produto produto = null;
+            for (Produto p: produtos) {
+                if (p.getCodigoBarras().equals(cursor.getLong(cursor.getColumnIndex("CODIGOBARRAS_PRODUTO")))) {
+                    produto = p;
+                }
+            }
+            String nomePersonalizado = cursor.getString(cursor.getColumnIndex("NOMEPERSONALIZADO"));
+            int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADE"));
+            double preco = cursor.getFloat(cursor.getColumnIndex("PRECO"));
+
+            Boolean comprado = false;
+            if ("true".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex("COMPRADO")))) {
+                comprado = true;
+            }
+            Compra compra = new Compra(id, lista, produto, nomePersonalizado, quantidade, preco, comprado);
+            compras.add(compra);
+            cursor.moveToNext();
+        }
+        return compras;
     }
 
 }
