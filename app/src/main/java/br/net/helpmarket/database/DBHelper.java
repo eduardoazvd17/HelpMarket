@@ -1,5 +1,40 @@
 package br.net.helpmarket.database;
 
-public class DBHelper {
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
+public class DBHelper extends SQLiteOpenHelper {
+
+    private final String criarTabelaProdutos = "CREATE TABLE PRODUTOS (CODIGOBARRAS INTEGER PRIMARY KEY, NOME TEXT, URLIMAGEM TEXT)";
+    private final String criarTabelaListas = "CREATE TABLE LISTAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, NOME TEXT, GASTOMAXIMO TEXT, DATACRIACAO TEXT, TERMINADO TEXT)";
+    private final String criarTabelaCompras = "CREATE TABLE COMPRAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_LISTA INTEGER, CODIGOBARRAS_PRODUTO, NOMEPERSONALIZADO TEXT, QUANTIDADE NTEGER, PRECO REAL, COMPRADO TEXT)";
+
+    public DBHelper(Context context) {
+        super(context, "helpmarket.db", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(criarTabelaProdutos);
+        db.execSQL(criarTabelaListas);
+        db.execSQL(criarTabelaCompras);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    public Cursor executarSQLSelect(String query) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[] {});
+        return cursor;
+    }
+
+    public void executarSQL(String query) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(query);
+    }
 }

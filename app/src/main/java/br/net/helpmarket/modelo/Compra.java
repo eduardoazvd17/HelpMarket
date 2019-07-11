@@ -1,6 +1,6 @@
 package br.net.helpmarket.modelo;
 
-public class ListaCompras {
+public class Compra {
 
     private Long id;
     private Lista lista;
@@ -8,22 +8,25 @@ public class ListaCompras {
     private String nomePersonalizado;
     private Integer quantidade;
     private Double preco;
+    private Boolean comprado;
 
-    public ListaCompras(Long id, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco) {
+    public Compra(Long id, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.id = id;
         this.lista = lista;
         this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
         this.quantidade = quantidade;
         this.preco = preco;
+        this.comprado = comprado;
     }
 
-    public ListaCompras(Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco) {
+    public Compra(Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.lista = lista;
         this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
         this.quantidade = quantidade;
         this.preco = preco;
+        this.comprado = comprado;
     }
 
     public Long getId() {
@@ -64,5 +67,21 @@ public class ListaCompras {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public String getNomePersonalizado() {
+        return nomePersonalizado;
+    }
+
+    public void setNomePersonalizado(String nomePersonalizado) {
+        this.nomePersonalizado = nomePersonalizado;
+    }
+
+    public Boolean getComprado() {
+        return comprado;
+    }
+
+    public void setComprado(Boolean comprado) {
+        this.comprado = comprado;
     }
 }

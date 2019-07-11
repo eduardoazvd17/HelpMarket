@@ -8,29 +8,34 @@ public class Lista {
     private String nome;
     private Double gastoMaximo;
     private Date dataCriacao;
+    private Boolean terminado;
 
-    public Lista(Long id, String nome, double gastoMaximo, Date dataCriacao) {
+    public Lista(Long id, String nome, double gastoMaximo, Date dataCriacao, Boolean terminado) {
         this.id = id;
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
         this.dataCriacao = dataCriacao;
+        this.terminado = terminado;
     }
 
-    public Lista(Long id, String nome, Date dataCriacao) {
+    public Lista(Long id, String nome, Date dataCriacao, Boolean terminado) {
         this.id = id;
         this.nome = nome;
         this.dataCriacao = dataCriacao;
+        this.terminado = terminado;
     }
 
-    public Lista(String nome, double gastoMaximo, Date dataCriacao) {
+    public Lista(String nome, double gastoMaximo, Date dataCriacao, Boolean terminado) {
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
         this.dataCriacao = dataCriacao;
+        this.terminado = terminado;
     }
 
-    public Lista(String nome, Date dataCriacao) {
+    public Lista(String nome, Date dataCriacao, Boolean terminado) {
         this.nome = nome;
         this.dataCriacao = dataCriacao;
+        this.terminado = terminado;
     }
 
     public Long getId() {
@@ -63,5 +68,13 @@ public class Lista {
 
     public void setDataCriacao(Date dataCriacao) {
         this.dataCriacao = dataCriacao;
+    }
+
+    public Boolean getTerminado() {
+        return terminado;
+    }
+
+    public void setTerminado(Boolean terminado) {
+        this.terminado = terminado;
     }
 }
