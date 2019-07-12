@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_cadastro"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,20 +26,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/cadastro_voltar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/colorWhite"
                 android:tint="@color/colorWhite"
-                android:src="@drawable/back"/>
+                android:background="@drawable/back"/>
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center"
-                android:text="Voltar ao Início"/>
+                android:text="Entre com a sua conta"/>
 
         </LinearLayout>
 
@@ -53,6 +59,7 @@
             android:text="E-mail:"/>
 
         <EditText
+            android:id="@+id/cadastro_email"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
             android:hint="Insira o seu e-mail..."
@@ -73,6 +80,7 @@
             android:text="Nome:"/>
 
         <EditText
+            android:id="@+id/cadastro_nome"
             android:inputType="textPersonName"
             android:imeOptions="actionDone"
             android:hint="Insira o seu nome..."
@@ -93,6 +101,7 @@
             android:text="Senha:"/>
 
         <EditText
+            android:id="@+id/cadastro_senha"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:hint="Insira a sua senha..."
@@ -108,6 +117,7 @@
             android:layout_height="10dp" />
 
         <Button
+            android:id="@+id/fazerCadastro"
             android:text="Cadastrar-se"
             android:textColor="@color/colorWhite"
             android:background="@drawable/button_bg_white"

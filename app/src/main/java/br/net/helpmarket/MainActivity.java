@@ -13,16 +13,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.List;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Produto;
+import br.net.helpmarket.modelo.Usuario;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private ImageButton btnLogoff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        final Usuario usuario = new Usuario(getIntent().getExtras().getLong("id_usuario"), getIntent().getExtras().getString("email_usuario"), getIntent().getExtras().getString("nome_usuario"), getIntent().getExtras().getString("senha_usuario"));
+
+        btnLogoff = findViewById(R.id.fazerLogoff);
+        btnLogoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Até a próxima, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override

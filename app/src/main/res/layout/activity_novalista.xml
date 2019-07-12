@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/layout_novalista"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -93,6 +94,7 @@
                         android:layout_height="5dp" />
 
                     <EditText
+                        android:text="0.00"
                         android:id="@+id/nl_gastoMaximo"
                         android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"

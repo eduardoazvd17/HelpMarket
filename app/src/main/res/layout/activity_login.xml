@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_login"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +10,6 @@
     android:background="@drawable/login_bg">
 
     <LinearLayout
-        android:id="@+id/layout_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -37,6 +37,7 @@
             android:text="E-mail:"/>
 
         <EditText
+            android:id="@+id/login_email"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
             android:hint="Insira o seu e-mail..."
@@ -57,6 +58,7 @@
             android:text="Senha:"/>
 
         <EditText
+            android:id="@+id/login_senha"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:hint="Insira a sua senha..."
@@ -72,6 +74,7 @@
             android:layout_height="10dp" />
 
         <Button
+            android:id="@+id/fazerLogin"
             android:text="Entrar"
             android:textColor="@color/colorWhite"
             android:background="@drawable/button_bg_white"
@@ -83,6 +86,7 @@
             android:layout_height="10dp" />
 
         <TextView
+            android:id="@+id/cadastrar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -1,11 +1,14 @@
 package br.net.helpmarket;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 
 
@@ -26,6 +29,7 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
         salvarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ocultarTeclado();
                 //TODO: Salvar o produto.
             }
         });
@@ -37,5 +41,21 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        CoordinatorLayout layout = findViewById(R.id.layout_adicionarproduto);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ocultarTeclado();
+            }
+        });
+    }
+
+    private void ocultarTeclado() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
