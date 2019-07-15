@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Usuario;
 
@@ -53,10 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("id_usuario", usuario.getId());
-                    intent.putExtra("email_usuario", usuario.getEmail());
-                    intent.putExtra("nome_usuario", usuario.getNome());
-                    intent.putExtra("senha_usuario", usuario.getSenha());
+                    intent.putExtra("usuario", (Serializable) usuario);
                     startActivity(intent);
                     finish();
                 }

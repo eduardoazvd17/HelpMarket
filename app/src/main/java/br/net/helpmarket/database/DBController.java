@@ -127,20 +127,13 @@ public class DBController {
         return listas;
     }
 
-    public List<Compra> selecionarCompras(Usuario usuario) {
+    public List<Compra> selecionarCompras(Usuario usuario, Lista lista) {
         DBHelper db = new DBHelper(context);
-        Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS WHERE ID_USUARIO = '" + usuario.getId() + "'");
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS WHERE ID_USUARIO = '" + usuario.getId() + "' AND ID_LISTA = '" + lista.getId() + "'");
         List<Compra> compras = new ArrayList<>();
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
             long id = cursor.getLong(cursor.getColumnIndex("ID"));
-            List<Lista> listas = selecionarListas(usuario);
-            Lista lista = null;
-            for (Lista l: listas) {
-                if (l.getId().equals(cursor.getLong(cursor.getColumnIndex("ID_LISTA")))) {
-                    lista = l;
-                }
-            }
             List<Produto> produtos = selecionarProdutos();
             Produto produto = null;
             for (Produto p: produtos) {

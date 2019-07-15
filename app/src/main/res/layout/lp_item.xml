@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/lcitem_bg"
+    android:id="@+id/lpitem_bg"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/lpitem_imagem"
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"/>
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,17 +25,17 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/lcitem_nome"
+            android:id="@+id/lpitem_nome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:textSize="20dp"
-            android:text="Nome da lista de compras"/>
-        
+            android:text="Nome do produto"/>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="4dp" />
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,14 +44,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Limite de gasto definido: "/>
+                android:text="Quantidade: "/>
 
             <TextView
-                android:id="@+id/lcitem_gastoMaximo"
+                android:id="@+id/lpitem_quantidade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="R$ 1000.00"/>
+                android:text="2"/>
 
         </LinearLayout>
 
@@ -50,14 +63,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Produtos nesta lista: "/>
+                android:text="Preço unitário: "/>
 
             <TextView
-                android:id="@+id/lcitem_quantidadeProdutos"
+                android:id="@+id/lpitem_precoUnitario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="99"/>
+                android:text="R$ 2,00"/>
 
         </LinearLayout>
 
@@ -69,14 +82,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Criada em: "/>
+                android:text="Total: "/>
 
             <TextView
-                android:id="@+id/lcitem_dataCriacao"
+                android:id="@+id/lpitem_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="01/01/2001"/>
+                android:text="R$ 4,00"/>
 
         </LinearLayout>
 

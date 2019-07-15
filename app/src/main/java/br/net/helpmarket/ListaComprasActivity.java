@@ -14,11 +14,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import java.io.Serializable;
+import java.util.List;
+
+import br.net.helpmarket.adapter.ListaComprasAdapter;
+import br.net.helpmarket.database.DBController;
+import br.net.helpmarket.modelo.Lista;
+import br.net.helpmarket.modelo.Usuario;
 
 public class ListaComprasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private Usuario usuario;
+    private List<Lista> listas;
+    private ListaComprasAdapter lcAdapter;
+    private ListView lvListas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +53,44 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(1).setChecked(true);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
+        lvListas = findViewById(R.id.lvListas);
+        listarListas();
 
         FloatingActionButton novaLista = findViewById(R.id.novaLista);
         novaLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), NovaListaActivity.class);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
             }
         });
+
+        lvListas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Lista lista = (Lista) lcAdapter.getItem(position);
+                Intent intent = new Intent(getBaseContext(), ListaProdutosActivity.class);
+                intent.putExtra("usuario", usuario);
+                intent.putExtra("lista", lista);
+                startActivity(intent);
+            }
+        });
+
+        lvListas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO: Ao segurar o click em uma lista de compras
+                return false;
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listarListas();
     }
 
     @Override
@@ -64,6 +105,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         switch (id){
             case R.id.nova_lista:
                 Intent intent = new Intent(getBaseContext(), NovaListaActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 break;
             case R.id.excluir_listas:
@@ -79,6 +121,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         switch (item.getItemId()) {
             case R.id.nav_inicio: {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
@@ -89,18 +132,21 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
             }
             case R.id.nav_grupos: {
                 Intent intent = new Intent(getBaseContext(), GruposActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_configuracoes: {
                 Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
@@ -117,5 +163,12 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void listarListas() {
+        DBController db = new DBController(getBaseContext());
+        this.listas = db.selecionarListas(this.usuario);
+        this.lcAdapter = new ListaComprasAdapter(this.listas, this);
+        this.lvListas.setAdapter(this.lcAdapter);
     }
 }

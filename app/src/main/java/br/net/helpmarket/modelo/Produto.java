@@ -1,6 +1,9 @@
 package br.net.helpmarket.modelo;
 
-public class Produto {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Produto implements Serializable {
 
     private Long codigoBarras;
     private String nome;
@@ -15,6 +18,19 @@ public class Produto {
     public Produto(Long codigoBarras, String nome) {
         this.codigoBarras = codigoBarras;
         this.nome = nome;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(codigoBarras, produto.codigoBarras);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codigoBarras);
     }
 
     public Long getCodigoBarras() {

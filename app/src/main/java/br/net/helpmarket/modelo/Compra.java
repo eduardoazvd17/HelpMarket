@@ -1,6 +1,9 @@
 package br.net.helpmarket.modelo;
 
-public class Compra {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Compra implements Serializable {
 
     private Long id;
     private Usuario usuario;
@@ -30,6 +33,19 @@ public class Compra {
         this.quantidade = quantidade;
         this.preco = preco;
         this.comprado = comprado;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Compra compra = (Compra) o;
+        return Objects.equals(id, compra.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Long getId() {

@@ -12,10 +12,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.io.Serializable;
+
+import br.net.helpmarket.modelo.Usuario;
+
 public class ConfiguracoesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,8 @@ public class ConfiguracoesActivity extends AppCompatActivity implements Navigati
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
     }
 
     @Override
@@ -45,24 +52,28 @@ public class ConfiguracoesActivity extends AppCompatActivity implements Navigati
         switch (item.getItemId()) {
             case R.id.nav_inicio: {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_listaCompras: {
                 Intent intent = new Intent(getBaseContext(), ListaComprasActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_grupos: {
                 Intent intent = new Intent(getBaseContext(), GruposActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;

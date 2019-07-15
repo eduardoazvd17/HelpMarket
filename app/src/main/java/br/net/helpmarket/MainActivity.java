@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.net.helpmarket.database.DBController;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private ImageButton btnLogoff;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        final Usuario usuario = new Usuario(getIntent().getExtras().getLong("id_usuario"), getIntent().getExtras().getString("email_usuario"), getIntent().getExtras().getString("nome_usuario"), getIntent().getExtras().getString("senha_usuario"));
+        this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
         btnLogoff = findViewById(R.id.fazerLogoff);
         btnLogoff.setOnClickListener(new View.OnClickListener() {
@@ -73,24 +75,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.nav_listaCompras: {
                 Intent intent = new Intent(getBaseContext(), ListaComprasActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_grupos: {
                 Intent intent = new Intent(getBaseContext(), GruposActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_configuracoes: {
                 Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
+                intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();
                 break;

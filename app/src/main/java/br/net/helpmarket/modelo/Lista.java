@@ -1,8 +1,10 @@
 package br.net.helpmarket.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-public class Lista {
+public class Lista implements Serializable {
 
     private Long id;
     private Usuario usuario;
@@ -22,28 +24,26 @@ public class Lista {
         this.quantidadeProdutos = quantidadeProdutos;
     }
 
-    public Lista(Long id, Usuario usuario, String nome, Integer quantidadeProdutos, Date dataCriacao, Boolean terminado) {
-        this.id = id;
-        this.usuario = usuario;
-        this.nome = nome;
-        this.dataCriacao = dataCriacao;
-        this.terminado = terminado;
-        this.quantidadeProdutos = quantidadeProdutos;
-    }
-
-    public Lista(Usuario usuario, String nome, double gastoMaximo, Date dataCriacao, Boolean terminado) {
+    public Lista(Usuario usuario, String nome, double gastoMaximo, Integer quantidadeProdutos, Date dataCriacao, Boolean terminado) {
         this.usuario = usuario;
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
+        this.quantidadeProdutos = quantidadeProdutos;
         this.dataCriacao = dataCriacao;
         this.terminado = terminado;
     }
 
-    public Lista(Usuario usuario, String nome, Date dataCriacao, Boolean terminado) {
-        this.usuario = usuario;
-        this.nome = nome;
-        this.dataCriacao = dataCriacao;
-        this.terminado = terminado;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lista lista = (Lista) o;
+        return Objects.equals(id, lista.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Long getId() {

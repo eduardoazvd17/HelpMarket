@@ -16,10 +16,15 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import br.net.helpmarket.database.DBController;
+import br.net.helpmarket.modelo.Lista;
+import br.net.helpmarket.modelo.Usuario;
+
 public class NovaListaActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private EditText nome, gastoMaximo;
+    private Usuario usuario;
     private TextView data;
 
     @Override
@@ -34,6 +39,7 @@ public class NovaListaActivity extends AppCompatActivity {
         nome = findViewById(R.id.nl_nome);
         gastoMaximo = findViewById(R.id.nl_gastoMaximo);
         data = findViewById(R.id.nl_data);
+        usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
         data.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
 
@@ -42,7 +48,17 @@ public class NovaListaActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ocultarTeclado();
-                //TODO: Salvar a lista.
+                Lista lista = new Lista(
+                        usuario,
+                        nome.getText().toString(),
+                        Integer.parseInt(gastoMaximo.getText().toString()),
+                        0,
+                        new Date(data.getText().toString()),
+                        false
+                );
+                DBController db = new DBController(v.getContext());
+                db.inserirLista(lista, usuario);
+                finish();
             }
         });
 
