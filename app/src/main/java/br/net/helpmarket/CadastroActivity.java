@@ -3,6 +3,7 @@ package br.net.helpmarket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -49,16 +50,18 @@ public class CadastroActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ocultarTeclado();
                 Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senha.getText().toString());
-                DBController db = new DBController(v.getContext());
-                boolean status = db.fazerCadastro(usuario);
-                if (status) {
-                    Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("usuario", (Serializable) usuario);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
+                if (0 == usuario.verificarPreenchimento(v.getContext())) {
+                    DBController db = new DBController(v.getContext());
+                    boolean status = db.fazerCadastro(usuario);
+                    if (status) {
+                        Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(v.getContext(), MainActivity.class);
+                        intent.putExtra("usuario", (Serializable) usuario);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

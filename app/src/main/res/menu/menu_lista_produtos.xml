@@ -12,7 +12,7 @@
 
             <item
                 android:id="@+id/add_produto"
-                android:icon="@drawable/add"
+                android:icon="@drawable/addcart_black"
                 android:title="Adicionar Produto"
                 app:showAsAction="ifRoom"/>
 

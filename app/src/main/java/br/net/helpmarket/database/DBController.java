@@ -59,14 +59,14 @@ public class DBController {
         db.executarSQL("INSERT INTO PRODUTOS VALUES ('" + produto.getCodigoBarras() + "','" + produto.getNome() + "','" + produto.getUrlImagem() + "')");
     }
 
-    public void inserirLista(Lista lista, Usuario usuario) {
+    public void inserirLista(Lista lista) {
         DBHelper db = new DBHelper(context);
-        db.executarSQL("INSERT INTO LISTAS (ID_USUARIO, NOME, GASTOMAXIMO, DATACRIACAO, TERMINADO) VALUES ('" + usuario.getId() + "','" + lista.getNome() + "','" + lista.getGastoMaximo() + "','" + lista.getDataCriacao().toString() + "', 'false')");
+        db.executarSQL("INSERT INTO LISTAS (ID_USUARIO, NOME, GASTOMAXIMO, DATACRIACAO, TERMINADO) VALUES ('" + lista.getUsuario().getId() + "','" + lista.getNome() + "','" + lista.getGastoMaximo() + "','" + lista.getDataCriacao() + "', 'false')");
     }
 
-    public void inserirCompra(Compra compra, Usuario usuario) {
+    public void inserirCompra(Compra compra) {
         DBHelper db = new DBHelper(context);
-        db.executarSQL("INSERT INTO COMPRAS (ID_USUARIO, ID_LISTA, CODIGOBARRAS_PRODUTO, QUANTIDADE, PRECO, COMPRADO) VALUES ('" + usuario.getId() + "','" + compra.getLista().getId() + "','" + compra.getProduto().getCodigoBarras() + "','" + compra.getQuantidade() + "', '" + compra.getPreco() + "', 'false')");
+        db.executarSQL("INSERT INTO COMPRAS (ID_USUARIO, ID_LISTA, CODIGOBARRAS_PRODUTO, QUANTIDADE, PRECO, COMPRADO) VALUES ('" + compra.getUsuario().getId() + "','" + compra.getLista().getId() + "','" + compra.getProduto().getCodigoBarras() + "','" + compra.getQuantidade() + "', '" + compra.getPreco() + "', 'false')");
     }
 
     public void deletarUsuario(Long id) {
@@ -89,9 +89,23 @@ public class DBController {
         db.executarSQL("DELETE FROM COMPRAS WHERE ID = '" + id + "'");
     }
 
+    public Produto buscarProduto(Long codigoBarras) {
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM PRODUTOS WHERE CODIGOBARRAS = '" + codigoBarras + "'");
+        Produto produto = null;
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            String nome = cursor.getString(cursor.getColumnIndex("NOME"));
+            String urlImagem = cursor.getString(cursor.getColumnIndex("URLIMAGEM"));
+            produto = new Produto(codigoBarras, nome, urlImagem);
+            cursor.moveToNext();
+        }
+        return produto;
+    }
+
     public List<Produto> selecionarProdutos() {
         DBHelper db = new DBHelper(context);
-        Cursor cursor = db.executarSQLSelect("SELECT * FROM LISTAS");
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM PRODUTOS");
         List<Produto> produtos = new ArrayList<>();
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
@@ -115,21 +129,22 @@ public class DBController {
             String nome = cursor.getString(cursor.getColumnIndex("NOME"));
             double gastoMaximo = cursor.getDouble(cursor.getColumnIndex("GASTOMAXIMO"));
             int quantidadeProdutos = countProdutos(id);
-            Date dataCriacao = new Date(cursor.getString(cursor.getColumnIndex("DATACRIACAO")));
+            double totalGasto = sumTotalGasto(id);
+            String dataCriacao = cursor.getString(cursor.getColumnIndex("DATACRIACAO"));
             Boolean terminado = false;
             if ("true".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex("TERMINADO")))) {
                 terminado = true;
             }
-            Lista lista = new Lista(id, usuario, nome, gastoMaximo, quantidadeProdutos, dataCriacao, terminado);
+            Lista lista = new Lista(id, usuario, nome, gastoMaximo, quantidadeProdutos, totalGasto, dataCriacao, terminado);
             listas.add(lista);
             cursor.moveToNext();
         }
         return listas;
     }
 
-    public List<Compra> selecionarCompras(Usuario usuario, Lista lista) {
+    public List<Compra> selecionarCompras(Lista lista) {
         DBHelper db = new DBHelper(context);
-        Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS WHERE ID_USUARIO = '" + usuario.getId() + "' AND ID_LISTA = '" + lista.getId() + "'");
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS WHERE ID_USUARIO = '" + lista.getUsuario().getId() + "' AND ID_LISTA = '" + lista.getId() + "'");
         List<Compra> compras = new ArrayList<>();
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
@@ -149,7 +164,7 @@ public class DBController {
             if ("true".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex("COMPRADO")))) {
                 comprado = true;
             }
-            Compra compra = new Compra(id, usuario, lista, produto, nomePersonalizado, quantidade, preco, comprado);
+            Compra compra = new Compra(id, lista.getUsuario(), lista, produto, nomePersonalizado, quantidade, preco, comprado);
             compras.add(compra);
             cursor.moveToNext();
         }
@@ -159,7 +174,22 @@ public class DBController {
     private int countProdutos(Long idLista) {
         DBHelper db = new DBHelper(context);
         Cursor cursor = db.executarSQLSelect("SELECT COUNT(CODIGOBARRAS_PRODUTO) AS QUANTIDADEPRODUTOS FROM COMPRAS WHERE ID_LISTA='" + idLista +  "'");
-        return cursor.getInt(cursor.getColumnIndex("QUANTIDADEPRODUTOS"));
+        cursor.moveToFirst();
+        int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADEPRODUTOS"));
+        return quantidade;
+    }
+
+    private double sumTotalGasto(long idLista) {
+        double total = 0.0;
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT QUANTIDADE, PRECO FROM COMPRAS WHERE ID_LISTA='" + idLista +  "'");
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADE"));
+            double preco = cursor.getFloat(cursor.getColumnIndex("PRECO"));
+            total = total + (quantidade*preco);
+        }
+        return total;
     }
 
 }

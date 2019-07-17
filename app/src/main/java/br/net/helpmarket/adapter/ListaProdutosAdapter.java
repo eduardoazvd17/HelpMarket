@@ -58,8 +58,8 @@ public class ListaProdutosAdapter extends BaseAdapter {
         Picasso.get().load(compra.getProduto().getUrlImagem()).into(imagem);
         nome.setText(compra.getProduto().getNome());
         quantidade.setText(compra.getQuantidade().toString());
-        precoUnitario.setText(NumberFormat.getCurrencyInstance().format(compra.getPreco()/100));
-        total.setText(NumberFormat.getCurrencyInstance().format((compra.getQuantidade()+0.0) * (compra.getPreco()/100)));
+        precoUnitario.setText(NumberFormat.getCurrencyInstance().format(compra.getPreco()));
+        total.setText(NumberFormat.getCurrencyInstance().format((compra.getQuantidade()+0.0) * (compra.getPreco())));
         return view;
     }
 }

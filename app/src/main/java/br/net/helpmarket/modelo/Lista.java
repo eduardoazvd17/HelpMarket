@@ -1,7 +1,9 @@
 package br.net.helpmarket.modelo;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 public class Lista implements Serializable {
@@ -11,24 +13,27 @@ public class Lista implements Serializable {
     private String nome;
     private Double gastoMaximo;
     private Integer quantidadeProdutos;
-    private Date dataCriacao;
+    private Double totalGasto;
+    private String dataCriacao;
     private Boolean terminado;
 
-    public Lista(Long id, Usuario usuario, String nome, double gastoMaximo, Integer quantidadeProdutos, Date dataCriacao, Boolean terminado) {
+    public Lista(Long id, Usuario usuario, String nome, Double gastoMaximo, Integer quantidadeProdutos, Double totalGasto, String dataCriacao, Boolean terminado) {
         this.id = id;
         this.usuario = usuario;
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
+        this.totalGasto = totalGasto;
         this.dataCriacao = dataCriacao;
         this.terminado = terminado;
         this.quantidadeProdutos = quantidadeProdutos;
     }
 
-    public Lista(Usuario usuario, String nome, double gastoMaximo, Integer quantidadeProdutos, Date dataCriacao, Boolean terminado) {
+    public Lista(Usuario usuario, String nome, Double gastoMaximo, Integer quantidadeProdutos, Double totalGasto, String dataCriacao, Boolean terminado) {
         this.usuario = usuario;
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
         this.quantidadeProdutos = quantidadeProdutos;
+        this.totalGasto = totalGasto;
         this.dataCriacao = dataCriacao;
         this.terminado = terminado;
     }
@@ -70,11 +75,11 @@ public class Lista implements Serializable {
         this.gastoMaximo = gastoMaximo;
     }
 
-    public Date getDataCriacao() {
+    public String getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(String dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
@@ -100,5 +105,13 @@ public class Lista implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Double getTotalGasto() {
+        return totalGasto;
+    }
+
+    public void setTotalGasto(Double totalGasto) {
+        this.totalGasto = totalGasto;
     }
 }

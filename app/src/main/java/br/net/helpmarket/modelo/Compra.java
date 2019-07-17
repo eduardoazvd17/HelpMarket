@@ -1,5 +1,8 @@
 package br.net.helpmarket.modelo;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.io.Serializable;
 import java.util.Objects;
 

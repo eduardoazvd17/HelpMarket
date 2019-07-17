@@ -76,7 +76,7 @@
                         android:text="Total em produtos: "/>
 
                     <TextView
-                        android:id="@+id/lp_totalGastoProdutos"
+                        android:id="@+id/lp_totalGasto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"

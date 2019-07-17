@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("usuario", (Serializable) usuario);
+                    intent.putExtra("usuario", usuario);
                     startActivity(intent);
                     finish();
                 }

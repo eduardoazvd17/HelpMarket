@@ -72,7 +72,6 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Lista lista = (Lista) lcAdapter.getItem(position);
                 Intent intent = new Intent(getBaseContext(), ListaProdutosActivity.class);
-                intent.putExtra("usuario", usuario);
                 intent.putExtra("lista", lista);
                 startActivity(intent);
             }
@@ -105,7 +104,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         switch (id){
             case R.id.nova_lista:
                 Intent intent = new Intent(getBaseContext(), NovaListaActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 break;
             case R.id.excluir_listas:
@@ -121,7 +120,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         switch (item.getItemId()) {
             case R.id.nav_inicio: {
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;
@@ -132,21 +131,21 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
             }
             case R.id.nav_grupos: {
                 Intent intent = new Intent(getBaseContext(), GruposActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_configuracoes: {
                 Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;

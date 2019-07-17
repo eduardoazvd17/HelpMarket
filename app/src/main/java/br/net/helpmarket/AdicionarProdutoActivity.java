@@ -9,12 +9,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import br.net.helpmarket.database.DBController;
+import br.net.helpmarket.modelo.Compra;
+import br.net.helpmarket.modelo.Lista;
+import br.net.helpmarket.modelo.Produto;
 
 
 public class AdicionarProdutoActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private TextView codigoBarras;
+    private EditText nome, quantidade, preco;
+    private Lista lista;
+    private Produto produto;
+    private ImageView img;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,12 +40,37 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        lista = (Lista) getIntent().getExtras().getSerializable("lista");
+        produto = (Produto) getIntent().getExtras().getSerializable("produto");
+        img = findViewById(R.id.ap_imagem);
+        codigoBarras = findViewById(R.id.ap_codigoBarras);
+        nome = findViewById(R.id.ap_nome);
+        quantidade = findViewById(R.id.ap_quantidade);
+        preco = findViewById(R.id.ap_preco);
+
+        Picasso.get().load(produto.getUrlImagem()).into(img);
+        codigoBarras.setText(produto.getCodigoBarras().toString());
+        nome.setText(produto.getNome());
+
         FloatingActionButton salvarProduto = findViewById(R.id.salvarProduto);
         salvarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ocultarTeclado();
-                //TODO: Salvar o produto.
+                if (verificarPreenchimento()) {
+                    Compra compra = new Compra(
+                            lista.getUsuario(),
+                            lista,
+                            produto,
+                            nome.getText().toString(),
+                            Integer.parseInt(quantidade.getText().toString()),
+                            Double.parseDouble(preco.getText().toString()),
+                            false
+                    );
+                    DBController db = new DBController(v.getContext());
+                    db.inserirCompra(compra);
+                    finish();
+                }
             }
         });
 
@@ -49,6 +89,20 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
                 ocultarTeclado();
             }
         });
+    }
+
+    private boolean verificarPreenchimento() {
+        if (nome.getText().toString().isEmpty()) {
+            nome.setError("Insira o nome do produto");
+            return false;
+        }
+        if (quantidade.getText().toString().isEmpty()) {
+            quantidade.setText("0");
+        }
+        if (preco.getText().toString().isEmpty()) {
+            preco.setText("0.0");
+        }
+        return true;
     }
 
     private void ocultarTeclado() {

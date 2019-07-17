@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import br.net.helpmarket.R;
@@ -51,9 +52,9 @@ public class ListaComprasAdapter extends BaseAdapter {
 
         //Atribuir atributos nesses objetos;
         nome.setText(lista.getNome());
-        gastoMaximo.setText(lista.getGastoMaximo().toString());
+        gastoMaximo.setText(NumberFormat.getCurrencyInstance().format(lista.getGastoMaximo()));
         totalProdutos.setText(lista.getQuantidadeProdutos().toString());
-        data.setText(lista.getDataCriacao().toString());
+        data.setText(lista.getDataCriacao());
         return view;
     }
 }

@@ -75,28 +75,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.nav_listaCompras: {
                 Intent intent = new Intent(getBaseContext(), ListaComprasActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_grupos: {
                 Intent intent = new Intent(getBaseContext(), GruposActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;
             }
             case R.id.nav_configuracoes: {
                 Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
+                intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
                 break;

@@ -15,9 +15,10 @@ public class Produto implements Serializable {
         this.urlImagem = urlImagem;
     }
 
-    public Produto(Long codigoBarras, String nome) {
-        this.codigoBarras = codigoBarras;
-        this.nome = nome;
+    public void verificarPreenchimento() {
+        if (null == urlImagem || urlImagem.isEmpty()) {
+            urlImagem = "https://cdn.iset.io/assets/51664/produtos/1192/produto-sem-imagem-1000x1000.jpg";
+        }
     }
 
     @Override

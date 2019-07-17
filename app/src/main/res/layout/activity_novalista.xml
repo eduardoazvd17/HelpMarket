@@ -94,7 +94,6 @@
                         android:layout_height="5dp" />
 
                     <EditText
-                        android:text="0.00"
                         android:id="@+id/nl_gastoMaximo"
                         android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"
