@@ -29,6 +29,8 @@
         <activity android:name=".NovaListaActivity"></activity>
         <activity android:name=".ListaProdutosActivity"></activity>
         <activity android:name=".AdicionarProdutoActivity"></activity>
+        <activity android:name=".EditarProdutoActivity"></activity>
+        <activity android:name=".EditarListaActivity"></activity>
 
     </application>
 

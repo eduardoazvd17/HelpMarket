@@ -42,7 +42,7 @@ public class ListaComprasAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         @SuppressLint("ViewHolder") View view = activity.getLayoutInflater().inflate(R.layout.lc_item, parent, false);
-        Lista lista = listas.get(position);
+        final Lista lista = listas.get(position);
 
         //Instanciar objetos do xml;
         TextView nome = view.findViewById(R.id.lcitem_nome);
@@ -55,6 +55,7 @@ public class ListaComprasAdapter extends BaseAdapter {
         gastoMaximo.setText(NumberFormat.getCurrencyInstance().format(lista.getGastoMaximo()));
         totalProdutos.setText(lista.getQuantidadeProdutos().toString());
         data.setText(lista.getDataCriacao());
+
         return view;
     }
 }

@@ -31,12 +31,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Cursor executarSQLSelect(String query) {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
         Cursor cursor = db.rawQuery(query, new String[] {});
+        db.setTransactionSuccessful();
+        db.endTransaction();
         return cursor;
     }
 
     public void executarSQL(String query) {
         SQLiteDatabase db = this.getReadableDatabase();
+        db.beginTransaction();
         db.execSQL(query);
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 }

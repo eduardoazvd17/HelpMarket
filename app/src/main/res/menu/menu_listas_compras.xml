@@ -18,8 +18,8 @@
 
             <item
                 android:id="@+id/excluir_listas"
-                android:icon="@drawable/deletef"
-                android:title="Excluir"
+                android:icon="@drawable/check"
+                android:title="Selecionar..."
                 app:showAsAction="ifRoom"/>
 
         </menu>

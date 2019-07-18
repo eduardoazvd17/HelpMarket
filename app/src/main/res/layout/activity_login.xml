@@ -34,13 +34,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:text="E-mail:"/>
+            android:text="E-mail ou Nome de Usuário:"/>
 
         <EditText
             android:id="@+id/login_email"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
-            android:hint="Insira o seu e-mail..."
+            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"
@@ -61,7 +61,7 @@
             android:id="@+id/login_senha"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
-            android:hint="Insira a sua senha..."
+            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"

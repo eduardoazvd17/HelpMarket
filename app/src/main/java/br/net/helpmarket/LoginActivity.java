@@ -48,16 +48,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ocultarTeclado();
-                DBController db = new DBController(v.getContext());
-                Usuario usuario = db.fazerLogin(email.getText().toString(), senha.getText().toString());
-                if (null == usuario) {
-                    Toast.makeText(v.getContext(), "Email ou senha incorretos.", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    intent.putExtra("usuario", usuario);
-                    startActivity(intent);
-                    finish();
+                if (verificarPreenchimento()) {
+                    DBController db = new DBController(v.getContext());
+                    Usuario usuario = db.fazerLogin(email.getText().toString(), senha.getText().toString());
+                    if (null == usuario) {
+                        Toast.makeText(v.getContext(), "Usuario ou senha incorretos.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(v.getContext(), MainActivity.class);
+                        intent.putExtra("usuario", usuario);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         });
@@ -69,6 +71,18 @@ public class LoginActivity extends AppCompatActivity {
                 ocultarTeclado();
             }
         });
+    }
+
+    private boolean verificarPreenchimento() {
+        if (email.getText().toString().isEmpty()) {
+            email.setError("Insira seu email ou nome de usuario");
+            return false;
+        }
+        if (senha.getText().toString().isEmpty()) {
+            senha.setError("Insira sua senha");
+            return false;
+        }
+        return true;
     }
 
     private void ocultarTeclado() {

@@ -1,15 +1,19 @@
 package br.net.helpmarket;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -66,6 +70,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         gastoMaximo = findViewById(R.id.lp_gastoMaximo);
         totalGasto = findViewById(R.id.lp_totalGasto);
         totalEconomizado = findViewById(R.id.lp_totalEconomizado);
+        registerForContextMenu(lvProdutos);
         listarProdutos();
 
         gastoMaximo.setText(NumberFormat.getCurrencyInstance().format(lista.getGastoMaximo()));
@@ -93,6 +98,51 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.menu_longpress, menu);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Compra compraSelecionada = (Compra) lpAdapter.getItem(info.position);
+        menu.setHeaderTitle(compraSelecionada.getProduto().getNome());
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Compra compraSelecionada = (Compra) lpAdapter.getItem(info.position);
+        switch (item.getItemId()) {
+            case R.id.lpr_editar:
+                Intent intent = new Intent(getBaseContext(), EditarProdutoActivity.class);
+                intent.putExtra("compra", compraSelecionada);
+                startActivity(intent);
+                return true;
+            case R.id.lpr_excluir:
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                DBController db = new DBController(getBaseContext());
+                                db.deletarCompra(compraSelecionada.getId());
+                                listarProdutos();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                Toast.makeText(getApplicationContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder ab = new AlertDialog.Builder(this);
+                ab.setMessage("Deseja realmente excluir o produto " + compraSelecionada.getProduto().getNome() + "?")
+                        .setNegativeButton("Não", dialogClickListener)
+                        .setPositiveButton("Sim", dialogClickListener)
+                        .show();
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override

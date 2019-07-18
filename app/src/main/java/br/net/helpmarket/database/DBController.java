@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import br.net.helpmarket.modelo.Compra;
@@ -26,6 +25,7 @@ public class DBController {
         } else {
             DBHelper db = new DBHelper(context);
             db.executarSQL("INSERT INTO USUARIOS (EMAIL, NOME, SENHA) VALUES ('" + usuario.getEmail() + "','" + usuario.getNome() + "','" + usuario.getSenha() + "')");
+            db.close();
             return true;
         }
     }
@@ -35,8 +35,10 @@ public class DBController {
         Cursor cursor = db.executarSQLSelect("SELECT * FROM USUARIOS WHERE EMAIL = '" + email + "'");
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
+            db.close();
             return true;
         }
+        db.close();
         return false;
     }
 
@@ -51,42 +53,56 @@ public class DBController {
             usuario = new Usuario(id, email, nome, senha);
             cursor.moveToNext();
         }
+        db.close();
         return usuario;
     }
 
     public void inserirProduto(Produto produto) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("INSERT INTO PRODUTOS VALUES ('" + produto.getCodigoBarras() + "','" + produto.getNome() + "','" + produto.getUrlImagem() + "')");
+        db.close();
     }
 
     public void inserirLista(Lista lista) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("INSERT INTO LISTAS (ID_USUARIO, NOME, GASTOMAXIMO, DATACRIACAO, TERMINADO) VALUES ('" + lista.getUsuario().getId() + "','" + lista.getNome() + "','" + lista.getGastoMaximo() + "','" + lista.getDataCriacao() + "', 'false')");
+        db.close();
     }
 
     public void inserirCompra(Compra compra) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("INSERT INTO COMPRAS (ID_USUARIO, ID_LISTA, CODIGOBARRAS_PRODUTO, QUANTIDADE, PRECO, COMPRADO) VALUES ('" + compra.getUsuario().getId() + "','" + compra.getLista().getId() + "','" + compra.getProduto().getCodigoBarras() + "','" + compra.getQuantidade() + "', '" + compra.getPreco() + "', 'false')");
+        db.close();
     }
 
     public void deletarUsuario(Long id) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("DELETE FROM USUARIOS WHERE ID = '" + id + "'");
+        db.close();
     }
 
     public void deletarProduto(Long codigoBarras) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("DELETE FROM PRODUTOS WHERE CODIGOBARRAS = '" + codigoBarras + "'");
+        db.close();
     }
 
     public void deletarLista(Long id) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("DELETE FROM LISTAS WHERE ID = '" + id + "'");
+        db.close();
+    }
+
+    public void deletarComprasDaLista(Long id) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("DELETE FROM COMPRAS WHERE ID_LISTA = '" + id + "'");
+        db.close();
     }
 
     public void deletarCompra(Long id) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("DELETE FROM COMPRAS WHERE ID = '" + id + "'");
+        db.close();
     }
 
     public Produto buscarProduto(Long codigoBarras) {
@@ -100,6 +116,7 @@ public class DBController {
             produto = new Produto(codigoBarras, nome, urlImagem);
             cursor.moveToNext();
         }
+        db.close();
         return produto;
     }
 
@@ -116,6 +133,7 @@ public class DBController {
             produtos.add(produto);
             cursor.moveToNext();
         }
+        db.close();
         return produtos;
     }
 
@@ -139,6 +157,7 @@ public class DBController {
             listas.add(lista);
             cursor.moveToNext();
         }
+        db.close();
         return listas;
     }
 
@@ -168,6 +187,7 @@ public class DBController {
             compras.add(compra);
             cursor.moveToNext();
         }
+        db.close();
         return compras;
     }
 
@@ -176,6 +196,7 @@ public class DBController {
         Cursor cursor = db.executarSQLSelect("SELECT COUNT(CODIGOBARRAS_PRODUTO) AS QUANTIDADEPRODUTOS FROM COMPRAS WHERE ID_LISTA='" + idLista +  "'");
         cursor.moveToFirst();
         int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADEPRODUTOS"));
+        db.close();
         return quantidade;
     }
 
@@ -189,6 +210,7 @@ public class DBController {
             double preco = cursor.getFloat(cursor.getColumnIndex("PRECO"));
             total = total + (quantidade*preco);
         }
+        db.close();
         return total;
     }
 

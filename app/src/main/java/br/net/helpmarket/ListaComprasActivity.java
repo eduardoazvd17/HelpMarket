@@ -1,23 +1,25 @@
 package br.net.helpmarket;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.List;
 
 import br.net.helpmarket.adapter.ListaComprasAdapter;
@@ -55,17 +57,8 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
 
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
         lvListas = findViewById(R.id.lvListas);
+        registerForContextMenu(lvListas);
         listarListas();
-
-        FloatingActionButton novaLista = findViewById(R.id.novaLista);
-        novaLista.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), NovaListaActivity.class);
-                intent.putExtra("usuario", usuario);
-                startActivity(intent);
-            }
-        });
 
         lvListas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,13 +70,61 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
             }
         });
 
-        lvListas.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        FloatingActionButton novaLista = findViewById(R.id.novaLista);
+        novaLista.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: Ao segurar o click em uma lista de compras
-                return false;
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), NovaListaActivity.class);
+                intent.putExtra("usuario", usuario);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.menu_longpress, menu);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Lista listaSelecionada = (Lista) lcAdapter.getItem(info.position);
+        menu.setHeaderTitle(listaSelecionada.getNome());
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final Lista listaSelecionada = (Lista) lcAdapter.getItem(info.position);
+        switch (item.getItemId()) {
+            case R.id.lpr_editar:
+                Intent intent = new Intent(getBaseContext(), EditarListaActivity.class);
+                intent.putExtra("lista", listaSelecionada);
+                startActivity(intent);
+                return true;
+            case R.id.lpr_excluir:
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                DBController db = new DBController(getBaseContext());
+                                db.deletarLista(listaSelecionada.getId());
+                                db.deletarComprasDaLista(listaSelecionada.getId());
+                                listarListas();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                Toast.makeText(getApplicationContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder ab = new AlertDialog.Builder(this);
+                ab.setMessage("Deseja realmente excluir a lista " + listaSelecionada.getNome() + "?")
+                        .setNegativeButton("Não", dialogClickListener)
+                        .setPositiveButton("Sim", dialogClickListener)
+                        .show();
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -108,7 +149,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                 startActivity(intent);
                 break;
             case R.id.excluir_listas:
-                //TODO: Entrar em modo de seleção para deletar.
+               //TODO: Entrar em modo de selação
                 break;
         }
         return super.onOptionsItemSelected(item);

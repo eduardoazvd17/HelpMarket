@@ -26,22 +26,6 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public int verificarPreenchimento(Context context) {
-        if (null == email) {
-            Toast.makeText(context, "O campo email deve ser preenchido", Toast.LENGTH_LONG).show();
-            return 1;
-        }
-        if (null == nome) {
-            Toast.makeText(context, "O campo nome deve ser preenchido", Toast.LENGTH_LONG).show();
-            return 2;
-        }
-        if (null == senha) {
-            Toast.makeText(context, "O campo senha deve ser preenchido", Toast.LENGTH_LONG).show();
-            return 3;
-        }
-        return 0;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

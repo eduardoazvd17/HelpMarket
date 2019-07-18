@@ -49,14 +49,14 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ocultarTeclado();
-                Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senha.getText().toString());
-                if (0 == usuario.verificarPreenchimento(v.getContext())) {
+                if (verificarPreenchimento()) {
+                    Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senha.getText().toString());
                     DBController db = new DBController(v.getContext());
                     boolean status = db.fazerCadastro(usuario);
                     if (status) {
                         Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
-                        intent.putExtra("usuario", (Serializable) usuario);
+                        intent.putExtra("usuario", usuario);
                         startActivity(intent);
                         finish();
                     } else {
@@ -73,6 +73,22 @@ public class CadastroActivity extends AppCompatActivity {
                 ocultarTeclado();
             }
         });
+    }
+
+    private boolean verificarPreenchimento() {
+        if (email.getText().toString().isEmpty()) {
+            email.setError("Insira seu email ou nome de usuario");
+            return false;
+        }
+        if (nome.getText().toString().isEmpty()) {
+            nome.setError("Insira seu nome");
+            return false;
+        }
+        if (senha.getText().toString().isEmpty()) {
+            senha.setError("Insira sua senha");
+            return false;
+        }
+        return true;
     }
 
     private void ocultarTeclado() {

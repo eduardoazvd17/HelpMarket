@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/lp_editar"
+        android:id="@+id/lpr_editar"
         android:icon="@drawable/edit"
         android:title="Editar" />
 
     <item
-        android:id="@+id/lp_excluir"
+        android:id="@+id/lpr_excluir"
         android:icon="@drawable/deletef"
         android:title="Excluir" />
 
