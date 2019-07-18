@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,7 +52,9 @@ public class EditarListaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    //TODO: salvar alteracoes.
+                    DBController db = new DBController(v.getContext());
+                    db.atualizarLista(lista, nome.getText().toString(), Double.parseDouble(gastoMaximo.getText().toString()));
+                    Toast.makeText(v.getContext(), "Alterações concluídas", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

@@ -71,7 +71,7 @@ public class DBController {
 
     public void inserirCompra(Compra compra) {
         DBHelper db = new DBHelper(context);
-        db.executarSQL("INSERT INTO COMPRAS (ID_USUARIO, ID_LISTA, CODIGOBARRAS_PRODUTO, QUANTIDADE, PRECO, COMPRADO) VALUES ('" + compra.getUsuario().getId() + "','" + compra.getLista().getId() + "','" + compra.getProduto().getCodigoBarras() + "','" + compra.getQuantidade() + "', '" + compra.getPreco() + "', 'false')");
+        db.executarSQL("INSERT INTO COMPRAS (ID_USUARIO, ID_LISTA, CODIGOBARRAS_PRODUTO, NOMEPERSONALIZADO, QUANTIDADE, PRECO, COMPRADO) VALUES ('" + compra.getUsuario().getId() + "','" + compra.getLista().getId() + "','" + compra.getProduto().getCodigoBarras() + "','" + compra.getNomePersonalizado() + "','" + compra.getQuantidade() + "', '" + compra.getPreco() + "', 'false')");
         db.close();
     }
 
@@ -212,6 +212,30 @@ public class DBController {
         }
         db.close();
         return total;
+    }
+
+    public void atualizarProduto(Compra compra, String nomePersonalizado, int quantidade, double preco) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE COMPRAS SET NOMEPERSONALIZADO = '" + nomePersonalizado + "', QUANTIDADE = '" + quantidade + "', PRECO = '" + preco + "' WHERE ID = '" + compra.getId() + "'");
+        db.close();
+    }
+
+    public void comprarProduto(Compra compra, Boolean comprar) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE COMPRAS SET COMPRADO = '" + comprar.toString() + "' WHERE ID = '" + compra.getId() + "'");
+        db.close();
+    }
+
+    public void atualizarLista(Lista lista, String nome, double gastoMaximo) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE LISTAS SET NOME = '" + nome + "', GASTOMAXIMO = '" + gastoMaximo + "' WHERE ID = '" + lista.getId() + "'");
+        db.close();
+    }
+
+    public void terminarLista(Lista lista, Boolean terminar) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE LISTAS SET TERMINADO = '" + terminar + "' WHERE ID = '" + lista.getId() + "'");
+        db.close();
     }
 
 }

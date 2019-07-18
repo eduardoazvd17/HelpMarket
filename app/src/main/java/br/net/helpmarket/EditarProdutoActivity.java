@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -58,7 +59,9 @@ public class EditarProdutoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    //TODO: Salvar alteracoes
+                    DBController db = new DBController(v.getContext());
+                    db.atualizarProduto(compra, nome.getText().toString(), Integer.parseInt(quantidade.getText().toString()), Double.parseDouble(preco.getText().toString()));
+                    Toast.makeText(v.getContext(), "Alterações concluídas", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
