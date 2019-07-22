@@ -2,8 +2,11 @@ package br.net.helpmarket;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +56,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     private ListaProdutosAdapter lpAdapter;
     private int numeroToken=1;
     private Tokens token = Tokens.TK1;
+    private CoordinatorLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,13 +74,12 @@ public class ListaProdutosActivity extends AppCompatActivity {
         gastoMaximo = findViewById(R.id.lp_gastoMaximo);
         totalGasto = findViewById(R.id.lp_totalGasto);
         totalEconomizado = findViewById(R.id.lp_totalEconomizado);
+        layout = findViewById(R.id.lp_layout);
         registerForContextMenu(lvProdutos);
-        listarProdutos();
 
-        gastoMaximo.setText(NumberFormat.getCurrencyInstance().format(lista.getGastoMaximo()));
-        totalGasto.setText(NumberFormat.getCurrencyInstance().format(lista.getTotalGasto()));
-        double total = lista.getGastoMaximo() - lista.getTotalGasto();
-        totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(total));
+        listarProdutos();
+        atualizarFundo();
+        calcularGastos();
 
         FloatingActionButton adicionarProduto = findViewById(R.id.adicionarProduto);
         adicionarProduto.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +131,8 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                 DBController db = new DBController(getBaseContext());
                                 db.deletarCompra(compraSelecionada.getId());
                                 listarProdutos();
+                                atualizarFundo();
+                                calcularGastos();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 Toast.makeText(getApplicationContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
@@ -159,7 +164,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 i.putExtra("produto", produto);
                 startActivity(i);
             } catch (Exception e) {
-                Toast.makeText(this, "Operação cancelada pelo usuário.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Produto não encontrado...", Toast.LENGTH_LONG).show();
                 gerarToken(numeroToken);
                 numeroToken++;
             }
@@ -203,6 +208,8 @@ public class ListaProdutosActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         listarProdutos();
+        atualizarFundo();
+        calcularGastos();
     }
 
     @Override
@@ -231,10 +238,36 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
     }
 
+    private void calcularGastos() {
+        gastoMaximo.setText(NumberFormat.getCurrencyInstance().format(lista.getGastoMaximo()));
+        double total = 0;
+        for (Compra c : compras) {
+            total = total + ((c.getQuantidade()+0.0) * c.getPreco());
+        }
+        totalGasto.setText(NumberFormat.getCurrencyInstance().format(total));
+        double economizado = lista.getGastoMaximo() - total;
+        totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(economizado));
+
+        if (total > lista.getGastoMaximo()) {
+            totalEconomizado.setTextColor(Color.RED);
+            totalEconomizado.setError("As compras estão ultrapassando o limite definido");
+        }
+    }
+
     public void listarProdutos() {
         DBController db = new DBController(getBaseContext());
         this.compras = db.selecionarCompras(lista);
         this.lpAdapter = new ListaProdutosAdapter(this.compras, this);
         this.lvProdutos.setAdapter(this.lpAdapter);
+    }
+
+    private void atualizarFundo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (compras.size() == 0) {
+                layout.setBackground(getDrawable(R.drawable.lp_vazio));
+            } else {
+                layout.setBackground(getDrawable(R.color.colorWhite));
+            }
+        }
     }
 }

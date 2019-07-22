@@ -54,7 +54,6 @@ public class NovaListaActivity extends AppCompatActivity {
                             nome.getText().toString(),
                             Double.parseDouble(gastoMaximo.getText().toString()),
                             0,
-                            0.0,
                             data.getText().toString(),
                             false
                     );

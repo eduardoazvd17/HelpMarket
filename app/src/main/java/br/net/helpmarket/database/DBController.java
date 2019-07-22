@@ -147,13 +147,12 @@ public class DBController {
             String nome = cursor.getString(cursor.getColumnIndex("NOME"));
             double gastoMaximo = cursor.getDouble(cursor.getColumnIndex("GASTOMAXIMO"));
             int quantidadeProdutos = countProdutos(id);
-            double totalGasto = sumTotalGasto(id);
             String dataCriacao = cursor.getString(cursor.getColumnIndex("DATACRIACAO"));
             Boolean terminado = false;
             if ("true".equalsIgnoreCase(cursor.getString(cursor.getColumnIndex("TERMINADO")))) {
                 terminado = true;
             }
-            Lista lista = new Lista(id, usuario, nome, gastoMaximo, quantidadeProdutos, totalGasto, dataCriacao, terminado);
+            Lista lista = new Lista(id, usuario, nome, gastoMaximo, quantidadeProdutos, dataCriacao, terminado);
             listas.add(lista);
             cursor.moveToNext();
         }
@@ -165,10 +164,10 @@ public class DBController {
         DBHelper db = new DBHelper(context);
         Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS WHERE ID_USUARIO = '" + lista.getUsuario().getId() + "' AND ID_LISTA = '" + lista.getId() + "'");
         List<Compra> compras = new ArrayList<>();
+        List<Produto> produtos = selecionarProdutos();
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
             long id = cursor.getLong(cursor.getColumnIndex("ID"));
-            List<Produto> produtos = selecionarProdutos();
             Produto produto = null;
             for (Produto p: produtos) {
                 if (p.getCodigoBarras().equals(cursor.getLong(cursor.getColumnIndex("CODIGOBARRAS_PRODUTO")))) {
@@ -198,20 +197,6 @@ public class DBController {
         int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADEPRODUTOS"));
         db.close();
         return quantidade;
-    }
-
-    private double sumTotalGasto(long idLista) {
-        double total = 0.0;
-        DBHelper db = new DBHelper(context);
-        Cursor cursor = db.executarSQLSelect("SELECT QUANTIDADE, PRECO FROM COMPRAS WHERE ID_LISTA='" + idLista +  "'");
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADE"));
-            double preco = cursor.getFloat(cursor.getColumnIndex("PRECO"));
-            total = total + (quantidade*preco);
-        }
-        db.close();
-        return total;
     }
 
     public void atualizarProduto(Compra compra, String nomePersonalizado, int quantidade, double preco) {

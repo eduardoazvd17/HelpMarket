@@ -2,8 +2,11 @@ package br.net.helpmarket;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +38,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     private List<Lista> listas;
     private ListaComprasAdapter lcAdapter;
     private ListView lvListas;
+    private CoordinatorLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +60,11 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         navigationView.getMenu().getItem(1).setChecked(true);
 
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
+        layout = findViewById(R.id.lc_layout);
         lvListas = findViewById(R.id.lvListas);
         registerForContextMenu(lvListas);
         listarListas();
+        atualizarFundo();
 
         lvListas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,6 +116,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                                 db.deletarLista(listaSelecionada.getId());
                                 db.deletarComprasDaLista(listaSelecionada.getId());
                                 listarListas();
+                                atualizarFundo();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 Toast.makeText(getApplicationContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
@@ -131,6 +138,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     protected void onResume() {
         super.onResume();
         listarListas();
+        atualizarFundo();
     }
 
     @Override
@@ -210,5 +218,15 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         this.listas = db.selecionarListas(this.usuario);
         this.lcAdapter = new ListaComprasAdapter(this.listas, this);
         this.lvListas.setAdapter(this.lcAdapter);
+    }
+
+    private void atualizarFundo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (listas.size() == 0) {
+                layout.setBackground(getDrawable(R.drawable.lc_vazio));
+            } else {
+                layout.setBackground(getDrawable(R.color.colorWhite));
+            }
+        }
     }
 }
