@@ -40,12 +40,12 @@
             android:id="@+id/login_email"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
-            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._"/>
 
         <Space
             android:layout_width="match_parent"
@@ -61,13 +61,26 @@
             android:id="@+id/login_senha"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
-            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"
             android:textColorHighlight="@color/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._#$% "/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <CheckBox
+            android:id="@+id/entrarAutomaticamente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:buttonTint="@color/colorWhite"
+            android:theme="@style/WhiteCheck"
+            android:text="Entrar Automaticamente"/>
 
         <Space
             android:layout_width="match_parent"

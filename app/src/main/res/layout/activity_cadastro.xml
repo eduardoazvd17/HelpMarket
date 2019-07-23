@@ -50,7 +50,17 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="10dp" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/foreground"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,12 +72,12 @@
             android:id="@+id/cadastro_email"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
-            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._"/>
 
         <Space
             android:layout_width="match_parent"
@@ -83,12 +93,12 @@
             android:id="@+id/cadastro_nome"
             android:inputType="textPersonName"
             android:imeOptions="actionDone"
-            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm "/>
 
         <Space
             android:layout_width="match_parent"
@@ -104,13 +114,35 @@
             android:id="@+id/cadastro_senha"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
-            android:hint="..."
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhiteA"
             android:backgroundTint="@color/colorWhite"
             android:textColorHighlight="@color/colorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._#$% "/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:text="Confirmação de Senha:"/>
+
+        <EditText
+            android:id="@+id/cadastro_confirmacaoSenha"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhiteA"
+            android:backgroundTint="@color/colorWhite"
+            android:textColorHighlight="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._#$% "/>
 
         <Space
             android:layout_width="match_parent"

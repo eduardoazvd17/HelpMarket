@@ -22,26 +22,6 @@
                 android:textColor="@color/colorWhite"
                 android:text="Início"/>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:gravity="right">
-
-                <ImageButton
-                    android:id="@+id/fazerLogoff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tooltipText="Fazer Logoff"
-                    android:layout_gravity="center"
-                    android:background="@drawable/exit"
-                    android:backgroundTint="@color/colorWhite"/>
-
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
-
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout

@@ -11,9 +11,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
+import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Usuario;
 
 public class InformacoesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,10 +46,31 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(3).setChecked(true);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
+
+        TextView nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
+        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+
+        LinearLayout btnLogoff = findViewById(R.id.info_fazerLogoff);
+        btnLogoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBController db = new DBController(v.getContext());
+                db.apagarCredenciais();
+                Toast.makeText(v.getContext(), "Até a próxima, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        LinearLayout btnMinhaConta = navigationView.getHeaderView(0).findViewById(R.id.minhaConta);
+        btnMinhaConta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: abre a tela de gerenciamento de conta.
+            }
+        });
     }
 
     @Override

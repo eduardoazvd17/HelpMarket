@@ -10,12 +10,19 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
-        android:paddingTop="16dp"
-        android:id="@+id/nav_header_imageView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher" />
+        android:orientation="horizontal"
+        android:paddingTop="16dp">
+
+        <ImageView
+            android:id="@+id/nav_header_imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -29,4 +36,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/slogan"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/minhaConta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@drawable/bg_primary_color"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tooltipText="Fazer Logoff"
+                android:layout_gravity="center"
+                android:background="@drawable/user"
+                android:backgroundTint="@color/colorPrimary"/>
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/nomePessoa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/colorBlack"
+                android:text="Minha Conta (nome da pessoa)"/>
+
+            <Space
+                android:layout_width="5dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

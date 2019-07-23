@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private ImageButton btnLogoff;
     private Usuario usuario;
 
     @Override
@@ -49,19 +50,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
-        btnLogoff = findViewById(R.id.fazerLogoff);
+        TextView nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
+        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+
+        LinearLayout btnLogoff = findViewById(R.id.main_fazerLogoff);
         btnLogoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DBController db = new DBController(v.getContext());
+                db.apagarCredenciais();
                 Toast.makeText(v.getContext(), "Até a próxima, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        LinearLayout btnMinhaConta = navigationView.getHeaderView(0).findViewById(R.id.minhaConta);
+        btnMinhaConta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: abre a tela de gerenciamento de conta.
             }
         });
     }

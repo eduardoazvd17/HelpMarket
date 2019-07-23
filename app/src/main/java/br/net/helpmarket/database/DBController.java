@@ -223,4 +223,30 @@ public class DBController {
         db.close();
     }
 
+    public void salvarCredenciais(Usuario usuario) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("INSERT INTO LOGINAUTOMATICO (ID, EMAIL, SENHA) VALUES ('1','" + usuario.getEmail() + "','" + usuario.getSenha() + "')");
+        db.close();
+    }
+
+    public Usuario buscarCredenciais() {
+        Usuario usuario = null;
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM LOGINAUTOMATICO");
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            String email = cursor.getString(cursor.getColumnIndex("EMAIL"));
+            String senha = cursor.getString(cursor.getColumnIndex("SENHA"));
+            usuario = fazerLogin(email, senha);
+            cursor.moveToNext();
+        }
+        db.close();
+        return usuario;
+    }
+
+    public void apagarCredenciais() {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("DELETE FROM LOGINAUTOMATICO");
+        db.close();
+    }
 }

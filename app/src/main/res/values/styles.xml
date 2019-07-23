@@ -13,4 +13,8 @@
         <item name="android:screenOrientation">portrait</item>
     </style>
 
+    <style name="WhiteCheck">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 </resources>

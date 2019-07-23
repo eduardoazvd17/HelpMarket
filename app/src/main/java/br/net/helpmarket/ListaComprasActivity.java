@@ -20,7 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -83,6 +86,30 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                 Intent intent = new Intent(getBaseContext(), NovaListaActivity.class);
                 intent.putExtra("usuario", usuario);
                 startActivity(intent);
+            }
+        });
+
+        TextView nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
+        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+
+        LinearLayout btnLogoff = findViewById(R.id.lc_fazerLogoff);
+        btnLogoff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBController db = new DBController(v.getContext());
+                db.apagarCredenciais();
+                Toast.makeText(v.getContext(), "Até a próxima, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        LinearLayout btnMinhaConta = navigationView.getHeaderView(0).findViewById(R.id.minhaConta);
+        btnMinhaConta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: abre a tela de gerenciamento de conta.
             }
         });
     }

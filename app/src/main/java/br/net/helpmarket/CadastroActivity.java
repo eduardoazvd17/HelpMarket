@@ -15,13 +15,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Usuario;
 
 public class CadastroActivity extends AppCompatActivity {
 
-    private EditText email, nome, senha;
+    private EditText email, nome, senha, confirmacaoSenha;
     private ImageButton btnVoltar;
     private Button btnCadastro;
 
@@ -33,6 +36,7 @@ public class CadastroActivity extends AppCompatActivity {
         email = findViewById(R.id.cadastro_email);
         nome = findViewById(R.id.cadastro_nome);
         senha = findViewById(R.id.cadastro_senha);
+        confirmacaoSenha = findViewById(R.id.cadastro_confirmacaoSenha);
 
         btnVoltar = findViewById(R.id.cadastro_voltar);
         btnVoltar.setOnClickListener(new View.OnClickListener() {
@@ -50,17 +54,22 @@ public class CadastroActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senha.getText().toString());
-                    DBController db = new DBController(v.getContext());
-                    boolean status = db.fazerCadastro(usuario);
-                    if (status) {
-                        Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(v.getContext(), MainActivity.class);
-                        intent.putExtra("usuario", usuario);
-                        startActivity(intent);
-                        finish();
+                    if (senha.getText().toString().equals(confirmacaoSenha.getText().toString())) {
+                        String senhaHash = criptografarSenha(senha.getText().toString());
+                        Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senhaHash);
+                        DBController db = new DBController(v.getContext());
+                        boolean status = db.fazerCadastro(usuario);
+                        if (status) {
+                            Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(v.getContext(), MainActivity.class);
+                            intent.putExtra("usuario", usuario);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
+                        confirmacaoSenha.setError("Os campos senha e confirmação de senha devem ser iguais");
                     }
                 }
             }
@@ -88,7 +97,33 @@ public class CadastroActivity extends AppCompatActivity {
             senha.setError("Insira sua senha");
             return false;
         }
+        if (confirmacaoSenha.getText().toString().isEmpty()) {
+            senha.setError("Insira sua senha novamente");
+            return false;
+        }
         return true;
+    }
+
+    private String criptografarSenha(String senha) {
+        try {
+            // Static getInstance method is called with hashing MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // digest() method is called to calculate message digest
+            //  of an input digest() return array of byte
+            byte[] messageDigest = md.digest(senha.getBytes());
+            // Convert byte array into signum representation
+            BigInteger no = new BigInteger(1, messageDigest);
+            // Convert message digest into hex value
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext.toUpperCase();
+        }
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void ocultarTeclado() {
