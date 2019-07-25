@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_login"
+    android:id="@+id/layout_recuperar"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,6 +19,37 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorBlackA">
 
+        <LinearLayout
+            android:id="@+id/recuperar_voltar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/colorWhite"
+                android:tint="@color/colorWhite"
+                android:background="@drawable/back"/>
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:layout_gravity="center"
+                android:text="Entre com a sua conta"/>
+
+        </LinearLayout>
+        
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
         <ImageView
             android:layout_gravity="center"
             android:layout_width="150dp"
@@ -36,7 +67,7 @@
             android:text="E-mail:"/>
 
         <EditText
-            android:id="@+id/login_email"
+            android:id="@+id/recuperar_email"
             android:maxEms="255"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
@@ -55,10 +86,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:text="Senha:"/>
+            android:text="Código de Recuperação:"/>
 
         <EditText
-            android:id="@+id/login_senha"
+            android:id="@+id/recuperar_codigo"
+            android:maxEms="6"
+            android:inputType="number"
+            android:imeOptions="actionDone"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhiteA"
+            android:backgroundTint="@color/colorWhite"
+            android:textColorHighlight="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
+            android:text="Nova Senha:"/>
+
+        <EditText
+            android:id="@+id/recuperar_novaSenha"
             android:maxEms="255"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
@@ -74,50 +128,36 @@
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
-        <CheckBox
-            android:id="@+id/entrarAutomaticamente"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorWhite"
-            android:buttonTint="@color/colorWhite"
-            android:theme="@style/WhiteCheck"
-            android:text="Entrar Automaticamente"/>
+            android:text="Confirmação de Nova Senha:"/>
+
+        <EditText
+            android:id="@+id/recuperar_confirmarNovaSenha"
+            android:maxEms="255"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhiteA"
+            android:backgroundTint="@color/colorWhite"
+            android:textColorHighlight="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._#$% "/>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="16dp" />
 
         <Button
-            android:id="@+id/fazerLogin"
-            android:text="Entrar"
+            android:id="@+id/recuperar_alterarSenha"
+            android:text="Alterar Senha"
             android:textColor="@color/colorWhite"
             android:background="@drawable/button_bg_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
-        <TextView
-            android:id="@+id/recuperar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/esqueciSenha"
-            android:textColor="@color/colorWhite"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
-        <TextView
-            android:id="@+id/cadastrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/registro"
-            android:textColor="@color/colorWhite"/>
 
     </LinearLayout>
 

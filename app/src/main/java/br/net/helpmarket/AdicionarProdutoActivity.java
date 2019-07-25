@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -82,7 +83,7 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
             }
         });
 
-        CoordinatorLayout layout = findViewById(R.id.layout_adicionarproduto);
+        LinearLayout layout = findViewById(R.id.layout_adicionarproduto);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -32,6 +32,8 @@
         <activity android:name=".AdicionarProdutoActivity"></activity>
         <activity android:name=".EditarProdutoActivity"></activity>
         <activity android:name=".EditarListaActivity"></activity>
+        <activity android:name=".MinhaContaActivity"></activity>
+        <activity android:name=".RecuperarActivity"></activity>
 
     </application>
 

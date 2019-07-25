@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,7 +27,7 @@ import br.net.helpmarket.modelo.Usuario;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText email, senha;
-    private TextView cadastrar;
+    private TextView cadastrar, recuperar;
     private Button btnLogin;
     private CheckBox entrarAutomaticamente;
     private Usuario usuario;
@@ -52,6 +53,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        recuperar = findViewById(R.id.recuperar);
+        recuperar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), RecuperarActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btnLogin = findViewById(R.id.fazerLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                     String senhaHash = criptografarSenha(senha.getText().toString());
                     usuario = db.fazerLogin(email.getText().toString(), senhaHash);
                     if (null == usuario) {
-                        Toast.makeText(v.getContext(), "Usuario ou senha incorretos.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(), "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
                     } else {
                         if (entrarAutomaticamente.isChecked()) {
                             salvarCredenciais();
@@ -77,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        ConstraintLayout layout = findViewById(R.id.layout_login);
+        CoordinatorLayout layout = findViewById(R.id.layout_login);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean verificarPreenchimento() {
         if (email.getText().toString().isEmpty()) {
-            email.setError("Insira seu email ou nome de usuario");
+            email.setError("Insira seu e-mail");
             return false;
         }
         if (senha.getText().toString().isEmpty()) {

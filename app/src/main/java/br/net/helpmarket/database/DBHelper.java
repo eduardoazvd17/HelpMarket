@@ -12,6 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String criarTabelaListas = "CREATE TABLE LISTAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, NOME TEXT, QUANTIDADEPRODUTOS INTEGER, GASTOMAXIMO TEXT, DATACRIACAO TEXT, TERMINADO TEXT)";
     private final String criarTabelaCompras = "CREATE TABLE COMPRAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, ID_LISTA INTEGER, CODIGOBARRAS_PRODUTO, NOMEPERSONALIZADO TEXT, QUANTIDADE NTEGER, PRECO TEXT, COMPRADO TEXT)";
     private final String criarTabelaLoginAutomatico = "CREATE TABLE LOGINAUTOMATICO (ID INTEGER PRIMARY KEY, EMAIL TEXT, SENHA TEXT)";
+    private final String criarTabelaRecuperacao = "CREATE TABLE RECUPERACAO (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, CODIGO INTEGER)";
 
     public DBHelper(Context context) {
         super(context, "helpmarket.db", null, 1);
@@ -24,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(criarTabelaListas);
         db.execSQL(criarTabelaCompras);
         db.execSQL(criarTabelaLoginAutomatico);
+        db.execSQL(criarTabelaRecuperacao);
     }
 
     @Override

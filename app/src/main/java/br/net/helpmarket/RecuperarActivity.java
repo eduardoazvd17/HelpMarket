@@ -1,79 +1,68 @@
 package br.net.helpmarket;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import br.net.helpmarket.database.DBController;
-import br.net.helpmarket.modelo.Usuario;
 
-public class CadastroActivity extends AppCompatActivity {
+public class RecuperarActivity extends AppCompatActivity {
 
-    private EditText email, nome, senha, confirmacaoSenha;
-    private LinearLayout btnVoltar;
-    private Button btnCadastro;
+    private EditText email, novaSenha, confirmarNovaSenha, codigo;
+    private Button btnRecuperar;
+    private LinearLayout voltar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro);
+        setContentView(R.layout.activity_recuperar);
 
-        email = findViewById(R.id.cadastro_email);
-        nome = findViewById(R.id.cadastro_nome);
-        senha = findViewById(R.id.cadastro_senha);
-        confirmacaoSenha = findViewById(R.id.cadastro_confirmacaoSenha);
+        email = findViewById(R.id.recuperar_email);
+        codigo = findViewById(R.id.recuperar_codigo);
+        novaSenha = findViewById(R.id.recuperar_novaSenha);
+        confirmarNovaSenha = findViewById(R.id.recuperar_confirmarNovaSenha);
 
-        btnVoltar = findViewById(R.id.cadastro_voltar);
-        btnVoltar.setOnClickListener(new View.OnClickListener() {
+        voltar = findViewById(R.id.recuperar_voltar);
+        voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), LoginActivity.class);
-                startActivity(intent);
                 finish();
             }
         });
 
-        btnCadastro = findViewById(R.id.fazerCadastro);
-        btnCadastro.setOnClickListener(new View.OnClickListener() {
+        btnRecuperar = findViewById(R.id.recuperar_alterarSenha);
+        btnRecuperar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    String senhaHash = criptografarSenha(senha.getText().toString());
-                    Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senhaHash);
                     DBController db = new DBController(v.getContext());
-                    boolean status = db.fazerCadastro(usuario);
-                    if (status) {
-                        Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(v.getContext(), MainActivity.class);
-                        intent.putExtra("usuario", usuario);
-                        startActivity(intent);
-                        finish();
+                    String recuperacao = db.recuperarSenha(email.getText().toString(), Integer.parseInt(codigo.getText().toString()));
+                    if ("emailIncorreto".equals(recuperacao)) {
+                        email.setError("Endereço de e-mail incorreto");
+                    } else if ("codigoIncorreto".equals(recuperacao)) {
+                        codigo.setError("Código de recuperação incorreto");
                     } else {
-                        Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
+                        db.recuperarUsuario(email.getText().toString(), criptografarSenha(novaSenha.getText().toString()));
+                        Toast.makeText(getBaseContext(), "Sua senha foi alterada, entre utilizando sua nova senha", Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }
             }
         });
 
-        CoordinatorLayout layout = findViewById(R.id.layout_cadastro);
+        CoordinatorLayout layout = findViewById(R.id.layout_recuperar);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,24 +73,24 @@ public class CadastroActivity extends AppCompatActivity {
 
     private boolean verificarPreenchimento() {
         if (email.getText().toString().isEmpty()) {
-            email.setError("Insira seu e-mail");
+            email.setError("Insira seu email");
             return false;
         }
-        if (nome.getText().toString().isEmpty()) {
-            nome.setError("Insira seu nome");
+        if (codigo.getText().toString().isEmpty()) {
+            codigo.setError("Insira seu código recuperação");
             return false;
         }
-        if (senha.getText().toString().isEmpty()) {
-            senha.setError("Insira sua senha");
+        if (novaSenha.getText().toString().isEmpty()) {
+            novaSenha.setError("Insira sua nova senha");
             return false;
         }
-        if (confirmacaoSenha.getText().toString().isEmpty()) {
-            senha.setError("Insira sua senha novamente");
+        if (confirmarNovaSenha.getText().toString().isEmpty()) {
+            confirmarNovaSenha.setError("Confirme sua nova senha");
             return false;
         }
-        if (!senha.getText().toString().equals(confirmacaoSenha.getText().toString())) {
-            senha.setError("Os campos senha e confirmação de senha devem ser iguais");
-            confirmacaoSenha.setError("Os campos senha e confirmação de senha devem ser iguais");
+        if (!novaSenha.getText().toString().equals(confirmarNovaSenha.getText().toString())) {
+            novaSenha.setError("Os campos nova senha e confirmação de nova senha devem ser iguais");
+            confirmarNovaSenha.setError("Os campos nova senha e confirmação de nova senha devem ser iguais");
             return false;
         }
         return true;

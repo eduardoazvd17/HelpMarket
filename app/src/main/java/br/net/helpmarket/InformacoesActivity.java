@@ -26,6 +26,7 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private Usuario usuario;
+    private TextView nomePessoa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
 
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
-        TextView nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
+        nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
         nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
 
         LinearLayout btnLogoff = findViewById(R.id.info_fazerLogoff);
@@ -68,9 +69,20 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
         btnMinhaConta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: abre a tela de gerenciamento de conta.
+                Intent intent = new Intent(getBaseContext(), MinhaContaActivity.class);
+                intent.putExtra("usuario", usuario);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DBController db = new DBController(getBaseContext());
+        usuario = db.buscarUsuario(usuario.getEmail());
+        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+
     }
 
     @Override

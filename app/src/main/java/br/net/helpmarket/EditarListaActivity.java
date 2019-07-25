@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +69,7 @@ public class EditarListaActivity extends AppCompatActivity {
             }
         });
 
-        CoordinatorLayout layout = findViewById(R.id.layout_editarlista);
+        LinearLayout layout = findViewById(R.id.layout_editarlista);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

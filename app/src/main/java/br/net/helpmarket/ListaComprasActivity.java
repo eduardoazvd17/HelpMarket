@@ -38,6 +38,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private Usuario usuario;
+    private TextView nomePessoa;
     private List<Lista> listas;
     private ListaComprasAdapter lcAdapter;
     private ListView lvListas;
@@ -89,7 +90,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
             }
         });
 
-        TextView nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
+        nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
         nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
 
         LinearLayout btnLogoff = findViewById(R.id.lc_fazerLogoff);
@@ -109,7 +110,9 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         btnMinhaConta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: abre a tela de gerenciamento de conta.
+                Intent intent = new Intent(getBaseContext(), MinhaContaActivity.class);
+                intent.putExtra("usuario", usuario);
+                startActivity(intent);
             }
         });
     }
@@ -164,6 +167,9 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     @Override
     protected void onResume() {
         super.onResume();
+        DBController db = new DBController(getBaseContext());
+        usuario = db.buscarUsuario(usuario.getEmail());
+        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
         listarListas();
         atualizarFundo();
     }

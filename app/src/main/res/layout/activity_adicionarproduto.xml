@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/layout_adicionarproduto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +39,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/layout_adicionarproduto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -120,6 +120,7 @@
 
                         <EditText
                             android:id="@+id/ap_nome"
+                            android:maxEms="255"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
@@ -153,6 +154,7 @@
 
                         <EditText
                             android:id="@+id/ap_quantidade"
+                            android:maxEms="3"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -187,6 +189,7 @@
 
                         <EditText
                             android:id="@+id/ap_preco"
+                            android:maxEms="255"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

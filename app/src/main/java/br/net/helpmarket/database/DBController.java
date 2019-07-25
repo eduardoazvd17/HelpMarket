@@ -57,6 +57,22 @@ public class DBController {
         return usuario;
     }
 
+    public Usuario buscarUsuario(String email) {
+        Usuario usuario = null;
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM USUARIOS WHERE EMAIL = '" + email + "'");
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            Long id = cursor.getLong(cursor.getColumnIndex("ID"));
+            String nome = cursor.getString(cursor.getColumnIndex("NOME"));
+            String senha = cursor.getString(cursor.getColumnIndex("SENHA"));
+            usuario = new Usuario(id, email, nome, senha);
+            cursor.moveToNext();
+        }
+        db.close();
+        return usuario;
+    }
+
     public void inserirProduto(Produto produto) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("INSERT INTO PRODUTOS VALUES ('" + produto.getCodigoBarras() + "','" + produto.getNome() + "','" + produto.getUrlImagem() + "')");
@@ -242,6 +258,54 @@ public class DBController {
         }
         db.close();
         return usuario;
+    }
+
+    public void inserirCodigoRecuperacao(Usuario usuario, int codigo) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("INSERT INTO RECUPERACAO (ID_USUARIO, CODIGO) VALUES ('" + usuario.getId() + "','" + codigo + "')");
+        db.close();
+    }
+
+    public String recuperarSenha(String email, int codigo) {
+        Usuario usuario = buscarUsuario(email);
+        if (null == usuario) {
+            return "emailIncorreto";
+        }
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM RECUPERACAO WHERE ID_USUARIO = '" + usuario.getId() + "' AND CODIGO = '" + codigo + "'");
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            return usuario.getSenha();
+        }
+        return "codigoIncorreto";
+    }
+
+    public void alterarUsuario(Usuario usuario, String nome) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE USUARIOS SET NOME = '" + nome + "' WHERE ID = '" + usuario.getId() + "'");
+        db.close();
+    }
+
+    public void alterarUsuario(Usuario usuario, String nome, String senha) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE USUARIOS SET NOME = '" + nome + "', SENHA = '" + senha + "' WHERE ID = '" + usuario.getId() + "'");
+        db.close();
+    }
+
+    public void recuperarUsuario(String email, String novaSenha) {
+        DBHelper db = new DBHelper(context);
+        db.executarSQL("UPDATE USUARIOS SET SENHA = '" + novaSenha + "' WHERE EMAIL = '" + email + "'");
+        db.close();
+    }
+
+    public boolean possuiCodigoRecuperacao(Usuario usuario) {
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM RECUPERACAO WHERE ID_USUARIO = '" + usuario.getId() + "'");
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            return true;
+        }
+        return false;
     }
 
     public void apagarCredenciais() {

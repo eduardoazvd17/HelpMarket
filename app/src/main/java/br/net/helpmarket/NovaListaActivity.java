@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -72,7 +73,7 @@ public class NovaListaActivity extends AppCompatActivity {
             }
         });
 
-        CoordinatorLayout layout = findViewById(R.id.layout_novalista);
+        LinearLayout layout = findViewById(R.id.layout_novalista);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
