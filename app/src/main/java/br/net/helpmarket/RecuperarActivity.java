@@ -76,6 +76,10 @@ public class RecuperarActivity extends AppCompatActivity {
             email.setError("Insira seu email");
             return false;
         }
+        if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")) {
+            email.setError("Digite um endereço de e-mail válido");
+            return false;
+        }
         if (codigo.getText().toString().isEmpty()) {
             codigo.setError("Insira seu código recuperação");
             return false;

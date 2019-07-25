@@ -87,6 +87,10 @@ public class CadastroActivity extends AppCompatActivity {
             email.setError("Insira seu e-mail");
             return false;
         }
+        if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")) {
+            email.setError("Digite um endereço de e-mail válido");
+            return false;
+        }
         if (nome.getText().toString().isEmpty()) {
             nome.setError("Insira seu nome");
             return false;

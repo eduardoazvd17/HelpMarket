@@ -118,6 +118,10 @@ public class LoginActivity extends AppCompatActivity {
             email.setError("Insira seu e-mail");
             return false;
         }
+        if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")) {
+            email.setError("Digite um endereço de e-mail válido");
+            return false;
+        }
         if (senha.getText().toString().isEmpty()) {
             senha.setError("Insira sua senha");
             return false;
