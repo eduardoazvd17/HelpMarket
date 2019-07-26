@@ -1,13 +1,9 @@
 package br.net.helpmarket;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -22,12 +18,9 @@ import android.widget.Toast;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
 
 import br.net.helpmarket.database.DBController;
-import br.net.helpmarket.modelo.Lista;
+import br.net.helpmarket.mail.MailController;
 import br.net.helpmarket.modelo.Usuario;
 
 public class MinhaContaActivity extends AppCompatActivity {
@@ -37,7 +30,7 @@ public class MinhaContaActivity extends AppCompatActivity {
     private Usuario usuario;
     private String nvSenha;
     private TextView email;
-    private LinearLayout alterarSenha, gerarCodigoRecuperacao, cancelarSenha;
+    private LinearLayout alterarSenha, cancelarSenha;
     private CardView senha, alterar;
     private Boolean desejaAlterarSenha;
 
@@ -61,7 +54,6 @@ public class MinhaContaActivity extends AppCompatActivity {
         novaSenha = findViewById(R.id.novaSenha);
         confirmarNovaSenha = findViewById(R.id.confimarNovaSenha);
         alterarSenha = findViewById(R.id.mc_alterarSenha);
-        gerarCodigoRecuperacao = findViewById(R.id.mc_codigoRecuperacao);
         usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
         nome.setText(usuario.getNome());
@@ -83,36 +75,6 @@ public class MinhaContaActivity extends AppCompatActivity {
             }
         });
 
-        gerarCodigoRecuperacao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DBController db = new DBController(v.getContext());
-                if (db.possuiCodigoRecuperacao(usuario)) {
-                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(v.getContext());
-                    dlgAlert.setTitle("Info");
-                    dlgAlert.setMessage("Você já possui um código de recuperação.");
-                    dlgAlert.setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dlgAlert.create().show();
-                } else {
-                    int codigo = new Random().nextInt(900000) + 100000;
-                    db.inserirCodigoRecuperacao(usuario, codigo);
-                    AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(v.getContext());
-                    dlgAlert.setTitle("Código de Recuperação");
-                    dlgAlert.setMessage("Seu código de recuperação é: " + codigo + "\n\nEssa é a unica vez em que ele aparece, com ele você conseguirá recuperar sua conta em caso de esquecimento de senha, portanto, anote este código.");
-                    dlgAlert.setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dlgAlert.create().show();
-                }
-            }
-        });
-
         FloatingActionButton salvarMinhaConta = findViewById(R.id.salvarMinhaConta);
         salvarMinhaConta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +84,8 @@ public class MinhaContaActivity extends AppCompatActivity {
                     DBController db = new DBController(v.getContext());
                     if (desejaAlterarSenha) {
                         db.alterarUsuario(usuario, nome.getText().toString(), nvSenha);
+                        MailController mc = new MailController(v.getContext());
+                        mc.enviarAlteracaoSenha(usuario);
                     } else {
                         db.alterarUsuario(usuario, nome.getText().toString());
                     }

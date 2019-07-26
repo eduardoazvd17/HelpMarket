@@ -260,26 +260,6 @@ public class DBController {
         return usuario;
     }
 
-    public void inserirCodigoRecuperacao(Usuario usuario, int codigo) {
-        DBHelper db = new DBHelper(context);
-        db.executarSQL("INSERT INTO RECUPERACAO (ID_USUARIO, CODIGO) VALUES ('" + usuario.getId() + "','" + codigo + "')");
-        db.close();
-    }
-
-    public String recuperarSenha(String email, int codigo) {
-        Usuario usuario = buscarUsuario(email);
-        if (null == usuario) {
-            return "emailIncorreto";
-        }
-        DBHelper db = new DBHelper(context);
-        Cursor cursor = db.executarSQLSelect("SELECT * FROM RECUPERACAO WHERE ID_USUARIO = '" + usuario.getId() + "' AND CODIGO = '" + codigo + "'");
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()) {
-            return usuario.getSenha();
-        }
-        return "codigoIncorreto";
-    }
-
     public void alterarUsuario(Usuario usuario, String nome) {
         DBHelper db = new DBHelper(context);
         db.executarSQL("UPDATE USUARIOS SET NOME = '" + nome + "' WHERE ID = '" + usuario.getId() + "'");
@@ -296,16 +276,6 @@ public class DBController {
         DBHelper db = new DBHelper(context);
         db.executarSQL("UPDATE USUARIOS SET SENHA = '" + novaSenha + "' WHERE EMAIL = '" + email + "'");
         db.close();
-    }
-
-    public boolean possuiCodigoRecuperacao(Usuario usuario) {
-        DBHelper db = new DBHelper(context);
-        Cursor cursor = db.executarSQLSelect("SELECT * FROM RECUPERACAO WHERE ID_USUARIO = '" + usuario.getId() + "'");
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()) {
-            return true;
-        }
-        return false;
     }
 
     public void apagarCredenciais() {

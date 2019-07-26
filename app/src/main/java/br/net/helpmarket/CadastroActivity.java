@@ -3,25 +3,21 @@ package br.net.helpmarket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import br.net.helpmarket.database.DBController;
+import br.net.helpmarket.mail.MailController;
 import br.net.helpmarket.modelo.Usuario;
 
 public class CadastroActivity extends AppCompatActivity {
@@ -61,6 +57,8 @@ public class CadastroActivity extends AppCompatActivity {
                     DBController db = new DBController(v.getContext());
                     boolean status = db.fazerCadastro(usuario);
                     if (status) {
+                        MailController mc = new MailController(v.getContext());
+                        mc.enviarMensagemBoasVindas(usuario);
                         Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
                         intent.putExtra("usuario", usuario);

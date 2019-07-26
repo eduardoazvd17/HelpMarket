@@ -250,7 +250,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
         if (total > lista.getGastoMaximo()) {
             totalEconomizado.setTextColor(Color.RED);
-            totalEconomizado.setError("As compras estão ultrapassando o limite definido");
+            totalEconomizado.setError("As compras ultrapassaram o limite definido");
         }
     }
 
@@ -262,12 +262,10 @@ public class ListaProdutosActivity extends AppCompatActivity {
     }
 
     private void atualizarFundo() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (compras.size() == 0) {
-                layout.setBackground(getDrawable(R.drawable.lp_vazio));
-            } else {
-                layout.setBackground(getDrawable(R.color.colorWhite));
-            }
+        if (compras.size() == 0) {
+            layout.setBackground(getDrawable(R.drawable.lp_vazio));
+        } else {
+            layout.setBackground(getDrawable(R.color.colorWhite));
         }
     }
 }
