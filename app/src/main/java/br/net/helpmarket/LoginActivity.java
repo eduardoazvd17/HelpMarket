@@ -77,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         if (salvarEmail.isChecked()) {
                             atualizarEmailSalvo();
+                        } else {
+                            apagarEmailSalvo();
                         }
                         Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
@@ -95,6 +97,11 @@ public class LoginActivity extends AppCompatActivity {
                 ocultarTeclado();
             }
         });
+    }
+
+    private void apagarEmailSalvo() {
+        DBController db = new DBController(getBaseContext());
+        db.apagarEmailSalvo();
     }
 
     private void atualizarEmailSalvo() {
