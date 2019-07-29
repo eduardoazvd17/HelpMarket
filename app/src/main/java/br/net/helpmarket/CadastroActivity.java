@@ -57,6 +57,7 @@ public class CadastroActivity extends AppCompatActivity {
                     DBController db = new DBController(v.getContext());
                     boolean status = db.fazerCadastro(usuario);
                     if (status) {
+                        atualizarEmailSalvo();
                         MailController mc = new MailController(v.getContext());
                         mc.enviarMensagemBoasVindas(usuario);
                         Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
@@ -107,6 +108,11 @@ public class CadastroActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void atualizarEmailSalvo() {
+        DBController db = new DBController(getBaseContext());
+        db.salvarEmail(email.getText().toString());
     }
 
     private String criptografarSenha(String senha) {

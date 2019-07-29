@@ -287,11 +287,11 @@ public class DBController {
     public void salvarEmail(String email) {
         if (existeEmailSalvo()) {
             DBHelper db = new DBHelper(context);
-            db.executarSQL("UPDATE EMAILSALVO SET EMAIL = '" + email + "' WHERE ID = '1'");
+            db.executarSQL("UPDATE EMAILSALVO SET EMAIL = '" + email + "'");
             db.close();
         } else {
             DBHelper db = new DBHelper(context);
-            db.executarSQL("INSERT INTO EMAILSALVO ('1', '" + email + "')");
+            db.executarSQL("INSERT INTO EMAILSALVO (EMAIL) VALUES ('" + email + "')");
             db.close();
         }
     }
@@ -303,6 +303,7 @@ public class DBController {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             email = cursor.getString(cursor.getColumnIndex("EMAIL"));
+            cursor.moveToNext();
         }
         db.close();
         return email;

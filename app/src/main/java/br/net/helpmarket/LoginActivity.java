@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         String emailSalvo = db.buscarEmailSalvo();
         if (null != emailSalvo) {
             email.setText(emailSalvo);
+            salvarEmail.setChecked(true);
         }
     }
 
