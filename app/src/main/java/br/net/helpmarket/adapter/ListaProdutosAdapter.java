@@ -2,6 +2,7 @@ package br.net.helpmarket.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -61,5 +62,13 @@ public class ListaProdutosAdapter extends BaseAdapter {
         precoUnitario.setText(NumberFormat.getCurrencyInstance().format(compra.getPreco()));
         total.setText(NumberFormat.getCurrencyInstance().format((compra.getQuantidade()+0.0) * (compra.getPreco())));
         return view;
+    }
+
+    public void desmarcarLista(View view, Drawable fundo) {
+        view.findViewById(R.id.lcitem_bg).setBackground(fundo);
+    }
+
+    public void marcarLista(View view, Drawable fundo) {
+        view.findViewById(R.id.lcitem_bg).setBackground(fundo);
     }
 }

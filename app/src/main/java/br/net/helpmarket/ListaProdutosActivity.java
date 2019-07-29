@@ -1,24 +1,25 @@
 package br.net.helpmarket;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,17 +34,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-import br.net.helpmarket.adapter.ListaComprasAdapter;
 import br.net.helpmarket.adapter.ListaProdutosAdapter;
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Compra;
 import br.net.helpmarket.modelo.Lista;
 import br.net.helpmarket.modelo.Produto;
-import br.net.helpmarket.modelo.Usuario;
 
 public class ListaProdutosActivity extends AppCompatActivity {
 
@@ -57,6 +55,10 @@ public class ListaProdutosActivity extends AppCompatActivity {
     private int numeroToken=1;
     private Tokens token = Tokens.TK1;
     private CoordinatorLayout layout;
+    private LinearLayout lpVazio;
+    private ActionMode mActionMode;
+    private FloatingActionButton adicionarProduto;
+    private List<Compra> comprasSelecionadas = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         nomeLista = findViewById(R.id.lp_nomeLista);
         nomeLista.setText(lista.getNome());
         lvProdutos = findViewById(R.id.lvProdutos);
+        lpVazio = findViewById(R.id.lp_vazio);
         gastoMaximo = findViewById(R.id.lp_gastoMaximo);
         totalGasto = findViewById(R.id.lp_totalGasto);
         totalEconomizado = findViewById(R.id.lp_totalEconomizado);
@@ -81,7 +84,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         atualizarFundo();
         calcularGastos();
 
-        FloatingActionButton adicionarProduto = findViewById(R.id.adicionarProduto);
+        adicionarProduto = findViewById(R.id.adicionarProduto);
         adicionarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +94,29 @@ public class ListaProdutosActivity extends AppCompatActivity {
                         .setOrientationLocked(true)
                         .setBarcodeImageEnabled(true)
                         .initiateScan();
+            }
+        });
+
+        lvProdutos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (null == mActionMode) {
+                    //TODO: Ao clicar no item.
+                } else {
+                    if (comprasSelecionadas.contains(lpAdapter.getItem(position))) {
+                        comprasSelecionadas.remove(lpAdapter.getItem(position));
+                        lpAdapter.desmarcarLista(view, getDrawable(R.color.colorWhite));
+
+                    } else {
+                        comprasSelecionadas.add((Compra) lpAdapter.getItem(position));
+                        lpAdapter.marcarLista(view, getDrawable(R.color.colorPrimaryA));
+                    }
+                    if (comprasSelecionadas.size() == 1) {
+                        mActionMode.setTitle(comprasSelecionadas.size() + " Produto Selecionado");
+                    } else {
+                        mActionMode.setTitle(comprasSelecionadas.size() + " Produtos Selecionados");
+                    }
+                }
             }
         });
 
@@ -218,6 +244,54 @@ public class ListaProdutosActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_selecao, menu);
+            mode.setTitle(comprasSelecionadas.size() + " Produtos Selecionados");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.excluirSelecionados:
+                    for (Compra c : comprasSelecionadas) {
+                        DBController db = new DBController(getBaseContext());
+                        db.deletarCompra(c.getId());
+                        compras.remove(c);
+                    }
+                    listarProdutos();
+                    atualizarFundo();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @SuppressLint("RestrictedApi")
+                @Override
+                public void run() {
+                    toolbar.setVisibility(View.VISIBLE);
+                    adicionarProduto.setVisibility(View.VISIBLE);
+                }
+            }, 300);
+            comprasSelecionadas.clear();
+        }
+    };
+
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -230,9 +304,14 @@ public class ListaProdutosActivity extends AppCompatActivity {
                         .setBarcodeImageEnabled(true)
                         .initiateScan();
                 break;
-            case R.id.excluir_produtos:
-                //TODO: Entrar em modo de seleção para deletar.
-                break;
+            case R.id.selecionar_produtos:
+                if (mActionMode != null) {
+                    return false;
+                }
+                mActionMode = startSupportActionMode(mActionModeCallback);
+                toolbar.setVisibility(View.GONE);
+                adicionarProduto.setVisibility(View.GONE);
+                return true;
         }
         return super.onOptionsItemSelected(item);
 
@@ -263,9 +342,11 @@ public class ListaProdutosActivity extends AppCompatActivity {
 
     private void atualizarFundo() {
         if (compras.size() == 0) {
-            layout.setBackground(getDrawable(R.drawable.lp_vazio));
+            lvProdutos.setVisibility(View.GONE);
+            lpVazio.setVisibility(View.VISIBLE);
         } else {
-            layout.setBackground(getDrawable(R.color.colorWhite));
+            lvProdutos.setVisibility(View.VISIBLE);
+            lpVazio.setVisibility(View.GONE);
         }
     }
 }

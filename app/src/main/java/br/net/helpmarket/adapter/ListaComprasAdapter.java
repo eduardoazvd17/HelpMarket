@@ -2,6 +2,7 @@ package br.net.helpmarket.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -57,5 +58,13 @@ public class ListaComprasAdapter extends BaseAdapter {
         data.setText(lista.getDataCriacao());
 
         return view;
+    }
+
+    public void marcarLista(View view, Drawable fundo) {
+        view.findViewById(R.id.lcitem_bg).setBackground(fundo);
+    }
+
+    public void desmarcarLista(View view, Drawable fundo) {
+        view.findViewById(R.id.lcitem_bg).setBackground(fundo);
     }
 }

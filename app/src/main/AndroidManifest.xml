@@ -15,27 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:screenOrientation="sensorPortrait">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".CadastroActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".ListaComprasActivity"></activity>
-        <activity android:name=".GruposActivity"></activity>
-        <activity android:name=".InformacoesActivity"></activity>
-        <activity android:name=".ConfiguracoesActivity"></activity>
-        <activity android:name=".NovaListaActivity"></activity>
-        <activity android:name=".ListaProdutosActivity"></activity>
-        <activity android:name=".AdicionarProdutoActivity"></activity>
-        <activity android:name=".EditarProdutoActivity"></activity>
-        <activity android:name=".EditarListaActivity"></activity>
-        <activity android:name=".MinhaContaActivity"></activity>
-        <activity android:name=".RecuperarActivity"></activity>
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".CadastroActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ListaComprasActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".GruposActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".InformacoesActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ConfiguracoesActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".NovaListaActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ListaProdutosActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".AdicionarProdutoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".EditarProdutoActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".EditarListaActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".MinhaContaActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".RecuperarActivity" android:screenOrientation="portrait"></activity>
 
     </application>
 

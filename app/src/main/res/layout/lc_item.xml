@@ -84,18 +84,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <CheckBox
-            android:visibility="gone"
-            android:id="@+id/lc_selecionar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
 </LinearLayout>

@@ -17,7 +17,7 @@
                 app:showAsAction="ifRoom"/>
 
             <item
-                android:id="@+id/excluir_listas"
+                android:id="@+id/selecionar_listas"
                 android:icon="@drawable/check"
                 android:title="Selecionar..."
                 app:showAsAction="ifRoom"/>

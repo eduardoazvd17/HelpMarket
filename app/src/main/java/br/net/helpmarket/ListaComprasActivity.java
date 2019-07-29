@@ -1,10 +1,10 @@
 package br.net.helpmarket;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,18 +14,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.net.helpmarket.adapter.ListaComprasAdapter;
@@ -40,9 +41,13 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     private Usuario usuario;
     private TextView nomePessoa;
     private List<Lista> listas;
+    private List<Lista> listasSelecionadas = new ArrayList<>();
     private ListaComprasAdapter lcAdapter;
     private ListView lvListas;
+    private LinearLayout lcVazio;
+    private FloatingActionButton novaLista;
     private CoordinatorLayout layout;
+    private ActionMode mActionMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
         layout = findViewById(R.id.lc_layout);
         lvListas = findViewById(R.id.lvListas);
+        lcVazio = findViewById(R.id.lc_vazio);
         registerForContextMenu(lvListas);
         listarListas();
         atualizarFundo();
@@ -73,14 +79,30 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         lvListas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Lista lista = (Lista) lcAdapter.getItem(position);
-                Intent intent = new Intent(getBaseContext(), ListaProdutosActivity.class);
-                intent.putExtra("lista", lista);
-                startActivity(intent);
+                if (null == mActionMode) {
+                    Lista lista = (Lista) lcAdapter.getItem(position);
+                    Intent intent = new Intent(getBaseContext(), ListaProdutosActivity.class);
+                    intent.putExtra("lista", lista);
+                    startActivity(intent);
+                } else {
+                    if (listasSelecionadas.contains(lcAdapter.getItem(position))) {
+                        listasSelecionadas.remove(lcAdapter.getItem(position));
+                        lcAdapter.desmarcarLista(view, getDrawable(R.color.colorWhite));
+
+                    } else {
+                        listasSelecionadas.add((Lista) lcAdapter.getItem(position));
+                        lcAdapter.marcarLista(view, getDrawable(R.color.colorPrimaryA));
+                    }
+                    if (listasSelecionadas.size() == 1) {
+                        mActionMode.setTitle(listasSelecionadas.size() + " Lista Selecionada");
+                    } else {
+                        mActionMode.setTitle(listasSelecionadas.size() + " Listas Selecionadas");
+                    }
+                }
             }
         });
 
-        FloatingActionButton novaLista = findViewById(R.id.novaLista);
+        novaLista = findViewById(R.id.novaLista);
         novaLista.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +202,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -189,13 +212,66 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                 intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 break;
-            case R.id.excluir_listas:
-               //TODO: Entrar em modo de selação
-                break;
+            case R.id.selecionar_listas:
+                if (mActionMode != null) {
+                    return false;
+                }
+                mActionMode = startSupportActionMode(mActionModeCallback);
+                toolbar.setVisibility(View.GONE);
+                novaLista.setVisibility(View.GONE);
+                return true;
         }
         return super.onOptionsItemSelected(item);
 
     }
+
+    ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_selecao, menu);
+            mode.setTitle(listasSelecionadas.size() + " Listas Selecionadas");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.excluirSelecionados:
+                    for (Lista l : listasSelecionadas) {
+                        DBController db = new DBController(getBaseContext());
+                        db.deletarComprasDaLista(l.getId());
+                        db.deletarLista(l.getId());
+                        listas.remove(l);
+                    }
+                    listarListas();
+                    atualizarFundo();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @SuppressLint("RestrictedApi")
+                @Override
+                public void run() {
+                    toolbar.setVisibility(View.VISIBLE);
+                    novaLista.setVisibility(View.VISIBLE);
+                }
+            }, 300);
+            listasSelecionadas.clear();
+        }
+    };
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -254,12 +330,12 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     }
 
     private void atualizarFundo() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (listas.size() == 0) {
-                layout.setBackground(getDrawable(R.drawable.lc_vazio));
-            } else {
-                layout.setBackground(getDrawable(R.color.colorWhite));
-            }
+        if (listas.size() == 0) {
+            lvListas.setVisibility(View.GONE);
+            lcVazio.setVisibility(View.VISIBLE);
+        } else {
+            lvListas.setVisibility(View.VISIBLE);
+            lcVazio.setVisibility(View.GONE);
         }
     }
 }
