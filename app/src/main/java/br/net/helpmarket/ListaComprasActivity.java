@@ -87,11 +87,11 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                 } else {
                     if (listasSelecionadas.contains(lcAdapter.getItem(position))) {
                         listasSelecionadas.remove(lcAdapter.getItem(position));
-                        lcAdapter.desmarcarLista(view, getDrawable(R.color.colorWhite));
+                        lcAdapter.selecionar(view, getDrawable(R.color.colorWhite));
 
                     } else {
                         listasSelecionadas.add((Lista) lcAdapter.getItem(position));
-                        lcAdapter.marcarLista(view, getDrawable(R.color.colorPrimaryA));
+                        lcAdapter.selecionar(view, getDrawable(R.color.colorPrimaryA));
                     }
                     if (listasSelecionadas.size() == 1) {
                         mActionMode.setTitle(listasSelecionadas.size() + " Lista Selecionada");

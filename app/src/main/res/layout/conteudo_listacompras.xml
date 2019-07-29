@@ -59,6 +59,7 @@
             </LinearLayout>
 
             <ListView
+                android:background="@color/colorWhite"
                 android:visibility="visible"
                 android:id="@+id/lvListas"
                 android:layout_width="match_parent"

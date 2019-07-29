@@ -139,6 +139,7 @@
             </LinearLayout>
 
             <ListView
+                android:background="@color/colorWhite"
                 android:id="@+id/lvProdutos"
                 android:visibility="visible"
                 android:layout_width="match_parent"

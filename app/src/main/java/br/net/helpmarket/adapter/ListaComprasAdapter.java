@@ -60,11 +60,7 @@ public class ListaComprasAdapter extends BaseAdapter {
         return view;
     }
 
-    public void marcarLista(View view, Drawable fundo) {
-        view.findViewById(R.id.lcitem_bg).setBackground(fundo);
-    }
-
-    public void desmarcarLista(View view, Drawable fundo) {
+    public void selecionar(View view, Drawable fundo) {
         view.findViewById(R.id.lcitem_bg).setBackground(fundo);
     }
 }

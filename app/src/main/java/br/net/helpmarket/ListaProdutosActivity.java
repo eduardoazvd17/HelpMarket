@@ -105,11 +105,11 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 } else {
                     if (comprasSelecionadas.contains(lpAdapter.getItem(position))) {
                         comprasSelecionadas.remove(lpAdapter.getItem(position));
-                        lpAdapter.desmarcarLista(view, getDrawable(R.color.colorWhite));
+                        lpAdapter.selecionar(view, getDrawable(R.color.colorWhite));
 
                     } else {
                         comprasSelecionadas.add((Compra) lpAdapter.getItem(position));
-                        lpAdapter.marcarLista(view, getDrawable(R.color.colorPrimaryA));
+                        lpAdapter.selecionar(view, getDrawable(R.color.colorPrimaryA));
                     }
                     if (comprasSelecionadas.size() == 1) {
                         mActionMode.setTitle(comprasSelecionadas.size() + " Produto Selecionado");
