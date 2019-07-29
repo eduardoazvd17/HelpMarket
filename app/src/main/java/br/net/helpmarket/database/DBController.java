@@ -283,4 +283,39 @@ public class DBController {
         db.executarSQL("DELETE FROM LOGINAUTOMATICO");
         db.close();
     }
+
+    public void salvarEmail(String email) {
+        if (existeEmailSalvo()) {
+            DBHelper db = new DBHelper(context);
+            db.executarSQL("UPDATE EMAILSALVO SET EMAIL = '" + email + "' WHERE ID = '1'");
+            db.close();
+        } else {
+            DBHelper db = new DBHelper(context);
+            db.executarSQL("INSERT INTO EMAILSALVO ('1', '" + email + "')");
+            db.close();
+        }
+    }
+
+    public String buscarEmailSalvo() {
+        String email = null;
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM EMAILSALVO");
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            email = cursor.getString(cursor.getColumnIndex("EMAIL"));
+        }
+        db.close();
+        return email;
+    }
+
+    private boolean existeEmailSalvo() {
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM EMAILSALVO");
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            return true;
+        }
+        db.close();
+        return false;
+    }
 }

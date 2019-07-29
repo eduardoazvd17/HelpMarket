@@ -3,20 +3,16 @@ package br.net.helpmarket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, senha;
     private TextView cadastrar, recuperar;
     private Button btnLogin;
-    private CheckBox entrarAutomaticamente;
+    private CheckBox entrarAutomaticamente, salvarEmail;
     private Usuario usuario;
 
     @Override
@@ -40,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.login_email);
         senha = findViewById(R.id.login_senha);
         entrarAutomaticamente = findViewById(R.id.entrarAutomaticamente);
+        salvarEmail = findViewById(R.id.salvarEmail);
 
         buscarCredenciais();
+        buscarEmailSalvo();
 
         cadastrar = findViewById(R.id.cadastrar);
         cadastrar.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
                         if (entrarAutomaticamente.isChecked()) {
                             salvarCredenciais();
                         }
+                        if (salvarEmail.isChecked()) {
+                            atualizarEmailSalvo();
+                        }
                         Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
                         intent.putExtra("usuario", usuario);
@@ -94,6 +95,19 @@ public class LoginActivity extends AppCompatActivity {
                 ocultarTeclado();
             }
         });
+    }
+
+    private void atualizarEmailSalvo() {
+        DBController db = new DBController(getBaseContext());
+        db.salvarEmail(email.getText().toString());
+    }
+
+    private void buscarEmailSalvo() {
+        DBController db = new DBController(getBaseContext());
+        String emailSalvo = db.buscarEmailSalvo();
+        if (null != emailSalvo) {
+            email.setText(emailSalvo);
+        }
     }
 
     private void buscarCredenciais() {
