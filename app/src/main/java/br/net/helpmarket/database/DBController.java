@@ -13,7 +13,7 @@ import br.net.helpmarket.modelo.Usuario;
 
 public class DBController {
 
-    Context context;
+    private Context context;
 
     public DBController(Context context) {
         this.context = context;

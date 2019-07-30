@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity {
         salvarEmail = findViewById(R.id.salvarEmail);
 
         buscarCredenciais();
-        buscarEmailSalvo();
 
         cadastrar = findViewById(R.id.cadastrar);
         cadastrar.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +126,8 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("usuario", u);
             startActivity(intent);
             finish();
+        } else {
+            buscarEmailSalvo();
         }
     }
 

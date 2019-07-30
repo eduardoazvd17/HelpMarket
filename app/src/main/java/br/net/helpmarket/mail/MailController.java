@@ -25,7 +25,6 @@ public class MailController {
         bm.setSendingMessage("Enviando código de recuperação para: " + usuario.getEmail());
         bm.setSendingMessageSuccess("Enviado com sucesso!");
         bm.setProcessVisibility(true);
-        //Enviar anexo: bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
         bm.send();
     }
 
@@ -39,7 +38,6 @@ public class MailController {
         bm.setSendingMessage("Enviando...");
         bm.setSendingMessageSuccess("E-mail enviado com sucesso!");
         bm.setProcessVisibility(false);
-        //Enviar anexo: bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
         bm.send();
     }
 
@@ -49,37 +47,22 @@ public class MailController {
         bm.setGmailPassword(PASS);
         bm.setMailTo(usuario.getEmail());
         bm.setFormSubject("NO-REPLY - SEJA BEM-VINDO");
-        bm.setFormBody("Olá " + usuario.getNome() + ", seja bem-vindo ao HelpMarket, utilize a aba Ajuda e Informações para um guia basico de uso e tirar algumas duvidas do nosso aplicativo." + BOTTOM);
+        bm.setFormBody("Olá " + usuario.getNome() + ", seja bem-vindo ao HelpMarket, utilize a aba Ajuda e Informações para um guia basico de uso e tirar algumas duvidas sobre o aplicativo." + BOTTOM);
         bm.setSendingMessage("Enviando...");
         bm.setSendingMessageSuccess("E-mail enviado com sucesso!");
         bm.setProcessVisibility(false);
-        //Enviar anexo: bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
         bm.send();
     }
 
-    public void enviarEmailBG(String email, String titulo, String mensagem) {
+    public void enviarMensagemSuporte(String email, String titulo, String mensagem) {
         BackgroundMail bm = new BackgroundMail(context);
         bm.setGmailUserName(HOST);
         bm.setGmailPassword(PASS);
         bm.setMailTo(email);
         bm.setFormSubject(titulo);
         bm.setFormBody(mensagem + BOTTOM);
-        bm.setSendingMessage("Enviando...");
-        bm.setSendingMessageSuccess("E-mail enviado com sucesso!");
-        bm.setProcessVisibility(false);
-        //Enviar anexo: bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
-        bm.send();
-    }
-
-    public void enviarEmail(String email, String titulo, String mensagem) {
-        BackgroundMail bm = new BackgroundMail(context);
-        bm.setGmailUserName(HOST);
-        bm.setGmailPassword(PASS);
-        bm.setMailTo(email);
-        bm.setFormSubject(titulo);
-        bm.setFormBody(mensagem + BOTTOM);
-        bm.setSendingMessage("Enviando...");
-        bm.setSendingMessageSuccess("E-mail enviado com sucesso!");
+        bm.setSendingMessage("Enviando mensagem para o suporte");
+        bm.setSendingMessageSuccess("Mensagem enviada com sucesso!");
         bm.setProcessVisibility(true);
         //Enviar anexo: bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
         bm.send();

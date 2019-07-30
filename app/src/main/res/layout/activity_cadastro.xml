@@ -47,19 +47,11 @@
 
         </LinearLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
-
         <ImageView
             android:layout_gravity="center"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:src="@drawable/foreground"/>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="16dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -81,7 +73,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -103,7 +95,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -126,7 +118,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -149,7 +141,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="16dp" />
+            android:layout_height="8dp" />
 
         <Button
             android:id="@+id/fazerCadastro"
