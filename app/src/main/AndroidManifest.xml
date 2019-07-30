@@ -36,6 +36,7 @@
         <activity android:name=".EditarListaActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".MinhaContaActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".RecuperarActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".CatalogoActivity" android:screenOrientation="portrait"></activity>
 
     </application>
 
