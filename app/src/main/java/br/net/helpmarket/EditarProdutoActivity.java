@@ -3,7 +3,6 @@ package br.net.helpmarket;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,8 +19,6 @@ import com.squareup.picasso.Picasso;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Compra;
-import br.net.helpmarket.modelo.Lista;
-import br.net.helpmarket.modelo.Produto;
 
 
 public class EditarProdutoActivity extends AppCompatActivity {
@@ -91,7 +88,7 @@ public class EditarProdutoActivity extends AppCompatActivity {
             return false;
         }
         if (quantidade.getText().toString().isEmpty()) {
-            quantidade.setText("0");
+            quantidade.setText("1");
         }
         if (preco.getText().toString().isEmpty()) {
             preco.setText("0.0");

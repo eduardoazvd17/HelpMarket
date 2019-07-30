@@ -3,7 +3,6 @@ package br.net.helpmarket;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -98,7 +97,7 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
             return false;
         }
         if (quantidade.getText().toString().isEmpty()) {
-            quantidade.setText("0");
+            quantidade.setText("1");
         }
         if (preco.getText().toString().isEmpty()) {
             preco.setText("0.0");

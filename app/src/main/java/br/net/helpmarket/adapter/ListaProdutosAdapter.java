@@ -57,7 +57,7 @@ public class ListaProdutosAdapter extends BaseAdapter {
 
         //Atribuir atributos nesses objetos;
         Picasso.get().load(compra.getProduto().getUrlImagem()).into(imagem);
-        nome.setText(compra.getProduto().getNome());
+        nome.setText(compra.getNomePersonalizado());
         quantidade.setText(compra.getQuantidade().toString());
         precoUnitario.setText(NumberFormat.getCurrencyInstance().format(compra.getPreco()));
         total.setText(NumberFormat.getCurrencyInstance().format((compra.getQuantidade()+0.0) * (compra.getPreco())));

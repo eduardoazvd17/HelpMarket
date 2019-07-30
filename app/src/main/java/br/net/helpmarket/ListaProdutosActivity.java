@@ -13,8 +13,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,12 +94,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         adicionarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator scanIntegrator = new IntentIntegrator(ListaProdutosActivity.this);
-                scanIntegrator.setPrompt("Alinhe o código de barras com a linha para ser lido")
-                        .setBeepEnabled(true)
-                        .setOrientationLocked(true)
-                        .setBarcodeImageEnabled(true)
-                        .initiateScan();
+                addProduto();
             }
         });
 
@@ -131,6 +128,44 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void addProduto() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.dialog_listaprodutos, null, false);
+        final CardView btnCatalogo = view.findViewById(R.id.catalogoProdutos);
+        final CardView btnLeitor = view.findViewById(R.id.leitorCodigoBarras);
+
+        btnCatalogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), CatalogoActivity.class);
+                intent.putExtra("lista", lista);
+                startActivity(intent);
+            }
+        });
+
+        btnLeitor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator scanIntegrator = new IntentIntegrator(ListaProdutosActivity.this);
+                scanIntegrator.setPrompt("Alinhe o código de barras com a linha para ser lido")
+                        .setBeepEnabled(true)
+                        .setOrientationLocked(true)
+                        .setBarcodeImageEnabled(true)
+                        .initiateScan();
+            }
+        });
+
+        builder.setView(view)
+                .setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                }
+        });
+        builder.show();
     }
 
     @Override
@@ -301,12 +336,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id){
             case R.id.add_produto:
-                IntentIntegrator scanIntegrator = new IntentIntegrator(ListaProdutosActivity.this);
-                scanIntegrator.setPrompt("Alinhe o código de barras com a linha para ser lido")
-                        .setBeepEnabled(true)
-                        .setOrientationLocked(true)
-                        .setBarcodeImageEnabled(true)
-                        .initiateScan();
+                addProduto();
                 break;
             case R.id.selecionar_produtos:
                 if (mActionMode != null) {
