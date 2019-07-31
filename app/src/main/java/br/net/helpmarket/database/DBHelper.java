@@ -14,6 +14,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String criarTabelaLoginAutomatico = "CREATE TABLE LOGINAUTOMATICO (ID INTEGER PRIMARY KEY, EMAIL TEXT, SENHA TEXT)";
     private final String criarTabelaEmailSalvo = "CREATE TABLE EMAILSALVO (EMAIL TEXT PRIMARY KEY)";
 
+    private final String USER = "RiEWYnvEGT";
+    private final String PASS = "AdpfanVMJM";
+    private final String HOST = "jtds:sqlserver://remotemysql.com:3306/RiEWYnvEGT";
+
     public DBHelper(Context context) {
         super(context, "helpmarket.db", null, 1);
     }
