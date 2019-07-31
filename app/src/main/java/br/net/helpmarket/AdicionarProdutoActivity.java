@@ -68,7 +68,9 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
                             false
                     );
                     DBController db = new DBController(v.getContext());
-                    db.inserirCompra(compra);
+                    if (!db.verificarExistenciaProduto(lista, produto, compra)) {
+                        db.inserirCompra(compra);
+                    }
                     finish();
                 }
             }

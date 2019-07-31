@@ -325,4 +325,17 @@ public class DBController {
         db.executarSQL("DELETE FROM EMAILSALVO");
         db.close();
     }
+
+    public boolean verificarExistenciaProduto(Lista lista, Produto produto, Compra compra) {
+        DBHelper db = new DBHelper(context);
+        Cursor cursor = db.executarSQLSelect("SELECT * FROM COMPRAS WHERE ID_USUARIO = '" + lista.getUsuario().getId() + "' AND ID_LISTA = '" + lista.getId() + "' AND CODIGOBARRAS_PRODUTO = '" + produto.getCodigoBarras() + "'");
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            int quantidade = cursor.getInt(cursor.getColumnIndex("QUANTIDADE")) + compra.getQuantidade();
+            db.executarSQL("UPDATE COMPRAS SET QUANTIDADE = '" + quantidade + "' WHERE ID_USUARIO = '" + lista.getUsuario().getId() + "' AND ID_LISTA = '" + lista.getId() + "' AND CODIGOBARRAS_PRODUTO = '" + produto.getCodigoBarras() + "'");
+            return true;
+        }
+        db.close();
+        return false;
+    }
 }

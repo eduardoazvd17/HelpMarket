@@ -88,7 +88,6 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                     if (listasSelecionadas.contains(lcAdapter.getItem(position))) {
                         listasSelecionadas.remove(lcAdapter.getItem(position));
                         lcAdapter.selecionar(view, getDrawable(R.color.colorWhite));
-
                     } else {
                         listasSelecionadas.add((Lista) lcAdapter.getItem(position));
                         lcAdapter.selecionar(view, getDrawable(R.color.colorPrimaryA));

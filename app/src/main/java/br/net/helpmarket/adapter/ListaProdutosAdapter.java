@@ -65,7 +65,7 @@ public class ListaProdutosAdapter extends BaseAdapter {
     }
 
     public void selecionar(View view, Drawable fundo) {
-        view.findViewById(R.id.lcitem_bg).setBackground(fundo);
+        view.findViewById(R.id.lpitem_bg).setBackground(fundo);
     }
 
 }

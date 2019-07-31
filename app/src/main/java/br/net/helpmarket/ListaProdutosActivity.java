@@ -108,7 +108,6 @@ public class ListaProdutosActivity extends AppCompatActivity {
                     if (comprasSelecionadas.contains(lpAdapter.getItem(position))) {
                         comprasSelecionadas.remove(lpAdapter.getItem(position));
                         lpAdapter.selecionar(view, getDrawable(R.color.colorWhite));
-
                     } else {
                         comprasSelecionadas.add((Compra) lpAdapter.getItem(position));
                         lpAdapter.selecionar(view, getDrawable(R.color.colorPrimaryA));
