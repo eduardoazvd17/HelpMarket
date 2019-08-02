@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private final String criarTabelaUsuarios = "CREATE TABLE USUARIOS (ID INTEGER PRIMARY KEY AUTOINCREMENT, EMAIL TEXT, NOME TEXT, SENHA TEXT)";
-    private final String criarTabelaProdutos = "CREATE TABLE PRODUTOS (CODIGOBARRAS INTEGER PRIMARY KEY, NOME TEXT, URLIMAGEM TEXT)";
-    private final String criarTabelaListas = "CREATE TABLE LISTAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, NOME TEXT, QUANTIDADEPRODUTOS INTEGER, GASTOMAXIMO TEXT, DATACRIACAO TEXT, TERMINADO TEXT)";
-    private final String criarTabelaCompras = "CREATE TABLE COMPRAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, ID_LISTA INTEGER, CODIGOBARRAS_PRODUTO, NOMEPERSONALIZADO TEXT, QUANTIDADE NTEGER, PRECO TEXT, COMPRADO TEXT)";
+    //private final String criarTabelaUsuarios = "CREATE TABLE USUARIOS (ID INTEGER PRIMARY KEY AUTOINCREMENT, EMAIL TEXT, NOME TEXT, SENHA TEXT)";
+    //private final String criarTabelaProdutos = "CREATE TABLE PRODUTOS (CODIGOBARRAS INTEGER PRIMARY KEY, NOME TEXT, URLIMAGEM TEXT)";
+    //private final String criarTabelaListas = "CREATE TABLE LISTAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, NOME TEXT, QUANTIDADEPRODUTOS INTEGER, GASTOMAXIMO TEXT, DATACRIACAO TEXT, TERMINADO TEXT)";
+    //private final String criarTabelaCompras = "CREATE TABLE COMPRAS (ID INTEGER PRIMARY KEY AUTOINCREMENT, ID_USUARIO INTEGER, ID_LISTA INTEGER, CODIGOBARRAS_PRODUTO, NOMEPERSONALIZADO TEXT, QUANTIDADE NTEGER, PRECO TEXT, COMPRADO TEXT)";
     private final String criarTabelaLoginAutomatico = "CREATE TABLE LOGINAUTOMATICO (ID INTEGER PRIMARY KEY, EMAIL TEXT, SENHA TEXT)";
     private final String criarTabelaEmailSalvo = "CREATE TABLE EMAILSALVO (EMAIL TEXT PRIMARY KEY)";
 
@@ -20,10 +20,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(criarTabelaUsuarios);
-        db.execSQL(criarTabelaProdutos);
-        db.execSQL(criarTabelaListas);
-        db.execSQL(criarTabelaCompras);
+        //db.execSQL(criarTabelaUsuarios);
+        //db.execSQL(criarTabelaProdutos);
+        //db.execSQL(criarTabelaListas);
+        //db.execSQL(criarTabelaCompras);
         db.execSQL(criarTabelaLoginAutomatico);
         db.execSQL(criarTabelaEmailSalvo);
     }

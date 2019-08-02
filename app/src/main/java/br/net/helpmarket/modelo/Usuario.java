@@ -1,19 +1,20 @@
 package br.net.helpmarket.modelo;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Usuario implements Serializable {
 
-    private Long id;
+    private String id;
     private String email;
     private String nome;
     private String senha;
 
-    public Usuario(Long id, String email, String nome, String senha) {
+    public Usuario() {
+
+    }
+
+    public Usuario(String id, String email, String nome, String senha) {
         this.id = id;
         this.email = email;
         this.nome = nome;
@@ -39,11 +40,11 @@ public class Usuario implements Serializable {
         return Objects.hash(id);
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

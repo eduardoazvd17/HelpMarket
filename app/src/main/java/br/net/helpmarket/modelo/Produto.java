@@ -9,6 +9,10 @@ public class Produto implements Serializable {
     private String nome;
     private String urlImagem;
 
+    public Produto() {
+
+    }
+
     public Produto(Long codigoBarras, String nome, String urlImagem) {
         this.codigoBarras = codigoBarras;
         this.nome = nome;

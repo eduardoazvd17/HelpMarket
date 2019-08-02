@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "433452657507",
+    "firebase_url": "https://helpmarket-2019.firebaseio.com",
+    "project_id": "helpmarket-2019",
+    "storage_bucket": "helpmarket-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433452657507:android:f87667e8a11657f2",
+        "android_client_info": {
+          "package_name": "br.net.helpmarket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "433452657507-fnuktmfv7jpf612h4mf4a8o8mr8jt7g1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYKT2-PJsMpQIhIaWvrPTBTB95bYMDsB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "433452657507-fnuktmfv7jpf612h4mf4a8o8mr8jt7g1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

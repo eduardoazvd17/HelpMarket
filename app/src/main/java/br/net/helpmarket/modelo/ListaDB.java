@@ -3,23 +3,23 @@ package br.net.helpmarket.modelo;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Lista implements Serializable {
+public class ListaDB implements Serializable {
 
     private String id;
-    private Usuario usuario;
+    private String idUsuario;
     private String nome;
     private Double gastoMaximo;
     private Integer quantidadeProdutos;
     private String dataCriacao;
     private Boolean terminado;
 
-    public Lista() {
+    public ListaDB() {
 
     }
 
-    public Lista(String id, Usuario usuario, String nome, Double gastoMaximo, Integer quantidadeProdutos, String dataCriacao, Boolean terminado) {
+    public ListaDB(String id, String idUsuario, String nome, Double gastoMaximo, Integer quantidadeProdutos, String dataCriacao, Boolean terminado) {
         this.id = id;
-        this.usuario = usuario;
+        this.idUsuario = idUsuario;
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
         this.dataCriacao = dataCriacao;
@@ -27,8 +27,8 @@ public class Lista implements Serializable {
         this.quantidadeProdutos = quantidadeProdutos;
     }
 
-    public Lista(Usuario usuario, String nome, Double gastoMaximo, Integer quantidadeProdutos, String dataCriacao, Boolean terminado) {
-        this.usuario = usuario;
+    public ListaDB(String idUsuario, String nome, Double gastoMaximo, Integer quantidadeProdutos, String dataCriacao, Boolean terminado) {
+        this.idUsuario = idUsuario;
         this.nome = nome;
         this.gastoMaximo = gastoMaximo;
         this.quantidadeProdutos = quantidadeProdutos;
@@ -40,7 +40,7 @@ public class Lista implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Lista lista = (Lista) o;
+        ListaDB lista = (ListaDB) o;
         return Objects.equals(id, lista.id);
     }
 
@@ -97,12 +97,12 @@ public class Lista implements Serializable {
         this.quantidadeProdutos = quantidadeProdutos;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(String id_usuario) {
+        this.idUsuario = idUsuario;
     }
 
 }

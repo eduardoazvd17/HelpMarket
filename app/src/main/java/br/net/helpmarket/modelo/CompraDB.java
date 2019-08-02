@@ -1,41 +1,38 @@
 package br.net.helpmarket.modelo;
 
-import android.content.Context;
-import android.widget.Toast;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Compra implements Serializable {
+public class CompraDB implements Serializable {
 
     private String id;
-    private Usuario usuario;
-    private Lista lista;
-    private Produto produto;
+    private String idUsuario;
+    private String idLista;
+    private Long codigoBarrasProduto;
     private String nomePersonalizado;
     private Integer quantidade;
     private Double preco;
     private Boolean comprado;
 
-    public Compra() {
+    public CompraDB() {
 
     }
 
-    public Compra(String id, Usuario usuario, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
+    public CompraDB(String id, String idUsuario, String idLista, Long codigoBarrasProduto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.id = id;
-        this.usuario = usuario;
-        this.lista = lista;
-        this.produto = produto;
+        this.idUsuario = idUsuario;
+        this.idLista = idLista;
+        this.codigoBarrasProduto = codigoBarrasProduto;
         this.nomePersonalizado = nomePersonalizado;
         this.quantidade = quantidade;
         this.preco = preco;
         this.comprado = comprado;
     }
 
-    public Compra(Usuario usuario, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
-        this.usuario = usuario;
-        this.lista = lista;
-        this.produto = produto;
+    public CompraDB(String idUsuario, String idLista, Long codigoBarrasProduto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
+        this.idUsuario = idUsuario;
+        this.idLista = idLista;
+        this.codigoBarrasProduto = codigoBarrasProduto;
         this.nomePersonalizado = nomePersonalizado;
         this.quantidade = quantidade;
         this.preco = preco;
@@ -46,7 +43,7 @@ public class Compra implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Compra compra = (Compra) o;
+        CompraDB compra = (CompraDB) o;
         return Objects.equals(id, compra.id);
     }
 
@@ -61,22 +58,6 @@ public class Compra implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Lista getLista() {
-        return lista;
-    }
-
-    public void setLista(Lista lista) {
-        this.lista = lista;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
     }
 
     public Integer getQuantidade() {
@@ -111,11 +92,27 @@ public class Compra implements Serializable {
         this.comprado = comprado;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getIdLista() {
+        return idLista;
+    }
+
+    public void setIdLista(String idLista) {
+        this.idLista = idLista;
+    }
+
+    public Long getCodigoBarrasProduto() {
+        return codigoBarrasProduto;
+    }
+
+    public void setCodigoBarrasProduto(Long codigoBarrasProduto) {
+        this.codigoBarrasProduto = codigoBarrasProduto;
     }
 }

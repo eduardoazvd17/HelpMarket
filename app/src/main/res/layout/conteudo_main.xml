@@ -28,7 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/teste"
+                android:layout_gravity="center"
+                android:text="Botão de Teste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
 
 

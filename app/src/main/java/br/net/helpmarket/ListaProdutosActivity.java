@@ -359,11 +359,14 @@ public class ListaProdutosActivity extends AppCompatActivity {
         }
         totalGasto.setText(NumberFormat.getCurrencyInstance().format(total));
         double economizado = lista.getGastoMaximo() - total;
-        totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(economizado));
+        totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(economizado)+" ");
 
         if (total > lista.getGastoMaximo()) {
             totalEconomizado.setTextColor(Color.RED);
             totalEconomizado.setError("As compras ultrapassaram o limite definido");
+        } else {
+            totalEconomizado.setTextColor(Color.BLACK);
+            totalEconomizado.setError(null);
         }
     }
 

@@ -71,7 +71,7 @@
                         android:inputType="textPersonName"
                         android:textColor="@color/colorBlack"
                         android:hint="Insira um nome para a lista..."
-                        android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789._-, "/>
+                        android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789._-, áàâãèéêìíîóòôõúùû"/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
