@@ -2,13 +2,16 @@ package br.net.helpmarket.database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import br.net.helpmarket.modelo.Compra;
 import br.net.helpmarket.modelo.CompraDB;
@@ -63,24 +67,24 @@ public class DBController {
 //        db.close();
 //        return false;
 
-        final List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("usuarios")
+        Task<QuerySnapshot> tasks = db.collection("usuarios")
                 .whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Usuario u = document.toObject(Usuario.class);
-                            u.setId(document.getId());
-                            usuarios.add(u);
-                        }
-                    } else {
+                .get();
 
-                    }
-                }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    Usuario u = doc.toObject(Usuario.class);
+                    u.setId(doc.getId());
+                    usuarios.add(u);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         if (usuarios.size() == 0) {
             return false;
         } else {
@@ -88,7 +92,7 @@ public class DBController {
         }
     }
 
-    public Usuario fazerLogin(String email, String senha) {
+    public Usuario fazerLogin(final String email, final String senha) {
 //        Usuario usuario = null;
 //        DBHelper db = new DBHelper(context);
 //        Cursor cursor = db.executarSQLSelect("SELECT * FROM USUARIOS WHERE EMAIL = '" + email + "' AND SENHA = '" + senha + "'");
@@ -102,25 +106,25 @@ public class DBController {
 //        db.close();
 //        return usuario;
 
-        final List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("usuarios")
+        Task<QuerySnapshot> tasks = db.collection("usuarios")
                 .whereEqualTo("email", email)
                 .whereEqualTo("senha", senha)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Usuario u = document.toObject(Usuario.class);
-                                u.setId(document.getId());
-                                usuarios.add(u);
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    Usuario u = doc.toObject(Usuario.class);
+                    u.setId(doc.getId());
+                    usuarios.add(u);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         Usuario usuario = null;
         if (usuarios.size() != 0) {
             usuario = usuarios.get(0);
@@ -143,24 +147,24 @@ public class DBController {
 //        db.close();
 //        return usuario;
 
-        final List<Usuario> usuarios = new ArrayList<>();
+        List<Usuario> usuarios = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("usuarios")
+        Task<QuerySnapshot> tasks = db.collection("usuarios")
                 .whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Usuario u = document.toObject(Usuario.class);
-                                u.setId(document.getId());
-                                usuarios.add(u);
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    Usuario u = doc.toObject(Usuario.class);
+                    u.setId(doc.getId());
+                    usuarios.add(u);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         Usuario usuario = null;
         if (usuarios.size() != 0) {
             usuario = usuarios.get(0);
@@ -229,22 +233,22 @@ public class DBController {
 //        db.executarSQL("DELETE FROM COMPRAS WHERE ID_LISTA = '" + id + "'");
 //        db.close();
 
-        final List<String> ids = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("compras")
+        Task<QuerySnapshot> tasks = db.collection("compras")
                 .whereEqualTo("idLista", id)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                ids.add(document.getId());
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    ids.add(doc.getId());
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         for (String idCompra : ids) {
             db.collection("compras").document(idCompra).delete();
         }
@@ -272,22 +276,23 @@ public class DBController {
 //        }
 //        db.close();
 
-        final List<Produto> produtos = new ArrayList<>();
+        List<Produto> produtos = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("produtos")
+        Task<QuerySnapshot> tasks = db.collection("produtos")
                 .whereEqualTo("codigoBarras", codigoBarras)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                produtos.add(document.toObject(Produto.class));
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    Produto p = doc.toObject(Produto.class);
+                    produtos.add(p);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         Produto produto = null;
         if (produtos.size() != 0) {
             produto = produtos.get(0);
@@ -310,21 +315,22 @@ public class DBController {
 //        }
 //        db.close();
 
-        final List<Produto> produtos = new ArrayList<>();
+        List<Produto> produtos = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("produtos")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                produtos.add(document.toObject(Produto.class));
-                            }
-                        } else {
+        Task<QuerySnapshot> tasks = db.collection("produtos")
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    Produto p = doc.toObject(Produto.class);
+                    produtos.add(p);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         return produtos;
     }
 
@@ -349,24 +355,24 @@ public class DBController {
 //        }
 //        db.close();
 
-        final List<ListaDB> listasDB = new ArrayList<>();
+        List<ListaDB> listasDB = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("listas")
+        Task<QuerySnapshot> tasks = db.collection("listas")
                 .whereEqualTo("idUsuario", usuario.getId())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                ListaDB ldb = document.toObject(ListaDB.class);
-                                ldb.setId(document.getId());
-                                listasDB.add(ldb);
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    ListaDB l = doc.toObject(ListaDB.class);
+                    l.setId(doc.getId());
+                    listasDB.add(l);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         List<Lista> listas = new ArrayList<>();
         for (ListaDB l : listasDB) {
             int quantidadeProdutos = countProdutos(l.getId());
@@ -405,22 +411,22 @@ public class DBController {
 
         final List<CompraDB> comprasDB = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("compras")
+        Task<QuerySnapshot> tasks = db.collection("compras")
                 .whereEqualTo("idLista", lista.getId())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CompraDB cdb = document.toObject(CompraDB.class);
-                                cdb.setId(document.getId());
-                                comprasDB.add(cdb);
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    CompraDB cdb = doc.toObject(CompraDB.class);
+                    cdb.setId(doc.getId());
+                    comprasDB.add(cdb);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         List<Compra> compras = new ArrayList<>();
         for (CompraDB c : comprasDB) {
             Produto produto = db.collection("produtos").document(c.getCodigoBarrasProduto().toString()).get().getResult().toObject(Produto.class);
@@ -439,20 +445,20 @@ public class DBController {
 
         final List<String> ids = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("compras")
+        Task<QuerySnapshot> tasks = db.collection("compras")
                 .whereEqualTo("idLista", idLista)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                ids.add(document.getId());
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }});
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    ids.add(doc.getId());
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         return ids.size();
     }
 
@@ -611,24 +617,23 @@ public class DBController {
 
         final List<CompraDB> comprasDB = new ArrayList<>();
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("compras")
+        Task<QuerySnapshot> tasks = db.collection("compras")
                 .whereEqualTo("idLista", lista.getId())
                 .whereEqualTo("codigoBarrasProduto", produto.getCodigoBarras())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CompraDB cdb = document.toObject(CompraDB.class);
-                                cdb.setId(document.getId());
-                                comprasDB.add(cdb);
-                            }
-                        } else {
+                .get();
 
-                        }
-                    }
-                });
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    CompraDB cdb = doc.toObject(CompraDB.class);
+                    cdb.setId(doc.getId());
+                    comprasDB.add(cdb);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
         if (comprasDB.size() != 0) {
             CompraDB c = comprasDB.get(0);
             c.setQuantidade(c.getQuantidade() + compra.getQuantidade());

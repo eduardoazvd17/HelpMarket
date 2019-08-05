@@ -358,15 +358,20 @@ public class ListaProdutosActivity extends AppCompatActivity {
             total = total + ((c.getQuantidade()+0.0) * c.getPreco());
         }
         totalGasto.setText(NumberFormat.getCurrencyInstance().format(total));
-        double economizado = lista.getGastoMaximo() - total;
-        totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(economizado)+" ");
 
-        if (total > lista.getGastoMaximo()) {
-            totalEconomizado.setTextColor(Color.RED);
-            totalEconomizado.setError("As compras ultrapassaram o limite definido");
+        if (lista.getGastoMaximo() == 0) {
+            totalEconomizado.setText(NumberFormat.getCurrencyInstance().format("0.0"));
         } else {
-            totalEconomizado.setTextColor(Color.BLACK);
-            totalEconomizado.setError(null);
+            double economizado = lista.getGastoMaximo() - total;
+            totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(economizado)+" ");
+
+            if (total > lista.getGastoMaximo()) {
+                totalEconomizado.setTextColor(Color.RED);
+                totalEconomizado.setError("As compras ultrapassaram o limite definido");
+            } else {
+                totalEconomizado.setTextColor(Color.BLACK);
+                totalEconomizado.setError(null);
+            }
         }
     }
 
