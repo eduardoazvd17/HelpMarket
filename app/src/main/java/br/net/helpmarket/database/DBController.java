@@ -435,7 +435,7 @@ public class DBController {
 
         List<Compra> compras = new ArrayList<>();
         for (CompraDB c : comprasDB) {
-            Produto produto = db.collection("produtos").document(c.getCodigoBarrasProduto().toString()).get().getResult().toObject(Produto.class);
+            Produto produto = buscarProduto(c.getCodigoBarrasProduto());
             compras.add(new Compra(c.getId(), lista.getUsuario(), lista, produto, c.getNomePersonalizado(), c.getQuantidade(), c.getPreco(), c.getComprado()));
         }
         return compras;
