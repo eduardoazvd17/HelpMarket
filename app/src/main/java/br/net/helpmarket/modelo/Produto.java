@@ -17,6 +17,7 @@ public class Produto implements Serializable {
         this.codigoBarras = codigoBarras;
         this.nome = nome;
         this.urlImagem = urlImagem;
+        verificarPreenchimento();
     }
 
     public void verificarPreenchimento() {

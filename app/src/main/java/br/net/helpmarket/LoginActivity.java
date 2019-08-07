@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
             email.setError("Insira seu e-mail");
             return false;
         }
-        if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")) {
+        if (!validarEmail(email.getText().toString())) {
             email.setError("Digite um endereço de e-mail válido");
             return false;
         }
@@ -150,6 +150,13 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private boolean validarEmail(final String email) {
+        if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return true;
+        }
+        return false;
     }
 
     private String criptografarSenha(String senha) {
