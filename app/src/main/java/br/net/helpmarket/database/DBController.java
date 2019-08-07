@@ -324,10 +324,8 @@ public class DBController {
         do {
             if (tasks.isComplete()) {
                 for (QueryDocumentSnapshot doc : tasks.getResult()) {
-                    if (doc.getId() != "1") {
                         Produto p = doc.toObject(Produto.class);
                         produtos.add(p);
-                    }
                 }
                 isTerminado=true;
             }
@@ -367,11 +365,9 @@ public class DBController {
         do {
             if (tasks.isComplete()) {
                 for (QueryDocumentSnapshot doc : tasks.getResult()) {
-                    if (doc.getId() != "1") {
                         ListaDB l = doc.toObject(ListaDB.class);
                         l.setId(doc.getId());
                         listasDB.add(l);
-                    }
                 }
                 isTerminado=true;
             }
@@ -423,11 +419,9 @@ public class DBController {
         do {
             if (tasks.isComplete()) {
                 for (QueryDocumentSnapshot doc : tasks.getResult()) {
-                    if (doc.getId() != "1") {
                         CompraDB cdb = doc.toObject(CompraDB.class);
                         cdb.setId(doc.getId());
                         comprasDB.add(cdb);
-                    }
                 }
                 isTerminado=true;
             }

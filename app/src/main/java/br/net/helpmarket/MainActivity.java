@@ -81,15 +81,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
-
-        final Button btn = findViewById(R.id.teste);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Botao de Testes:
-                
-            }
-        });
     }
 
     @Override
