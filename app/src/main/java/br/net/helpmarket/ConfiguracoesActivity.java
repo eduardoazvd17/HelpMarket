@@ -81,7 +81,7 @@ public class ConfiguracoesActivity extends AppCompatActivity implements Navigati
         super.onResume();
         DBController db = new DBController(getBaseContext());
         usuario = db.buscarUsuario(usuario.getEmail());
-        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+        nomePessoa.setText(usuario.getNome());
 
     }
 

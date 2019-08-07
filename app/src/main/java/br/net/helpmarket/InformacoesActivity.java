@@ -81,7 +81,7 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
         super.onResume();
         DBController db = new DBController(getBaseContext());
         usuario = db.buscarUsuario(usuario.getEmail());
-        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+        nomePessoa.setText(usuario.getNome());
 
     }
 
