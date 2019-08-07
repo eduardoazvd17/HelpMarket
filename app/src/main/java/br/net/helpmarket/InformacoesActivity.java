@@ -50,7 +50,7 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
         nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
-        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+        nomePessoa.setText(usuario.getNome());
 
         LinearLayout btnLogoff = findViewById(R.id.info_fazerLogoff);
         btnLogoff.setOnClickListener(new View.OnClickListener() {

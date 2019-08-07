@@ -112,7 +112,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         });
 
         nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
-        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+        nomePessoa.setText(usuario.getNome());
 
         LinearLayout btnLogoff = findViewById(R.id.lc_fazerLogoff);
         btnLogoff.setOnClickListener(new View.OnClickListener() {

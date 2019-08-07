@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
         DBController db = new DBController(getBaseContext());
         usuario = db.buscarUsuario(usuario.getEmail());
-        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+        nomePessoa.setText(usuario.getNome());
     }
 
     @Override
