@@ -300,6 +300,26 @@ public class DBController {
         return produto;
     }
 
+    public List<Usuario> selecionarUsuarios() {
+        List<Usuario> usuarios = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task<QuerySnapshot> tasks = db.collection("usuarios")
+                .get();
+
+        boolean isTerminado = false;
+        do {
+            if (tasks.isComplete()) {
+                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+                    Usuario u = doc.toObject(Usuario.class);
+                    usuarios.add(u);
+                }
+                isTerminado=true;
+            }
+        } while (!isTerminado);
+
+        return usuarios;
+    }
+
     public List<Produto> selecionarProdutos() {
 //        DBHelper db = new DBHelper(context);
 //        Cursor cursor = db.executarSQLSelect("SELECT * FROM PRODUTOS");
