@@ -127,7 +127,7 @@
 
             <EditText
                 android:id="@+id/recuperar_codigo"
-                android:maxEms="6"
+                android:maxLength="6"
                 android:inputType="number"
                 android:imeOptions="actionDone"
                 android:textColor="@color/colorWhite"
@@ -167,7 +167,7 @@
 
             <EditText
                 android:id="@+id/recuperar_novaSenha"
-                android:maxEms="255"
+                android:maxLength="255"
                 android:inputType="textPassword"
                 android:imeOptions="actionDone"
                 android:textColor="@color/colorWhite"
@@ -190,7 +190,7 @@
 
             <EditText
                 android:id="@+id/recuperar_confirmarNovaSenha"
-                android:maxEms="255"
+                android:maxLength="255"
                 android:inputType="textPassword"
                 android:imeOptions="actionDone"
                 android:textColor="@color/colorWhite"

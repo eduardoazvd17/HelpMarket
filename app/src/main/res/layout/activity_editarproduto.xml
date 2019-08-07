@@ -120,6 +120,7 @@
 
                         <EditText
                             android:id="@+id/ep_nome"
+                            android:maxLength="255"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
@@ -153,6 +154,7 @@
 
                         <EditText
                             android:id="@+id/ep_quantidade"
+                            android:maxLength="3"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

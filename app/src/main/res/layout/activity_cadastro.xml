@@ -61,7 +61,7 @@
 
         <EditText
             android:id="@+id/cadastro_email"
-            android:maxEms="255"
+            android:maxLength="255"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
             android:textColor="@color/colorWhite"
@@ -83,7 +83,7 @@
 
         <EditText
             android:id="@+id/cadastro_nome"
-            android:maxEms="255"
+            android:maxLength="255"
             android:inputType="textPersonName"
             android:imeOptions="actionDone"
             android:textColor="@color/colorWhite"
@@ -105,7 +105,7 @@
 
         <EditText
             android:id="@+id/cadastro_senha"
-            android:maxEms="255"
+            android:maxLength="255"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:textColor="@color/colorWhite"
@@ -128,7 +128,7 @@
 
         <EditText
             android:id="@+id/cadastro_confirmacaoSenha"
-            android:maxEms="255"
+            android:maxLength="255"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:textColor="@color/colorWhite"

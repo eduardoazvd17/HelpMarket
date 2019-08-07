@@ -65,7 +65,7 @@
 
                     <EditText
                         android:id="@+id/nl_nome"
-                        android:maxEms="255"
+                        android:maxLength="255"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
@@ -99,7 +99,7 @@
                         android:layout_height="5dp" />
 
                     <EditText
-                        android:maxEms="255"
+                        android:maxLength="255"
                         android:id="@+id/nl_gastoMaximo"
                         android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"

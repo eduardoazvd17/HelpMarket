@@ -31,7 +31,7 @@
 
         <EditText
             android:id="@+id/login_email"
-            android:maxEms="255"
+            android:maxLength="255"
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
             android:textColor="@color/colorWhite"
@@ -53,7 +53,7 @@
 
         <EditText
             android:id="@+id/login_senha"
-            android:maxEms="255"
+            android:maxLength="255"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:textColor="@color/colorWhite"

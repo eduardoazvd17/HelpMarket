@@ -120,7 +120,7 @@
 
                         <EditText
                             android:id="@+id/ap_nome"
-                            android:maxEms="255"
+                            android:maxLength="255"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
@@ -154,7 +154,7 @@
 
                         <EditText
                             android:id="@+id/ap_quantidade"
-                            android:maxEms="3"
+                            android:maxLength="3"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
 
                         <EditText
                             android:id="@+id/ap_preco"
-                            android:maxEms="255"
+                            android:maxLength="255"
                             android:textColor="@color/colorBlack"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

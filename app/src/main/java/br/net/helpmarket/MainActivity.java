@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
         nomePessoa = navigationView.getHeaderView(0).findViewById(R.id.nomePessoa);
-        nomePessoa.setText("Minha Conta (" + usuario.getNome() + ")");
+        nomePessoa.setText(usuario.getNome());
 
         LinearLayout btnLogoff = findViewById(R.id.main_fazerLogoff);
         btnLogoff.setOnClickListener(new View.OnClickListener() {

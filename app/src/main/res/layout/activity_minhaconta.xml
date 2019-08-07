@@ -100,7 +100,7 @@
                         android:id="@+id/mc_nome"
                         android:inputType="textPersonName"
                         android:hint="Insira o seu nome..."
-                        android:maxEms="255"
+                        android:maxLength="255"
                         android:imeOptions="actionDone"
                         android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"
