@@ -63,6 +63,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     private ActionMode mActionMode;
     private FloatingActionButton adicionarProduto;
     private List<Compra> comprasSelecionadas = new ArrayList<>();
+    private boolean executarOnResume = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -206,7 +207,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
                     }
                 };
                 AlertDialog.Builder ab = new AlertDialog.Builder(this);
-                ab.setMessage("Deseja realmente excluir o produto " + compraSelecionada.getProduto().getNome() + "?")
+                ab.setMessage("Deseja realmente excluir o produto " + compraSelecionada.getNomePersonalizado() + "?")
                         .setNegativeButton("Não", dialogClickListener)
                         .setPositiveButton("Sim", dialogClickListener)
                         .show();
@@ -272,9 +273,13 @@ public class ListaProdutosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        listarProdutos();
-        atualizarFundo();
-        calcularGastos();
+        if (executarOnResume) {
+            listarProdutos();
+            atualizarFundo();
+            calcularGastos();
+        } else {
+            executarOnResume = true;
+        }
     }
 
     @Override

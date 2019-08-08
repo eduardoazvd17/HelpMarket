@@ -48,6 +48,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     private FloatingActionButton novaLista;
     private CoordinatorLayout layout;
     private ActionMode mActionMode;
+    private boolean executarOnResume = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,11 +189,15 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     @Override
     protected void onResume() {
         super.onResume();
-        DBController db = new DBController(getBaseContext());
-        usuario = db.buscarUsuario(usuario.getEmail());
-        nomePessoa.setText(usuario.getNome());
-        listarListas();
-        atualizarFundo();
+        if (executarOnResume) {
+            DBController db = new DBController(getBaseContext());
+            usuario = db.buscarUsuario(usuario.getEmail());
+            nomePessoa.setText(usuario.getNome());
+            listarListas();
+            atualizarFundo();
+        } else {
+            executarOnResume = true;
+        }
     }
 
     @Override

@@ -311,6 +311,7 @@ public class DBController {
             if (tasks.isComplete()) {
                 for (QueryDocumentSnapshot doc : tasks.getResult()) {
                     Usuario u = doc.toObject(Usuario.class);
+                    u.setId(doc.getId());
                     usuarios.add(u);
                 }
                 isTerminado=true;

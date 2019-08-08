@@ -25,6 +25,7 @@ public class CatalogoActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Lista lista;
     private List<Produto> produtos;
+    private boolean executarOnResume = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,17 @@ public class CatalogoActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (executarOnResume) {
+            listarProdutos();
+            atualizarFundo();
+        } else {
+            executarOnResume = true;
+        }
     }
 
     public void listarProdutos() {
