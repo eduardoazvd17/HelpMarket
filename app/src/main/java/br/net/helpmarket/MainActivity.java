@@ -86,9 +86,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        DBController db = new DBController(getBaseContext());
-        usuario = db.buscarUsuario(usuario.getEmail());
-        nomePessoa.setText(usuario.getNome());
+        atualizarNome();
+    }
+
+    private void atualizarNome() {
+        final List<Usuario> usuarios = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("usuarios")
+                .whereEqualTo("email", usuario.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    Usuario u = doc.toObject(Usuario.class);
+                    u.setId(doc.getId());
+                    usuarios.add(u);
+                }
+                if (usuarios.size() != 0) {
+                    nomePessoa.setText(usuarios.get(0).getNome());
+                }
+            }
+        });
     }
 
     @Override

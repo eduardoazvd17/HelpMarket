@@ -58,6 +58,16 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/lc_load"
+                android:visibility="gone"
+                android:indeterminate="true"
+                android:paddingTop="75dp"
+                android:indeterminateTint="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_gravity="top|center"
+                android:layout_height="wrap_content" />
+
             <ListView
                 android:background="@color/colorWhite"
                 android:visibility="visible"

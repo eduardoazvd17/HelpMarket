@@ -138,6 +138,16 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/lp_load"
+                android:visibility="gone"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimary"
+                android:paddingTop="75dp"
+                android:layout_width="wrap_content"
+                android:layout_gravity="top|center"
+                android:layout_height="wrap_content" />
+
             <ListView
                 android:background="@color/colorWhite"
                 android:id="@+id/lvProdutos"

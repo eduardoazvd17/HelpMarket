@@ -2,6 +2,7 @@ package br.net.helpmarket;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -9,7 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import br.net.helpmarket.adapter.ListaCatalogoAdapter;
@@ -23,9 +32,9 @@ public class CatalogoActivity extends AppCompatActivity {
     private LinearLayout catalogoVazio;
     private ListaCatalogoAdapter lcAdapter;
     private Toolbar toolbar;
+    private ProgressBar load;
     private Lista lista;
-    private List<Produto> produtos;
-    private boolean executarOnResume = false;
+    private List<Produto> produtos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +49,7 @@ public class CatalogoActivity extends AppCompatActivity {
 
         lvCatalogo = findViewById(R.id.lvCatalogo);
         catalogoVazio = findViewById(R.id.catalogo_vazio);
-
-        listarProdutos();
-        atualizarFundo();
+        load = findViewById(R.id.catalogo_load);
 
         lvCatalogo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,19 +73,26 @@ public class CatalogoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (executarOnResume) {
-            listarProdutos();
-            atualizarFundo();
-        } else {
-            executarOnResume = true;
-        }
+        listarProdutos();
     }
 
     public void listarProdutos() {
-        DBController db = new DBController(getBaseContext());
-        this.produtos = db.selecionarProdutos();
-        this.lcAdapter = new ListaCatalogoAdapter(this.produtos, this);
-        this.lvCatalogo.setAdapter(this.lcAdapter);
+        load.setVisibility(View.VISIBLE);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("produtos")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Produto p = doc.toObject(Produto.class);
+                            produtos.add(p);
+                        }
+                        lcAdapter = new ListaCatalogoAdapter(produtos, CatalogoActivity.this);
+                        lvCatalogo.setAdapter(lcAdapter);
+                        load.setVisibility(View.GONE);
+                        atualizarFundo();
+                    }
+                });
     }
 
     private void atualizarFundo() {

@@ -23,8 +23,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,7 @@ import java.util.List;
 import br.net.helpmarket.adapter.ListaComprasAdapter;
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Lista;
+import br.net.helpmarket.modelo.ListaDB;
 import br.net.helpmarket.modelo.Usuario;
 
 public class ListaComprasActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +48,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     private Toolbar toolbar;
     private Usuario usuario;
     private TextView nomePessoa;
-    private List<Lista> listas;
+    private List<Lista> listas = new ArrayList<>();
     private List<Lista> listasSelecionadas = new ArrayList<>();
     private ListaComprasAdapter lcAdapter;
     private ListView lvListas;
@@ -48,7 +56,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     private FloatingActionButton novaLista;
     private CoordinatorLayout layout;
     private ActionMode mActionMode;
-    private boolean executarOnResume = false;
+    private ProgressBar load;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +81,8 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         layout = findViewById(R.id.lc_layout);
         lvListas = findViewById(R.id.lvListas);
         lcVazio = findViewById(R.id.lc_vazio);
+        load = findViewById(R.id.lc_load);
         registerForContextMenu(lvListas);
-        listarListas();
-        atualizarFundo();
 
         lvListas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -165,8 +172,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 DBController db = new DBController(getBaseContext());
-                                db.deletarLista(listaSelecionada.getId());
-                                db.deletarComprasDaLista(listaSelecionada.getId());
+                                db.deletarLista(listaSelecionada);
                                 listarListas();
                                 atualizarFundo();
                                 break;
@@ -189,15 +195,28 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     @Override
     protected void onResume() {
         super.onResume();
-        if (executarOnResume) {
-            DBController db = new DBController(getBaseContext());
-            usuario = db.buscarUsuario(usuario.getEmail());
-            nomePessoa.setText(usuario.getNome());
-            listarListas();
-            atualizarFundo();
-        } else {
-            executarOnResume = true;
-        }
+        atualizarNome();
+        listarListas();
+    }
+
+    private void atualizarNome() {
+        final List<Usuario> usuarios = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("usuarios")
+                .whereEqualTo("email", usuario.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Usuario u = doc.toObject(Usuario.class);
+                            u.setId(doc.getId());
+                            usuarios.add(u);
+                        }
+                        if (usuarios.size() != 0) {
+                            nomePessoa.setText(usuarios.get(0).getNome());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -248,12 +267,9 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                 case R.id.excluirSelecionados:
                     for (Lista l : listasSelecionadas) {
                         DBController db = new DBController(getBaseContext());
-                        db.deletarComprasDaLista(l.getId());
-                        db.deletarLista(l.getId());
-                        listas.remove(l);
+                        db.deletarLista(l);
                     }
                     listarListas();
-                    atualizarFundo();
                     mode.finish();
                     return true;
                 default:
@@ -327,10 +343,29 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
     }
 
     public void listarListas() {
-        DBController db = new DBController(getBaseContext());
-        this.listas = db.selecionarListas(this.usuario);
-        this.lcAdapter = new ListaComprasAdapter(this.listas, this);
-        this.lvListas.setAdapter(this.lcAdapter);
+        listas.clear();
+        load.setVisibility(View.VISIBLE);
+        final List<ListaDB> listasDB = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("listas")
+                .whereEqualTo("idUsuario", usuario.getId())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    ListaDB l = doc.toObject(ListaDB.class);
+                    l.setId(doc.getId());
+                    listasDB.add(l);
+                }
+                for (ListaDB l : listasDB) {
+                    listas.add(new Lista(l.getId(), usuario, l.getNome(), l.getGastoMaximo(), l.getQuantidadeProdutos(), l.getDataCriacao(), l.getTerminado()));
+                }
+                lcAdapter = new ListaComprasAdapter(listas, ListaComprasActivity.this);
+                lvListas.setAdapter(lcAdapter);
+                load.setVisibility(View.GONE);
+                atualizarFundo();
+            }
+        });
     }
 
     private void atualizarFundo() {

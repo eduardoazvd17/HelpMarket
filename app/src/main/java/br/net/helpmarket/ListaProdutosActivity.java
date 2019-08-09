@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -25,9 +25,15 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -44,6 +50,7 @@ import java.util.List;
 import br.net.helpmarket.adapter.ListaProdutosAdapter;
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Compra;
+import br.net.helpmarket.modelo.CompraDB;
 import br.net.helpmarket.modelo.Lista;
 import br.net.helpmarket.modelo.Produto;
 
@@ -52,7 +59,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView nomeLista, gastoMaximo, totalGasto, totalEconomizado;
     private Lista lista;
-    private List<Compra> compras;
+    private List<Compra> compras = new ArrayList<>();
     private ListView lvProdutos;
     private Produto produto;
     private ListaProdutosAdapter lpAdapter;
@@ -63,7 +70,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     private ActionMode mActionMode;
     private FloatingActionButton adicionarProduto;
     private List<Compra> comprasSelecionadas = new ArrayList<>();
-    private boolean executarOnResume = false;
+    private ProgressBar load;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,15 +89,12 @@ public class ListaProdutosActivity extends AppCompatActivity {
         nomeLista.setText(lista.getNome());
         lvProdutos = findViewById(R.id.lvProdutos);
         lpVazio = findViewById(R.id.lp_vazio);
+        load = findViewById(R.id.lp_load);
         gastoMaximo = findViewById(R.id.lp_gastoMaximo);
         totalGasto = findViewById(R.id.lp_totalGasto);
         totalEconomizado = findViewById(R.id.lp_totalEconomizado);
         layout = findViewById(R.id.lp_layout);
         registerForContextMenu(lvProdutos);
-
-        listarProdutos();
-        atualizarFundo();
-        calcularGastos();
 
         adicionarProduto = findViewById(R.id.adicionarProduto);
         adicionarProduto.setOnClickListener(new View.OnClickListener() {
@@ -195,10 +199,8 @@ public class ListaProdutosActivity extends AppCompatActivity {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 DBController db = new DBController(getBaseContext());
-                                db.deletarCompra(compraSelecionada.getId());
+                                db.deletarCompra(compraSelecionada);
                                 listarProdutos();
-                                atualizarFundo();
-                                calcularGastos();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 Toast.makeText(getApplicationContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
@@ -273,13 +275,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (executarOnResume) {
-            listarProdutos();
-            atualizarFundo();
-            calcularGastos();
-        } else {
-            executarOnResume = true;
-        }
+        listarProdutos();
     }
 
     @Override
@@ -307,11 +303,10 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 case R.id.excluirSelecionados:
                     for (Compra c : comprasSelecionadas) {
                         DBController db = new DBController(getBaseContext());
-                        db.deletarCompra(c.getId());
+                        db.deletarCompra(c);
                         compras.remove(c);
                     }
                     listarProdutos();
-                    atualizarFundo();
                     mode.finish();
                     return true;
                 default:
@@ -365,7 +360,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         totalGasto.setText(NumberFormat.getCurrencyInstance().format(total));
 
         if (lista.getGastoMaximo() == 0) {
-            totalEconomizado.setText(NumberFormat.getCurrencyInstance().format("0.0"));
+            totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(0.0));
         } else {
             double economizado = lista.getGastoMaximo() - total;
             totalEconomizado.setText(NumberFormat.getCurrencyInstance().format(economizado)+" ");
@@ -381,10 +376,30 @@ public class ListaProdutosActivity extends AppCompatActivity {
     }
 
     public void listarProdutos() {
-        DBController db = new DBController(getBaseContext());
-        this.compras = db.selecionarCompras(lista);
-        this.lpAdapter = new ListaProdutosAdapter(this.compras, this);
-        this.lvProdutos.setAdapter(this.lpAdapter);
+        compras.clear();
+        load.setVisibility(View.VISIBLE);
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("compras")
+                .whereEqualTo("idLista", lista.getId())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<CompraDB> comprasDB = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    CompraDB cdb = doc.toObject(CompraDB.class);
+                    cdb.setId(doc.getId());
+                    comprasDB.add(cdb);
+                }
+                for (CompraDB c : comprasDB) {
+                    compras.add(new Compra(c.getId(), lista.getUsuario(), lista, c.getProduto(), c.getNomePersonalizado(), c.getQuantidade(), c.getPreco(), c.getComprado()));
+                }
+                lpAdapter = new ListaProdutosAdapter(compras, ListaProdutosActivity.this);
+                lvProdutos.setAdapter(lpAdapter);
+                load.setVisibility(View.GONE);
+                atualizarFundo();
+                calcularGastos();
+            }
+        });
     }
 
     private void atualizarFundo() {

@@ -8,7 +8,7 @@ public class CompraDB implements Serializable {
     private String id;
     private String idUsuario;
     private String idLista;
-    private Long codigoBarrasProduto;
+    private Produto produto;
     private String nomePersonalizado;
     private Integer quantidade;
     private Double preco;
@@ -18,21 +18,21 @@ public class CompraDB implements Serializable {
 
     }
 
-    public CompraDB(String id, String idUsuario, String idLista, Long codigoBarrasProduto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
+    public CompraDB(String id, String idUsuario, String idLista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.id = id;
         this.idUsuario = idUsuario;
         this.idLista = idLista;
-        this.codigoBarrasProduto = codigoBarrasProduto;
+        this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
         this.quantidade = quantidade;
         this.preco = preco;
         this.comprado = comprado;
     }
 
-    public CompraDB(String idUsuario, String idLista, Long codigoBarrasProduto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
+    public CompraDB(String idUsuario, String idLista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.idUsuario = idUsuario;
         this.idLista = idLista;
-        this.codigoBarrasProduto = codigoBarrasProduto;
+        this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
         this.quantidade = quantidade;
         this.preco = preco;
@@ -108,11 +108,11 @@ public class CompraDB implements Serializable {
         this.idLista = idLista;
     }
 
-    public Long getCodigoBarrasProduto() {
-        return codigoBarrasProduto;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setCodigoBarrasProduto(Long codigoBarrasProduto) {
-        this.codigoBarrasProduto = codigoBarrasProduto;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 }

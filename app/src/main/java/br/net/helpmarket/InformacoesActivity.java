@@ -16,7 +16,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Usuario;
@@ -79,10 +87,27 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
     @Override
     protected void onResume() {
         super.onResume();
-        DBController db = new DBController(getBaseContext());
-        usuario = db.buscarUsuario(usuario.getEmail());
-        nomePessoa.setText(usuario.getNome());
+        atualizarNome();
+    }
 
+    private void atualizarNome() {
+        final List<Usuario> usuarios = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("usuarios")
+                .whereEqualTo("email", usuario.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    Usuario u = doc.toObject(Usuario.class);
+                    u.setId(doc.getId());
+                    usuarios.add(u);
+                }
+                if (usuarios.size() != 0) {
+                    nomePessoa.setText(usuarios.get(0).getNome());
+                }
+            }
+        });
     }
 
     @Override

@@ -197,8 +197,13 @@ public class DBController {
 //        db.close();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CompraDB compraDB = new CompraDB(compra.getUsuario().getId(), compra.getLista().getId(), compra.getProduto().getCodigoBarras(), compra.getNomePersonalizado(), compra.getQuantidade(), compra.getPreco(), compra.getComprado());
+        CompraDB compraDB = new CompraDB(compra.getUsuario().getId(), compra.getLista().getId(), compra.getProduto(), compra.getNomePersonalizado(), compra.getQuantidade(), compra.getPreco(), compra.getComprado());
         db.collection("compras").add(compraDB);
+
+        Lista lista = compra.getLista();
+        ListaDB ldb = new ListaDB(lista.getId(), lista.getUsuario().getId(), lista.getNome(), lista.getGastoMaximo(), lista.getQuantidadeProdutos()+1, lista.getDataCriacao(), lista.getTerminado());
+        db.collection("listas").document(lista.getId()).set(ldb);
+
     }
 
     public void deletarUsuario(String id) {
@@ -219,48 +224,49 @@ public class DBController {
         db.collection("produtos").document(codigoBarras.toString()).delete();
     }
 
-    public void deletarLista(String id) {
+    public void deletarLista(Lista lista) {
 //        DBHelper db = new DBHelper(context);
 //        db.executarSQL("DELETE FROM LISTAS WHERE ID = '" + id + "'");
 //        db.close();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("listas").document(id).delete();
+        db.collection("listas").document(lista.getId()).delete();
+        deletarComprasDaLista(lista);
     }
 
-    public void deletarComprasDaLista(String id) {
+    public void deletarComprasDaLista(Lista lista) {
 //        DBHelper db = new DBHelper(context);
 //        db.executarSQL("DELETE FROM COMPRAS WHERE ID_LISTA = '" + id + "'");
 //        db.close();
 
-        List<String> ids = new ArrayList<>();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task<QuerySnapshot> tasks = db.collection("compras")
-                .whereEqualTo("idLista", id)
-                .get();
-
-        boolean isTerminado = false;
-        do {
-            if (tasks.isComplete()) {
-                for (QueryDocumentSnapshot doc : tasks.getResult()) {
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("compras")
+                .whereEqualTo("idLista", lista.getId())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<String> ids = new ArrayList<>();
+                for (DocumentSnapshot doc : task.getResult()) {
                     ids.add(doc.getId());
                 }
-                isTerminado=true;
+                for (String idCompra : ids) {
+                    db.collection("compras").document(idCompra).delete();
+                }
             }
-        } while (!isTerminado);
-
-        for (String idCompra : ids) {
-            db.collection("compras").document(idCompra).delete();
-        }
+        });
     }
 
-    public void deletarCompra(String id) {
+    public void deletarCompra(Compra compra) {
 //        DBHelper db = new DBHelper(context);
 //        db.executarSQL("DELETE FROM COMPRAS WHERE ID = '" + id + "'");
 //        db.close();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("compras").document(id).delete();
+        db.collection("compras").document(compra.getId()).delete();
+
+        Lista lista = compra.getLista();
+        ListaDB ldb = new ListaDB(lista.getId(), lista.getUsuario().getId(), lista.getNome(), lista.getGastoMaximo(), lista.getQuantidadeProdutos()-1, lista.getDataCriacao(), lista.getTerminado());
+        db.collection("listas").document(lista.getId()).set(ldb);
     }
 
     public Produto buscarProduto(Long codigoBarras) {
@@ -450,8 +456,7 @@ public class DBController {
 
         List<Compra> compras = new ArrayList<>();
         for (CompraDB c : comprasDB) {
-            Produto produto = buscarProduto(c.getCodigoBarrasProduto());
-            compras.add(new Compra(c.getId(), lista.getUsuario(), lista, produto, c.getNomePersonalizado(), c.getQuantidade(), c.getPreco(), c.getComprado()));
+            compras.add(new Compra(c.getId(), lista.getUsuario(), lista, c.getProduto(), c.getNomePersonalizado(), c.getQuantidade(), c.getPreco(), c.getComprado()));
         }
         return compras;
     }
@@ -488,7 +493,7 @@ public class DBController {
 //        db.executarSQL("UPDATE COMPRAS SET NOMEPERSONALIZADO = '" + nomePersonalizado + "', QUANTIDADE = '" + quantidade + "', PRECO = '" + preco + "' WHERE ID = '" + compra.getId() + "'");
 //        db.close();
 
-        CompraDB compraDB = new CompraDB(compra.getId(), compra.getUsuario().getId(), compra.getLista().getId(), compra.getProduto().getCodigoBarras(), nomePersonalizado, quantidade, preco, compra.getComprado());
+        CompraDB compraDB = new CompraDB(compra.getId(), compra.getUsuario().getId(), compra.getLista().getId(), compra.getProduto(), nomePersonalizado, quantidade, preco, compra.getComprado());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("compras").document(compraDB.getId()).set(compraDB);
     }
@@ -498,7 +503,7 @@ public class DBController {
 //        db.executarSQL("UPDATE COMPRAS SET COMPRADO = '" + comprar.toString() + "' WHERE ID = '" + compra.getId() + "'");
 //        db.close();
 
-        CompraDB compraDB = new CompraDB(compra.getId(), compra.getUsuario().getId(), compra.getLista().getId(), compra.getProduto().getCodigoBarras(), compra.getNomePersonalizado(), compra.getQuantidade(), compra.getPreco(), comprar);
+        CompraDB compraDB = new CompraDB(compra.getId(), compra.getUsuario().getId(), compra.getLista().getId(), compra.getProduto(), compra.getNomePersonalizado(), compra.getQuantidade(), compra.getPreco(), comprar);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("compras").document(compraDB.getId()).set(compraDB);
     }
