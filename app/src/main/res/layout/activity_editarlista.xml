@@ -70,7 +70,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
                         android:textColor="@color/colorBlack"
-                        android:hint="Insira um nome para a lista..."
                         android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789._-, áàâãèéêìíîóòôõúùû"/>
 
                 </LinearLayout>
@@ -103,8 +102,7 @@
                         android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
-                        android:hint="Insira o valor máximo que deseja gastar..."/>
+                        android:inputType="numberDecimal" />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -136,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"
-                        android:text="dd/MM/yyyy"/>
+                        android:text=""/>
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

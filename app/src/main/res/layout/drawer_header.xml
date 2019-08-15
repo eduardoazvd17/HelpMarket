@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/colorBlack"
-                android:text="Minha Conta (nome da pessoa)"/>
+                android:text=""/>
 
             <Space
                 android:layout_width="5dp"

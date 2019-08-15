@@ -18,12 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text="Nome da lista de compras"/>
         
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="4dp" />
+
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="R$ 1000.00"/>
+                android:text=""/>
 
         </LinearLayout>
 
@@ -52,14 +50,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Produtos nesta lista: "/>
+                android:text="Total gasto: "/>
 
             <TextView
                 android:id="@+id/lcitem_quantidadeProdutos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="99"/>
+                android:text=""/>
 
         </LinearLayout>
 
@@ -78,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
-                android:text="01/01/2001"/>
+                android:text=""/>
 
         </LinearLayout>
 

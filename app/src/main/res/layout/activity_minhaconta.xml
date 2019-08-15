@@ -99,7 +99,6 @@
                     <EditText
                         android:id="@+id/mc_nome"
                         android:inputType="textPersonName"
-                        android:hint="Insira o seu nome..."
                         android:maxLength="255"
                         android:imeOptions="actionDone"
                         android:textColor="@color/colorBlack"

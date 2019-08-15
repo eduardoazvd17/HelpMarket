@@ -3,15 +3,26 @@ package br.net.helpmarket.adapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import br.net.helpmarket.ListaProdutosActivity;
 import br.net.helpmarket.R;
+import br.net.helpmarket.modelo.Compra;
+import br.net.helpmarket.modelo.CompraDB;
 import br.net.helpmarket.modelo.Lista;
 
 public class ListaComprasAdapter extends BaseAdapter {
@@ -48,13 +59,33 @@ public class ListaComprasAdapter extends BaseAdapter {
         //Instanciar objetos do xml;
         TextView nome = view.findViewById(R.id.lcitem_nome);
         TextView gastoMaximo = view.findViewById(R.id.lcitem_gastoMaximo);
-        TextView totalProdutos = view.findViewById(R.id.lcitem_quantidadeProdutos);
+        final TextView totalProdutos = view.findViewById(R.id.lcitem_quantidadeProdutos);
         TextView data = view.findViewById(R.id.lcitem_dataCriacao);
 
         //Atribuir atributos nesses objetos;
         nome.setText(lista.getNome());
         gastoMaximo.setText(NumberFormat.getCurrencyInstance().format(lista.getGastoMaximo()));
-        totalProdutos.setText(lista.getQuantidadeProdutos().toString());
+
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("compras")
+                .whereEqualTo("idLista", lista.getId())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                List<CompraDB> comprasDB = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    CompraDB cdb = doc.toObject(CompraDB.class);
+                    cdb.setId(doc.getId());
+                    comprasDB.add(cdb);
+                }
+                double total=0.0;
+                for (CompraDB c : comprasDB) {
+                    total = total + c.getPreco();
+                }
+                totalProdutos.setText(NumberFormat.getCurrencyInstance().format(total));
+            }
+        });
+
         data.setText(lista.getDataCriacao());
 
         return view;
