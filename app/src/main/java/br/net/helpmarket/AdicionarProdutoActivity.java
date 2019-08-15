@@ -1,7 +1,9 @@
 package br.net.helpmarket;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +15,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Compra;
+import br.net.helpmarket.modelo.CompraDB;
 import br.net.helpmarket.modelo.Lista;
+import br.net.helpmarket.modelo.ListaDB;
 import br.net.helpmarket.modelo.Produto;
 
 
@@ -55,25 +68,59 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
         FloatingActionButton salvarProduto = findViewById(R.id.salvarProduto);
         salvarProduto.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    Compra compra = new Compra(
-                            lista.getUsuario(),
-                            lista,
-                            produto,
-                            nome.getText().toString(),
-                            Integer.parseInt(quantidade.getText().toString()),
-                            Double.parseDouble(preco.getText().toString()),
-                            false
-                    );
-                    DBController db = new DBController(v.getContext());
-                    if (!db.verificarExistenciaProduto(lista, produto, compra)) {
-                        db.inserirCompra(compra);
-                    }
-                    finish();
+                    final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
+                    progressDialog.setTitle("Adicionando Produto");
+                    progressDialog.setMessage("Carregando...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("compras")
+                            .whereEqualTo("idLista", lista.getId())
+                            .whereEqualTo("produto", produto)
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            List<CompraDB> comprasDB = new ArrayList<>();
+                            Compra compra = new Compra(
+                                    lista,
+                                    produto,
+                                    nome.getText().toString(),
+                                    Integer.parseInt(quantidade.getText().toString()),
+                                    Double.parseDouble(preco.getText().toString()),
+                                    false
+                            );
+
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                CompraDB cdb = doc.toObject(CompraDB.class);
+                                cdb.setId(doc.getId());
+                                comprasDB.add(cdb);
+                            }
+
+                            if (comprasDB.size() != 0) {
+                                CompraDB c = comprasDB.get(0);
+                                c.setQuantidade(c.getQuantidade() + compra.getQuantidade());
+                                db.collection("compras").document(c.getId()).set(c);
+                                Toast.makeText(v.getContext(), "O produto inserido já existe na sua lista, a quantidade foi aumentada.", Toast.LENGTH_LONG).show();
+                            } else {
+                                CompraDB compraDB = new CompraDB(compra.getLista().getId(), compra.getProduto(), compra.getNomePersonalizado(), compra.getQuantidade(), compra.getPreco(), compra.getComprado());
+                                db.collection("compras").add(compraDB);
+                                Lista lista = compra.getLista();
+                                ListaDB ldb = new ListaDB(lista.getId(), lista.getUsuario().getId(), lista.getNome(), lista.getGastoMaximo(), lista.getQuantidadeProdutos()+1, lista.getDataCriacao(), lista.getTerminado());
+                                db.collection("listas").document(lista.getId()).set(ldb);
+                                Toast.makeText(v.getContext(), "Produto inserido.", Toast.LENGTH_LONG).show();
+                            }
+                            progressDialog.dismiss();
+                            finish();
+                        }
+                    });
                 }
-            }
+                }
         });
 
         ImageButton voltar = findViewById(R.id.ap_voltar);

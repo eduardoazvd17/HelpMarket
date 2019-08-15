@@ -104,7 +104,8 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
                     usuarios.add(u);
                 }
                 if (usuarios.size() != 0) {
-                    nomePessoa.setText(usuarios.get(0).getNome());
+                    usuario = usuarios.get(0);
+                    nomePessoa.setText(usuario.getNome());
                 }
             }
         });

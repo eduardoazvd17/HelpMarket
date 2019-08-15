@@ -6,7 +6,6 @@ import java.util.Objects;
 public class CompraDB implements Serializable {
 
     private String id;
-    private String idUsuario;
     private String idLista;
     private Produto produto;
     private String nomePersonalizado;
@@ -18,9 +17,8 @@ public class CompraDB implements Serializable {
 
     }
 
-    public CompraDB(String id, String idUsuario, String idLista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
+    public CompraDB(String id, String idLista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.id = id;
-        this.idUsuario = idUsuario;
         this.idLista = idLista;
         this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
@@ -29,8 +27,7 @@ public class CompraDB implements Serializable {
         this.comprado = comprado;
     }
 
-    public CompraDB(String idUsuario, String idLista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
-        this.idUsuario = idUsuario;
+    public CompraDB(String idLista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.idLista = idLista;
         this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
@@ -90,14 +87,6 @@ public class CompraDB implements Serializable {
 
     public void setComprado(Boolean comprado) {
         this.comprado = comprado;
-    }
-
-    public String getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getIdLista() {

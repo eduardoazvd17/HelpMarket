@@ -1,8 +1,10 @@
 package br.net.helpmarket;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,9 +15,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.modelo.Usuario;
@@ -25,8 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, senha;
     private TextView cadastrar, recuperar;
     private Button btnLogin;
-    private CheckBox entrarAutomaticamente, salvarEmail;
-    private Usuario usuario;
+    private CheckBox entrarAutomaticamente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.login_email);
         senha = findViewById(R.id.login_senha);
         entrarAutomaticamente = findViewById(R.id.entrarAutomaticamente);
-        salvarEmail = findViewById(R.id.salvarEmail);
 
-        buscarCredenciais();
+        buscarCredenciais(LoginActivity.this);
 
         cadastrar = findViewById(R.id.cadastrar);
         cadastrar.setOnClickListener(new View.OnClickListener() {
@@ -62,29 +71,58 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.fazerLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    DBController db = new DBController(v.getContext());
+                    final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
+                    progressDialog.setTitle("Efetuando Login");
+                    progressDialog.setMessage("Carregando...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
                     String senhaHash = criptografarSenha(senha.getText().toString());
-                    usuario = db.fazerLogin(email.getText().toString(), senhaHash);
-                    if (null == usuario) {
-                        Toast.makeText(v.getContext(), "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
-                    } else {
-                        if (entrarAutomaticamente.isChecked()) {
-                            salvarCredenciais();
-                        }
-                        if (salvarEmail.isChecked()) {
-                            atualizarEmailSalvo();
-                        } else {
-                            apagarEmailSalvo();
-                        }
-                        Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(v.getContext(), MainActivity.class);
-                        intent.putExtra("usuario", usuario);
-                        startActivity(intent);
-                        finish();
-                    }
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("usuarios")
+                            .whereEqualTo("email", email.getText().toString())
+                            .whereEqualTo("senha", senhaHash)
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    List<Usuario> usuarios = new ArrayList<>();
+
+                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                        Usuario u = doc.toObject(Usuario.class);
+                                        u.setId(doc.getId());
+                                        usuarios.add(u);
+                                    }
+
+                                    Usuario usuario = null;
+                                    if (usuarios.size() != 0) {
+                                        usuario = usuarios.get(0);
+                                    }
+
+                                    progressDialog.dismiss();
+
+                                    if (null == usuario) {
+                                        Toast.makeText(v.getContext(), "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        if (entrarAutomaticamente.isChecked()) {
+                                            salvarCredenciais(usuario);
+                                        }
+
+                                        atualizarEmailSalvo();
+
+                                        Toast.makeText(v.getContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(v.getContext(), MainActivity.class);
+                                        intent.putExtra("usuario", usuario);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            });
                 }
             }
         });
@@ -98,11 +136,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void apagarEmailSalvo() {
-        DBController db = new DBController(getBaseContext());
-        db.apagarEmailSalvo();
-    }
-
     private void atualizarEmailSalvo() {
         DBController db = new DBController(getBaseContext());
         db.salvarEmail(email.getText().toString());
@@ -113,25 +146,61 @@ public class LoginActivity extends AppCompatActivity {
         String emailSalvo = db.buscarEmailSalvo();
         if (null != emailSalvo) {
             email.setText(emailSalvo);
-            salvarEmail.setChecked(true);
         }
     }
 
-    private void buscarCredenciais() {
-        DBController db = new DBController(getBaseContext());
-        Usuario u = db.buscarCredenciais();
-        if (!(null == u)) {
-            Toast.makeText(getBaseContext(), "Bem vindo, " + u.getNome(), Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);
-            intent.putExtra("usuario", u);
-            startActivity(intent);
-            finish();
+    private void buscarCredenciais(Context c) {
+        DBController dbc = new DBController(c);
+        Map<String, String> credenciais = dbc.buscarCredenciais();
+
+        if (credenciais.size() != 0) {
+            final ProgressDialog progressDialog = new ProgressDialog(c);
+            progressDialog.setTitle("Efetuando Login");
+            progressDialog.setMessage("Carregando...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("usuarios")
+                    .whereEqualTo("email", credenciais.get("email"))
+                    .whereEqualTo("senha", credenciais.get("senha"))
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    List<Usuario> usuarios = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Usuario u = doc.toObject(Usuario.class);
+                        u.setId(doc.getId());
+                        usuarios.add(u);
+                    }
+
+                    Usuario usuario = null;
+                    if (usuarios.size() != 0) {
+                        usuario = usuarios.get(0);
+                    }
+
+                    progressDialog.dismiss();
+
+                    if (null == usuario) {
+                        Toast.makeText(getBaseContext(), "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getBaseContext(), "Bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                        intent.putExtra("usuario", usuario);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
         } else {
             buscarEmailSalvo();
         }
     }
 
-    private void salvarCredenciais() {
+    private void salvarCredenciais(Usuario usuario) {
         DBController db = new DBController(getBaseContext());
         db.salvarCredenciais(usuario);
     }

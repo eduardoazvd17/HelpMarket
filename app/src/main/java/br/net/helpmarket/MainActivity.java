@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     usuarios.add(u);
                 }
                 if (usuarios.size() != 0) {
-                    nomePessoa.setText(usuarios.get(0).getNome());
+                    usuario = usuarios.get(0);
+                    nomePessoa.setText(usuario.getNome());
                 }
             }
         });

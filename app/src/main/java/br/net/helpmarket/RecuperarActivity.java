@@ -1,7 +1,9 @@
 package br.net.helpmarket;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,12 +11,21 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import br.net.helpmarket.database.DBController;
@@ -55,22 +66,52 @@ public class RecuperarActivity extends AppCompatActivity {
         btnEnviar = findViewById(R.id.recuperar_enviarCodigo);
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 ocultarTeclado();
-                DBController db = new DBController(v.getContext());
                 if (1 != verificarPreenchimento()) {
-                    usuario = db.buscarUsuario(email.getText().toString());
-                    if (null != usuario){
-                        codigoRecuperacao = new Random().nextInt(900000) + 100000;
-                        MailController mc = new MailController(v.getContext());
-                        mc.enviarCodigoRecuperaco(usuario, codigoRecuperacao);
-                        passos.setText("Passo 2/3 - Informe o código de recuperação");
-                        enviarCodigo.setVisibility(View.GONE);
-                        validarCodigo.setVisibility(View.VISIBLE);
-                        alterarSenha.setVisibility(View.GONE);
-                    } else {
-                        Toast.makeText(v.getContext(), "Usuário não encontrado", Toast.LENGTH_LONG).show();
-                    }
+                    final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
+                    progressDialog.setTitle("Buscando Usuário");
+                    progressDialog.setMessage("Carregando...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("usuarios")
+                            .whereEqualTo("email", email.getText().toString())
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    List<Usuario> usuarios = new ArrayList<>();
+
+                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                        Usuario us = doc.toObject(Usuario.class);
+                                        us.setId(doc.getId());
+                                        usuarios.add(us);
+                                    }
+
+                                    Usuario u = null;
+                                    if (usuarios.size() != 0) {
+                                        u = usuarios.get(0);
+                                    }
+
+                                    progressDialog.dismiss();
+
+                                    if (null != u){
+                                        usuario = u;
+                                        codigoRecuperacao = new Random().nextInt(900000) + 100000;
+                                        MailController mc = new MailController(v.getContext());
+                                        mc.enviarCodigoRecuperaco(u, codigoRecuperacao);
+                                        passos.setText("Passo 2/3 - Informe o código de recuperação");
+                                        enviarCodigo.setVisibility(View.GONE);
+                                        validarCodigo.setVisibility(View.VISIBLE);
+                                        alterarSenha.setVisibility(View.GONE);
+                                    } else {
+                                        Toast.makeText(v.getContext(), "Usuário não encontrado", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                 }
             }
         });
@@ -92,15 +133,33 @@ public class RecuperarActivity extends AppCompatActivity {
         btnRecuperar = findViewById(R.id.recuperar_alterarSenha);
         btnRecuperar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 ocultarTeclado();
                 if (0 == verificarPreenchimento()) {
-                    DBController db = new DBController(v.getContext());
-                    db.recuperarUsuario(email.getText().toString(), criptografarSenha(novaSenha.getText().toString()));
-                    MailController mc = new MailController(v.getContext());
-                    mc.enviarAlteracaoSenha(usuario);
-                    Toast.makeText(getBaseContext(), "Sua senha foi alterada, entre utilizando sua nova senha", Toast.LENGTH_LONG).show();
-                    finish();
+                    final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
+                    progressDialog.setTitle("Alterando sua Senha");
+                    progressDialog.setMessage("Carregando...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    usuario.setSenha(criptografarSenha(novaSenha.getText().toString()));
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("usuarios").document(usuario.getId()).set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            progressDialog.dismiss();
+                            if (task.isComplete()) {
+                                MailController mc = new MailController(v.getContext());
+                                mc.enviarAlteracaoSenha(usuario);
+                                Toast.makeText(v.getContext(), "Sua senha foi alterada, entre utilizando sua nova senha", Toast.LENGTH_LONG).show();
+                                finish();
+                            } else {
+                                Toast.makeText(v.getContext(), "Ocorreu um erro, tente novamente mais tarde.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 }
             }
         });

@@ -1,8 +1,10 @@
 package br.net.helpmarket;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,9 +14,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.net.helpmarket.database.DBController;
 import br.net.helpmarket.mail.MailController;
@@ -49,25 +59,51 @@ public class CadastroActivity extends AppCompatActivity {
         btnCadastro = findViewById(R.id.fazerCadastro);
         btnCadastro.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
-                    String senhaHash = criptografarSenha(senha.getText().toString());
-                    Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senhaHash);
-                    DBController db = new DBController(v.getContext());
-                    boolean status = db.fazerCadastro(usuario);
-                    if (status) {
-                        atualizarEmailSalvo();
-                        MailController mc = new MailController(v.getContext());
-                        mc.enviarMensagemBoasVindas(usuario);
-                        Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(v.getContext(), MainActivity.class);
-                        intent.putExtra("usuario", usuario);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
-                    }
+                    final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
+                    progressDialog.setTitle("Efetuando Cadastro");
+                    progressDialog.setMessage("Carregando...");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                    final String senhaHash = criptografarSenha(senha.getText().toString());
+
+                    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("usuarios")
+                            .whereEqualTo("email", email.getText().toString())
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    Usuario usuario = new Usuario(email.getText().toString(), nome.getText().toString(), senhaHash);
+                                    List<Usuario> usuarios = new ArrayList<>();
+
+                                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                                        Usuario u = doc.toObject(Usuario.class);
+                                        u.setId(doc.getId());
+                                        usuarios.add(u);
+                                    }
+
+                                    progressDialog.dismiss();
+
+                                    if (usuarios.size() == 0) {
+                                        db.collection("usuarios").add(usuario);
+                                        atualizarEmailSalvo();
+                                        MailController mc = new MailController(v.getContext());
+                                        mc.enviarMensagemBoasVindas(usuario);
+                                        Toast.makeText(v.getContext(), "Cadastro efetuado. Seja bem vindo, " + usuario.getNome(), Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                        intent.putExtra("usuario", usuario);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                 }
             }
         });

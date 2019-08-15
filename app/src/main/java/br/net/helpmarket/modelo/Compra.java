@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Compra implements Serializable {
 
     private String id;
-    private Usuario usuario;
     private Lista lista;
     private Produto produto;
     private String nomePersonalizado;
@@ -21,9 +20,8 @@ public class Compra implements Serializable {
 
     }
 
-    public Compra(String id, Usuario usuario, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
+    public Compra(String id, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.id = id;
-        this.usuario = usuario;
         this.lista = lista;
         this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
@@ -32,8 +30,7 @@ public class Compra implements Serializable {
         this.comprado = comprado;
     }
 
-    public Compra(Usuario usuario, Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
-        this.usuario = usuario;
+    public Compra(Lista lista, Produto produto, String nomePersonalizado, Integer quantidade, Double preco, Boolean comprado) {
         this.lista = lista;
         this.produto = produto;
         this.nomePersonalizado = nomePersonalizado;
@@ -109,13 +106,5 @@ public class Compra implements Serializable {
 
     public void setComprado(Boolean comprado) {
         this.comprado = comprado;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 }

@@ -1,6 +1,7 @@
 package br.net.helpmarket;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -225,17 +227,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         if (null == scanningResult) {
             Toast.makeText(this, "Não foi possivel efetuar a leitura deste codigo de barras", Toast.LENGTH_LONG).show();
         } else {
-            try {
-                buscarProduto(scanningResult.getContents());
-                Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
-                i.putExtra("lista", lista);
-                i.putExtra("produto", produto);
-                startActivity(i);
-            } catch (Exception e) {
-                Toast.makeText(this, "Produto não encontrado...", Toast.LENGTH_LONG).show();
-                gerarToken(numeroToken);
-                numeroToken++;
-            }
+            buscarProduto(scanningResult.getContents());
         }
     }
 
@@ -249,27 +241,55 @@ public class ListaProdutosActivity extends AppCompatActivity {
         }
     }
 
-    private void buscarProduto(String codigo) throws Exception {
-        DBController db = new DBController(getBaseContext());
-        Produto produtoDB = db.buscarProduto(Long.parseLong(codigo));
-        if (null == produtoDB) {
-            String token = this.token.getKey();
-            String endpoint = "https://api.cosmos.bluesoft.com.br/";
-            URL url = new URL(endpoint + "gtins/" + codigo);
-            HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-            conexao.setRequestMethod("GET");
-            conexao.setRequestProperty("X-Cosmos-Token", token);
-            conexao.connect();
-            BufferedReader br = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
-            String jsonString = br.readLine();
-            JSONObject jsonObject = new JSONObject(jsonString);
-            this.produto = new Produto(Long.parseLong(jsonObject.getString("gtin")), jsonObject.getString("description"), jsonObject.getString("thumbnail"));
-            this.produto.verificarPreenchimento();
-            db.inserirProduto(produto);
-            conexao.disconnect();
-        } else {
-            this.produto = produtoDB;
-        }
+    private void buscarProduto(final String codigo) {
+        final ProgressDialog progressDialog = new ProgressDialog(getBaseContext());
+        progressDialog.setTitle("Buscando Produto");
+        progressDialog.setMessage("Carregando...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        final DBController db = new DBController(getBaseContext());
+        FirebaseFirestore ff = FirebaseFirestore.getInstance();
+        ff.collection("produtos").document(codigo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Produto produtoDB = task.getResult().toObject(Produto.class);
+
+                if (null == produtoDB) {
+                    try {
+                        String tk = token.getKey();
+                        String endpoint = "https://api.cosmos.bluesoft.com.br/";
+                        URL url = new URL(endpoint + "gtins/" + codigo);
+                        HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+                        conexao.setRequestMethod("GET");
+                        conexao.setRequestProperty("X-Cosmos-Token", tk);
+                        conexao.connect();
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
+                        String jsonString = br.readLine();
+                        JSONObject jsonObject = new JSONObject(jsonString);
+                        produto = new Produto(Long.parseLong(jsonObject.getString("gtin")), jsonObject.getString("description"), jsonObject.getString("thumbnail"));
+                        produto.verificarPreenchimento();
+                        db.inserirProduto(produto);
+                        conexao.disconnect();
+                    } catch (Exception e) {
+                        Toast.makeText(getBaseContext(), "Produto não encontrado...", Toast.LENGTH_LONG).show();
+                        gerarToken(numeroToken);
+                        numeroToken++;
+                    }
+                } else {
+                    produto = produtoDB;
+                }
+
+                progressDialog.dismiss();
+
+                Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
+                i.putExtra("lista", lista);
+                i.putExtra("produto", produto);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -391,7 +411,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
                     comprasDB.add(cdb);
                 }
                 for (CompraDB c : comprasDB) {
-                    compras.add(new Compra(c.getId(), lista.getUsuario(), lista, c.getProduto(), c.getNomePersonalizado(), c.getQuantidade(), c.getPreco(), c.getComprado()));
+                    compras.add(new Compra(c.getId(), lista, c.getProduto(), c.getNomePersonalizado(), c.getQuantidade(), c.getPreco(), c.getComprado()));
                 }
                 lpAdapter = new ListaProdutosAdapter(compras, ListaProdutosActivity.this);
                 lvProdutos.setAdapter(lpAdapter);

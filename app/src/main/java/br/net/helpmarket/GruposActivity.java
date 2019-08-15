@@ -104,7 +104,8 @@ public class GruposActivity extends AppCompatActivity implements NavigationView.
                     usuarios.add(u);
                 }
                 if (usuarios.size() != 0) {
-                    nomePessoa.setText(usuarios.get(0).getNome());
+                    usuario = usuarios.get(0);
+                    nomePessoa.setText(usuario.getNome());
                 }
             }
         });
