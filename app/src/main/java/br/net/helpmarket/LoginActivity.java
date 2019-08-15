@@ -104,8 +104,6 @@ public class LoginActivity extends AppCompatActivity {
                                         usuario = usuarios.get(0);
                                     }
 
-                                    progressDialog.dismiss();
-
                                     if (null == usuario) {
                                         Toast.makeText(v.getContext(), "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
                                     } else {
@@ -121,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         finish();
                                     }
+
+                                    progressDialog.dismiss();
                                 }
                             });
                 }
@@ -182,8 +182,6 @@ public class LoginActivity extends AppCompatActivity {
                         usuario = usuarios.get(0);
                     }
 
-                    progressDialog.dismiss();
-
                     if (null == usuario) {
                         Toast.makeText(getBaseContext(), "E-mail ou senha incorretos.", Toast.LENGTH_LONG).show();
                     } else {
@@ -193,6 +191,8 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
+
+                    progressDialog.dismiss();
                 }
             });
         } else {

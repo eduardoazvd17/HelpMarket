@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -166,12 +167,47 @@ public class ListaProdutosActivity extends AppCompatActivity {
         });
 
         builder.setView(view)
-                .setNegativeButton("Fechar", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Digitar Código de Barras", new DialogInterface.OnClickListener() {
                      @Override
                      public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                }
-        });
+                         dialog.dismiss();
+                         digitarCodigoBarras();
+                     }
+                });
+        builder.show();
+    }
+
+    private void digitarCodigoBarras() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.dialog_codigomanual, null, false);
+        final EditText codigoBarrasManual = view.findViewById(R.id.codigoBarrasManual);
+
+        builder.setView(view)
+                .setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Buscar Produto", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String codigo =  codigoBarrasManual.getText().toString();
+                        if (null == codigo || codigo.isEmpty()) {
+                            codigoBarrasManual.setError("Insira o código de barras");
+                        } else {
+                            dialogInterface.dismiss();
+                            buscarProduto(codigo);
+                        }
+                    }
+                });
         builder.show();
     }
 
@@ -242,7 +278,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     }
 
     private void buscarProduto(final String codigo) {
-        final ProgressDialog progressDialog = new ProgressDialog(getBaseContext());
+        final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Buscando Produto");
         progressDialog.setMessage("Carregando...");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -277,6 +313,8 @@ public class ListaProdutosActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Produto não encontrado...", Toast.LENGTH_LONG).show();
                         gerarToken(numeroToken);
                         numeroToken++;
+                        progressDialog.dismiss();
+                        return;
                     }
                 } else {
                     produto = produtoDB;

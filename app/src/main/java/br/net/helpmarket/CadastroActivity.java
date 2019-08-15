@@ -87,8 +87,6 @@ public class CadastroActivity extends AppCompatActivity {
                                         usuarios.add(u);
                                     }
 
-                                    progressDialog.dismiss();
-
                                     if (usuarios.size() == 0) {
                                         db.collection("usuarios").add(usuario);
                                         atualizarEmailSalvo();
@@ -102,6 +100,7 @@ public class CadastroActivity extends AppCompatActivity {
                                     } else {
                                         Toast.makeText(v.getContext(), "O endereço de e-mail informado já existe.", Toast.LENGTH_LONG).show();
                                     }
+                                    progressDialog.dismiss();
                                 }
                             });
                 }
