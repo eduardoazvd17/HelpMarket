@@ -83,6 +83,8 @@ public class RecuperarActivity extends AppCompatActivity {
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    progressDialog.dismiss();
+
                                     List<Usuario> usuarios = new ArrayList<>();
 
                                     for (QueryDocumentSnapshot doc : task.getResult()) {
@@ -95,8 +97,6 @@ public class RecuperarActivity extends AppCompatActivity {
                                     if (usuarios.size() != 0) {
                                         u = usuarios.get(0);
                                     }
-
-                                    progressDialog.dismiss();
 
                                     if (null != u){
                                         usuario = u;
@@ -149,7 +149,6 @@ public class RecuperarActivity extends AppCompatActivity {
                     db.collection("usuarios").document(usuario.getId()).set(usuario).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            progressDialog.dismiss();
                             if (task.isComplete()) {
                                 MailController mc = new MailController(v.getContext());
                                 mc.enviarAlteracaoSenha(usuario);
@@ -158,6 +157,7 @@ public class RecuperarActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(v.getContext(), "Ocorreu um erro, tente novamente mais tarde.", Toast.LENGTH_LONG).show();
                             }
+                            progressDialog.dismiss();
                         }
                     });
                 }

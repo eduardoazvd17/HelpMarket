@@ -309,12 +309,12 @@ public class ListaProdutosActivity extends AppCompatActivity {
                     produto = produtoDB;
                 }
 
-                progressDialog.dismiss();
-
                 Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
                 i.putExtra("lista", lista);
                 i.putExtra("produto", produto);
                 startActivity(i);
+
+                progressDialog.dismiss();
             }
         });
     }
