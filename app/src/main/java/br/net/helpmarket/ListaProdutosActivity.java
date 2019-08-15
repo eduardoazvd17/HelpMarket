@@ -267,16 +267,6 @@ public class ListaProdutosActivity extends AppCompatActivity {
         }
     }
 
-    private void gerarToken(int numeroToken) {
-        if (numeroToken == 1) {
-            this.token = Tokens.TK2;
-        } else if (numeroToken == 2) {
-            this.token = Tokens.TK3;
-        } else if (numeroToken == 3) {
-            this.token = Tokens.TK4;
-        }
-    }
-
     private void buscarProduto(final String codigo) {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Buscando Produto");
@@ -310,9 +300,8 @@ public class ListaProdutosActivity extends AppCompatActivity {
                         db.inserirProduto(produto);
                         conexao.disconnect();
                     } catch (Exception e) {
+                        //TODO: Criar gerador de tokens para limitar a 25 usos cada (verificar se o erro é por causa de limite da api).
                         Toast.makeText(getBaseContext(), "Produto não encontrado...", Toast.LENGTH_LONG).show();
-                        gerarToken(numeroToken);
-                        numeroToken++;
                         progressDialog.dismiss();
                         return;
                     }
