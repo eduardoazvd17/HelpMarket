@@ -272,15 +272,32 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.excluirSelecionados:
-                    for (Lista l : listasSelecionadas) {
-                        DBController db = new DBController(getBaseContext());
-                        db.deletarLista(l);
-                    }
-                    listarListas();
-                    mode.finish();
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    for (Lista l : listasSelecionadas) {
+                                        DBController db = new DBController(getBaseContext());
+                                        db.deletarLista(l);
+                                    }
+                                    listarListas();
+                                    mode.finish();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    Toast.makeText(getBaseContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder ab = new AlertDialog.Builder(ListaComprasActivity.this);
+                    ab.setMessage("Deseja realmente excluir todas as listas selecionadas? \n\nListas selecionadas: " + listasSelecionadas.size())
+                            .setNegativeButton("Não", dialogClickListener)
+                            .setPositiveButton("Sim", dialogClickListener)
+                            .show();
                     return true;
                 default:
                     return false;

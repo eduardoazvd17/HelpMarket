@@ -387,16 +387,33 @@ public class ListaProdutosActivity extends AppCompatActivity {
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.excluirSelecionados:
-                    for (Compra c : comprasSelecionadas) {
-                        DBController db = new DBController(getBaseContext());
-                        db.deletarCompra(c);
-                        compras.remove(c);
-                    }
-                    listarProdutos();
-                    mode.finish();
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    for (Compra c : comprasSelecionadas) {
+                                        DBController db = new DBController(getBaseContext());
+                                        db.deletarCompra(c);
+                                        compras.remove(c);
+                                    }
+                                    listarProdutos();
+                                    mode.finish();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    Toast.makeText(getBaseContext(), "Operação cancelada.", Toast.LENGTH_SHORT).show();
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder ab = new AlertDialog.Builder(ListaProdutosActivity.this);
+                    ab.setMessage("Deseja realmente excluir todos os produtos selecionados? \n\nProdutos selecionados: " + comprasSelecionadas.size())
+                            .setNegativeButton("Não", dialogClickListener)
+                            .setPositiveButton("Sim", dialogClickListener)
+                            .show();
                     return true;
                 default:
                     return false;
