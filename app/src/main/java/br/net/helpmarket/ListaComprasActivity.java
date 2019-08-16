@@ -192,7 +192,7 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
                     }
                 };
                 AlertDialog.Builder ab = new AlertDialog.Builder(this);
-                ab.setMessage("Deseja realmente excluir a lista " + listaSelecionada.getNome() + "?")
+                ab.setMessage("Deseja realmente excluir a lista: " + listaSelecionada.getNome() + "?")
                         .setNegativeButton("Não", dialogClickListener)
                         .setPositiveButton("Sim", dialogClickListener)
                         .show();

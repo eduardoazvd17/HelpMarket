@@ -263,7 +263,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
                     }
                 };
                 AlertDialog.Builder ab = new AlertDialog.Builder(this);
-                ab.setMessage("Deseja realmente excluir o produto " + compraSelecionada.getNomePersonalizado() + "?")
+                ab.setMessage("Deseja realmente excluir o produto: " + compraSelecionada.getNomePersonalizado() + "?")
                         .setNegativeButton("Não", dialogClickListener)
                         .setPositiveButton("Sim", dialogClickListener)
                         .show();
