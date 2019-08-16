@@ -245,10 +245,4 @@ public class DBController {
         return false;
     }
 
-    public void apagarEmailSalvo() {
-        DBHelper db = new DBHelper(context);
-        db.executarSQL("DELETE FROM EMAILSALVO");
-        db.close();
-    }
-
 }

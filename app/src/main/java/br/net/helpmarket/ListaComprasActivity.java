@@ -160,6 +160,15 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final Lista listaSelecionada = (Lista) lcAdapter.getItem(info.position);
         switch (item.getItemId()) {
+            case R.id.lpr_marcar:
+                DBController db = new DBController(this);
+                if (listaSelecionada.getTerminado()) {
+                    db.terminarLista(listaSelecionada, false);
+                } else {
+                    db.terminarLista(listaSelecionada, true);
+                }
+                listarListas();
+                return true;
             case R.id.lpr_editar:
                 Intent intent = new Intent(getBaseContext(), EditarListaActivity.class);
                 intent.putExtra("lista", listaSelecionada);

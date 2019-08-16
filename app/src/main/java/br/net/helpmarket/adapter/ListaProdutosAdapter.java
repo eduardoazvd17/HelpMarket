@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -54,6 +55,7 @@ public class ListaProdutosAdapter extends BaseAdapter {
         TextView quantidade = view.findViewById(R.id.lpitem_quantidade);
         TextView precoUnitario = view.findViewById(R.id.lpitem_precoUnitario);
         TextView total = view.findViewById(R.id.lpitem_total);
+        LinearLayout comprado = view.findViewById(R.id.lpitem_comprado);
 
         //Atribuir atributos nesses objetos;
         Picasso.get().load(compra.getProduto().getUrlImagem()).into(imagem);
@@ -61,6 +63,13 @@ public class ListaProdutosAdapter extends BaseAdapter {
         quantidade.setText(compra.getQuantidade().toString());
         precoUnitario.setText(NumberFormat.getCurrencyInstance().format(compra.getPreco()));
         total.setText(NumberFormat.getCurrencyInstance().format((compra.getQuantidade()+0.0) * (compra.getPreco())));
+
+        if (compra.getComprado()) {
+            comprado.setVisibility(View.VISIBLE);
+        } else {
+            comprado.setVisibility(View.GONE);
+        }
+
         return view;
     }
 

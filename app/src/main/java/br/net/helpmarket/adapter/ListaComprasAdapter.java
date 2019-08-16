@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,6 +62,7 @@ public class ListaComprasAdapter extends BaseAdapter {
         TextView gastoMaximo = view.findViewById(R.id.lcitem_gastoMaximo);
         final TextView totalProdutos = view.findViewById(R.id.lcitem_quantidadeProdutos);
         TextView data = view.findViewById(R.id.lcitem_dataCriacao);
+        LinearLayout terminado = view.findViewById(R.id.lcitem_terminado);
 
         //Atribuir atributos nesses objetos;
         nome.setText(lista.getNome());
@@ -80,7 +82,7 @@ public class ListaComprasAdapter extends BaseAdapter {
                 }
                 double total=0.0;
                 for (CompraDB c : comprasDB) {
-                    total = total + c.getPreco();
+                    total = total + (c.getPreco()*c.getQuantidade());
                 }
                 totalProdutos.setText(NumberFormat.getCurrencyInstance().format(total));
             }
@@ -88,10 +90,17 @@ public class ListaComprasAdapter extends BaseAdapter {
 
         data.setText(lista.getDataCriacao());
 
+        if (lista.getTerminado()) {
+            terminado.setVisibility(View.VISIBLE);
+        } else {
+            terminado.setVisibility(View.GONE);
+        }
+
         return view;
     }
 
     public void selecionar(View view, Drawable fundo) {
         view.findViewById(R.id.lcitem_bg).setBackground(fundo);
     }
+
 }

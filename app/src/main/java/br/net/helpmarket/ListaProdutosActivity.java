@@ -111,7 +111,14 @@ public class ListaProdutosActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (null == mActionMode) {
-                    //TODO: Ao clicar no item.
+                    Compra compraSelecionada = (Compra) lpAdapter.getItem(position);
+                    DBController db = new DBController(view.getContext());
+                    if (compraSelecionada.getComprado()) {
+                        db.comprarProduto(compraSelecionada, false);
+                    } else {
+                        db.comprarProduto(compraSelecionada, true);
+                    }
+                    listarProdutos();
                 } else {
                     if (comprasSelecionadas.contains(lpAdapter.getItem(position))) {
                         comprasSelecionadas.remove(lpAdapter.getItem(position));
@@ -188,7 +195,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
         final LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.dialog_codigomanual, null, false);
         final EditText codigoBarrasManual = view.findViewById(R.id.codigoBarrasManual);
-
+        builder.setCancelable(false);
         builder.setView(view)
                 .setPositiveButton("Fechar", new DialogInterface.OnClickListener() {
                     @Override
@@ -199,7 +206,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 .setNegativeButton("Buscar Produto", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String codigo =  codigoBarrasManual.getText().toString();
+                        String codigo = codigoBarrasManual.getText().toString();
                         if (null == codigo || codigo.isEmpty()) {
                             codigoBarrasManual.setError("Insira o código de barras");
                         } else {
@@ -225,6 +232,15 @@ public class ListaProdutosActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final Compra compraSelecionada = (Compra) lpAdapter.getItem(info.position);
         switch (item.getItemId()) {
+            case R.id.lpr_marcar:
+                DBController db = new DBController(this);
+                if (compraSelecionada.getComprado()) {
+                    db.comprarProduto(compraSelecionada, false);
+                } else {
+                    db.comprarProduto(compraSelecionada, true);
+                }
+                listarProdutos();
+                return true;
             case R.id.lpr_editar:
                 Intent intent = new Intent(getBaseContext(), EditarProdutoActivity.class);
                 intent.putExtra("compra", compraSelecionada);
@@ -260,14 +276,14 @@ public class ListaProdutosActivity extends AppCompatActivity {
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (null == scanningResult) {
-            Toast.makeText(this, "Não foi possivel efetuar a leitura deste codigo de barras", Toast.LENGTH_LONG).show();
-        } else {
-            buscarProduto(scanningResult.getContents());
-        }
+        buscarProduto(scanningResult.getContents());
     }
 
     private void buscarProduto(final String codigo) {
+        if (null == codigo || codigo.isEmpty()) {
+            Toast.makeText(this, "Não foi possivel efetuar a leitura deste codigo de barras", Toast.LENGTH_LONG).show();
+            return;
+        }
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Buscando Produto");
         progressDialog.setMessage("Carregando...");
