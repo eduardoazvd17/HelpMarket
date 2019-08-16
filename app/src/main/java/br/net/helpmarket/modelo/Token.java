@@ -1,4 +1,4 @@
-package br.net.helpmarket;
+package br.net.helpmarket.modelo;
 
 import java.util.Objects;
 

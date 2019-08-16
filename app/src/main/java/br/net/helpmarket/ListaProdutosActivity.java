@@ -56,6 +56,7 @@ import br.net.helpmarket.modelo.Compra;
 import br.net.helpmarket.modelo.CompraDB;
 import br.net.helpmarket.modelo.Lista;
 import br.net.helpmarket.modelo.Produto;
+import br.net.helpmarket.modelo.Token;
 
 public class ListaProdutosActivity extends AppCompatActivity {
 
