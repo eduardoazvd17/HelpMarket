@@ -66,8 +66,7 @@ public class ListaProdutosActivity extends AppCompatActivity {
     private ListView lvProdutos;
     private Produto produto;
     private ListaProdutosAdapter lpAdapter;
-    private int numeroToken=1;
-    private Tokens token = Tokens.TK1;
+    private Token token = null;
     private CoordinatorLayout layout;
     private LinearLayout lpVazio;
     private ActionMode mActionMode;
@@ -293,44 +292,70 @@ public class ListaProdutosActivity extends AppCompatActivity {
         progressDialog.show();
 
         final DBController db = new DBController(getBaseContext());
-        FirebaseFirestore ff = FirebaseFirestore.getInstance();
+        final FirebaseFirestore ff = FirebaseFirestore.getInstance();
         ff.collection("produtos").document(codigo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 Produto produtoDB = task.getResult().toObject(Produto.class);
-
                 if (null == produtoDB) {
-                    try {
-                        String tk = token.getKey();
-                        String endpoint = "https://api.cosmos.bluesoft.com.br/";
-                        URL url = new URL(endpoint + "gtins/" + codigo);
-                        HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-                        conexao.setRequestMethod("GET");
-                        conexao.setRequestProperty("X-Cosmos-Token", tk);
-                        conexao.connect();
-                        BufferedReader br = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
-                        String jsonString = br.readLine();
-                        JSONObject jsonObject = new JSONObject(jsonString);
-                        produto = new Produto(Long.parseLong(jsonObject.getString("gtin")), jsonObject.getString("description"), jsonObject.getString("thumbnail"));
-                        produto.verificarPreenchimento();
-                        db.inserirProduto(produto);
-                        conexao.disconnect();
-                    } catch (Exception e) {
-                        //TODO: Criar gerador de tokens para limitar a 25 usos cada (verificar se o erro é por causa de limite da api).
-                        Toast.makeText(getBaseContext(), "Produto não encontrado...", Toast.LENGTH_LONG).show();
-                        progressDialog.dismiss();
-                        return;
-                    }
+                    ff.collection("tokens").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            List<Token> tokens = new ArrayList<>();
+                            for (DocumentSnapshot doc : task.getResult()) {
+                                Token tk = doc.toObject(Token.class);
+                                tk.setId(doc.getId());
+                                tokens.add(tk);
+                            }
+                            for (Token tk : tokens) {
+                                if (tk.getUsos() < 25) {
+                                    token = tk;
+                                }
+                            }
+                            if (null == token) {
+                                Toast.makeText(getBaseContext(), "Ocorreu um erro ao buscar o produto, tente novamente mais tarde.", Toast.LENGTH_LONG).show();
+                            } else {
+                                try {
+                                    String endpoint = "https://api.cosmos.bluesoft.com.br/";
+                                    URL url = new URL(endpoint + "gtins/" + codigo);
+                                    HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+                                    conexao.setRequestMethod("GET");
+                                    conexao.setRequestProperty("X-Cosmos-Token", token.getId());
+                                    conexao.connect();
+                                    BufferedReader br = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
+                                    String jsonString = br.readLine();
+                                    JSONObject jsonObject = new JSONObject(jsonString);
+                                    produto = new Produto(Long.parseLong(jsonObject.getString("gtin")), jsonObject.getString("description"), jsonObject.getString("thumbnail"));
+                                    produto.verificarPreenchimento();
+
+                                    token.setUsos(token.getUsos()+1);
+                                    ff.collection("tokens").document(token.getId()).set(token);
+
+                                    db.inserirProduto(produto);
+                                    conexao.disconnect();
+                                } catch (Exception e) {
+                                    Toast.makeText(getBaseContext(), "Produto não encontrado.", Toast.LENGTH_LONG).show();
+                                    progressDialog.dismiss();
+                                    return;
+                                }
+                                Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
+                                i.putExtra("lista", lista);
+                                i.putExtra("produto", produto);
+                                startActivity(i);
+
+                                progressDialog.dismiss();
+                            }
+                        }
+                    });
                 } else {
                     produto = produtoDB;
+                    Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
+                    i.putExtra("lista", lista);
+                    i.putExtra("produto", produto);
+                    startActivity(i);
+
+                    progressDialog.dismiss();
                 }
-
-                Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
-                i.putExtra("lista", lista);
-                i.putExtra("produto", produto);
-                startActivity(i);
-
-                progressDialog.dismiss();
             }
         });
     }
