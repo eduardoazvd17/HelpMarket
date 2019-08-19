@@ -6,14 +6,16 @@ public class Token {
 
     private String id;
     private int usos;
+    private String dtPrimeiroUso;
 
     public Token() {
 
     }
 
-    public Token(String id, int usos) {
+    public Token(String id, int usos, String primeiroUso) {
         this.id = id;
         this.usos = usos;
+        this.dtPrimeiroUso = primeiroUso;
     }
 
     @Override
@@ -43,5 +45,13 @@ public class Token {
 
     public void setUsos(int usos) {
         this.usos = usos;
+    }
+
+    public String getPrimeiroUso() {
+        return dtPrimeiroUso;
+    }
+
+    public void setPrimeiroUso(String primeiroUso) {
+        this.dtPrimeiroUso = primeiroUso;
     }
 }

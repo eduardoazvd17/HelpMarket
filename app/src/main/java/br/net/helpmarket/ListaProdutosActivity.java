@@ -47,7 +47,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.net.helpmarket.adapter.ListaProdutosAdapter;
@@ -312,6 +315,20 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                 if (tk.getUsos() < 25) {
                                     token = tk;
                                 }
+                                if (null != tk.getPrimeiroUso()) {
+                                    try {
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                                        Date atual = sdf.parse(sdf.format(new Date()));
+                                        Date primeiroUso = sdf.parse(tk.getPrimeiroUso());
+                                        if (atual.after(primeiroUso)) {
+                                            tk.setUsos(0);
+                                            tk.setPrimeiroUso(null);
+                                            ff.collection("tokens").document(tk.getId()).set(tk);
+                                        }
+                                    } catch (Exception e) {
+                                        Toast.makeText(getBaseContext(), "Erro ao gerar o token da API.", Toast.LENGTH_LONG).show();
+                                    }
+                                }
                             }
                             if (null == token) {
                                 Toast.makeText(getBaseContext(), "Ocorreu um erro ao buscar o produto, tente novamente mais tarde.", Toast.LENGTH_LONG).show();
@@ -330,6 +347,10 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                     produto.verificarPreenchimento();
 
                                     token.setUsos(token.getUsos()+1);
+                                    if (token.getUsos() == 1) {
+                                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                                        token.setPrimeiroUso(sdf.format(new Date()));
+                                    }
                                     ff.collection("tokens").document(token.getId()).set(token);
 
                                     db.inserirProduto(produto);
