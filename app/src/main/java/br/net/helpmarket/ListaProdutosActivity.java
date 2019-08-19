@@ -312,9 +312,6 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                 tokens.add(tk);
                             }
                             for (Token tk : tokens) {
-                                if (tk.getUsos() < 25) {
-                                    token = tk;
-                                }
                                 if (null != tk.getPrimeiroUso()) {
                                     try {
                                         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -322,12 +319,14 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                         Date primeiroUso = sdf.parse(tk.getPrimeiroUso());
                                         if (atual.after(primeiroUso)) {
                                             tk.setUsos(0);
-                                            tk.setPrimeiroUso(null);
                                             ff.collection("tokens").document(tk.getId()).set(tk);
                                         }
                                     } catch (Exception e) {
                                         Toast.makeText(getBaseContext(), "Erro ao gerar o token da API.", Toast.LENGTH_LONG).show();
                                     }
+                                }
+                                if (tk.getUsos() < 25) {
+                                    token = tk;
                                 }
                             }
                             if (null == token) {
