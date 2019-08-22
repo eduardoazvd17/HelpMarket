@@ -5,23 +5,29 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.net.helpmarket.R;
 import br.net.helpmarket.modelo.Produto;
 
-public class ListaCatalogoAdapter extends BaseAdapter {
+public class ListaCatalogoAdapter extends BaseAdapter implements Filterable {
 
     private List<Produto> produtos;
+    List<Produto> produtosFiltrados;
+    private Filtro filtro;
     private Activity activity;
 
     public ListaCatalogoAdapter(List<Produto> produtos, Activity activity) {
         this.produtos = produtos;
+        this.produtosFiltrados = produtos;
         this.activity = activity;
     }
 
@@ -56,4 +62,39 @@ public class ListaCatalogoAdapter extends BaseAdapter {
         return view;
     }
 
+    @Override
+    public Filter getFilter() {
+        if (filtro == null) {
+            filtro = new Filtro();
+        }
+        return filtro;
+    }
+
+    public class Filtro extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            if (constraint != null && constraint.length() > 0) {
+                List<Produto> filterList = new ArrayList<>();
+                for (Produto p : produtosFiltrados) {
+                    if ((p.getNome().toUpperCase()).contains(constraint.toString().toUpperCase())) {
+                        filterList.add(p);
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            } else {
+                results.count = produtosFiltrados.size();
+                results.values = produtosFiltrados;
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            produtos = (List<Produto>) results.values;
+            notifyDataSetChanged();
+        }
+    }
 }
+

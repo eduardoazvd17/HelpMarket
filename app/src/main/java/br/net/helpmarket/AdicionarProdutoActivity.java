@@ -2,6 +2,7 @@ package br.net.helpmarket;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -127,6 +128,9 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
         voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CatalogoActivity.class);
+                intent.putExtra("lista", lista);
+                startActivity(intent);
                 finish();
             }
         });

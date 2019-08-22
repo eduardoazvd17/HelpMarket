@@ -19,4 +19,13 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:backgroundTint">@color/colorWhite</item>
+        <item name="android:foregroundTint">@color/colorWhite</item>
+        <item name="android:editTextColor">@color/colorWhite</item>
+        <item name="android:color">@color/colorWhite</item>
+        <item name="android:tint">@color/colorWhite</item>
+        <item name="queryBackground">@color/colorWhite</item>
+    </style>
+
 </resources>
