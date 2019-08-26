@@ -2,7 +2,6 @@ package br.net.helpmarket;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,6 +44,8 @@ public class GruposActivity extends AppCompatActivity implements NavigationView.
         toolbar = findViewById(R.id.g_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
 
         drawerLayout = findViewById(R.id.g_drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
@@ -130,17 +132,11 @@ public class GruposActivity extends AppCompatActivity implements NavigationView.
             }
             case R.id.nav_grupos: {
                 drawerLayout.closeDrawer(GravityCompat.START);
+
                 break;
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
-                intent.putExtra("usuario", (Serializable) usuario);
-                startActivity(intent);
-                finish();
-                break;
-            }
-            case R.id.nav_configuracoes: {
-                Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
                 intent.putExtra("usuario", (Serializable) usuario);
                 startActivity(intent);
                 finish();

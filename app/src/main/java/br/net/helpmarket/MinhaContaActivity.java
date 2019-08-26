@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -42,6 +44,8 @@ public class MinhaContaActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.mc_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
 
         nome = findViewById(R.id.mc_nome);
         email = findViewById(R.id.mc_email);

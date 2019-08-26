@@ -198,6 +198,10 @@
                 </android.support.v7.widget.CardView>
 
             </LinearLayout>
+            
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
         </ScrollView>
 
@@ -209,7 +213,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/done"
-        android:layout_margin="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="66dp"
         android:layout_gravity="bottom|end"/>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="end|bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-6093298333256656/1943262206">
+    </com.google.android.gms.ads.AdView>
 
 </android.support.design.widget.CoordinatorLayout>

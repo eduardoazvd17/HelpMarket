@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.squareup.picasso.Picasso;
 
 import br.net.helpmarket.database.DBController;
@@ -37,6 +38,8 @@ public class EditarProdutoActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.ep_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
 
         compra = (Compra) getIntent().getExtras().getSerializable("compra");
         img = findViewById(R.id.ep_imagem);

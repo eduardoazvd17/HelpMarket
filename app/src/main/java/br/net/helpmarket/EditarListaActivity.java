@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -37,6 +39,8 @@ public class EditarListaActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.el_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
 
         nome = findViewById(R.id.el_nome);
         gastoMaximo = findViewById(R.id.el_gastoMaximo);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.net.helpmarket">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -28,7 +29,6 @@
         <activity android:name=".ListaComprasActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".GruposActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".InformacoesActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".ConfiguracoesActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".NovaListaActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".ListaProdutosActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".AdicionarProdutoActivity" android:screenOrientation="portrait"></activity>
@@ -37,7 +37,9 @@
         <activity android:name=".MinhaContaActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".RecuperarActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".CatalogoActivity" android:screenOrientation="portrait"></activity>
-
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6093298333256656~3639487257"/>
     </application>
 
 </manifest>

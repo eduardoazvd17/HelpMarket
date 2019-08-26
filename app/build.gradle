@@ -35,6 +35,7 @@ dependencies {
     implementation 'com.sun.mail:android-mail:1.6.2'
     implementation 'com.sun.mail:android-activation:1.6.2'
     implementation 'com.google.firebase:firebase-firestore:18.2.0'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

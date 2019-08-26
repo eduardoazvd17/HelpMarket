@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -67,6 +68,8 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
+
         drawerLayout = findViewById(R.id.lc_drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.colorWhite));
@@ -76,6 +79,8 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
         NavigationView navigationView = findViewById(R.id.lc_navView);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(1).setChecked(true);
+        //TODO: Remover para exibir o menu compartilhamento
+        navigationView.getMenu().getItem(2).setVisible(false);
 
         this.usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
         layout = findViewById(R.id.lc_layout);
@@ -343,13 +348,6 @@ public class ListaComprasActivity extends AppCompatActivity implements Navigatio
             }
             case R.id.nav_informacoes: {
                 Intent intent = new Intent(getBaseContext(), InformacoesActivity.class);
-                intent.putExtra("usuario", usuario);
-                startActivity(intent);
-                finish();
-                break;
-            }
-            case R.id.nav_configuracoes: {
-                Intent intent = new Intent(getBaseContext(), ConfiguracoesActivity.class);
                 intent.putExtra("usuario", usuario);
                 startActivity(intent);
                 finish();
