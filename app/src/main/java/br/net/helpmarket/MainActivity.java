@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        CardView ajuda = findViewById(R.id.ajuda);
+        LinearLayout ajuda = findViewById(R.id.ajuda);
         ajuda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

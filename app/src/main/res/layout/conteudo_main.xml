@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_main">
+    android:layout_height="match_parent" android:background="@drawable/bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,95 +27,109 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:padding="16dp"
-            android:orientation="vertical"
-            android:background="@color/colorBlackA">
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingBottom="16dp"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/colorWhiteA">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorBlack"
-                        android:fontFamily="sans-serif-black"
-                        android:textSize="40dp"
-                        android:text="HelpMarket"/>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
+            <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/foreground"/>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/colorWhiteA">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:text="Seja bem-vindo ao "
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/colorBlack"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="20dp"
-                        android:text="Seja bem-vindo, utilize o menu lozalizado no canto superior esquerdo para navegar"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:text="HelpMarket"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/colorPrimary"/>
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/foreground"/>
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:text="O aplicativo ideal para quem se organiza em suas compras e gosta de economizar"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/colorBlack"/>
 
-            <android.support.v7.widget.CardView
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:text="Utilize o menu localizado no canto superior esquerdo para navegar, e boas compras!"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/colorBlack"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <LinearLayout
                 android:id="@+id/ajuda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="@color/colorWhiteA">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:text="Precisa de ajuda? "
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/colorBlack"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="20dp"
-                        android:text="Precisa de ajuda? Clique aqui!"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:text="Clique aqui."
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/colorPrimary"/>
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
         <com.google.android.gms.ads.AdView
-            android:background="@color/colorBlackA"
             xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
