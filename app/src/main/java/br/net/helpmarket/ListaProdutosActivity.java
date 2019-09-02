@@ -371,9 +371,8 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                 i.putExtra("lista", lista);
                                 i.putExtra("produto", produto);
                                 startActivity(i);
-
-                                progressDialog.dismiss();
                             }
+                            progressDialog.dismiss();
                         }
                     });
                 } else {
