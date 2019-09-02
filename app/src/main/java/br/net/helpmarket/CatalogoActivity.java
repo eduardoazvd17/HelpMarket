@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,6 +57,9 @@ public class CatalogoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
+        final AdView adView = findViewById(R.id.catalogo_adview);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         this.lista = (Lista) getIntent().getExtras().getSerializable("lista");
 

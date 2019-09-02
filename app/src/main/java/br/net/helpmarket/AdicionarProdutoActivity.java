@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -56,6 +58,9 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
+        final AdView adView = findViewById(R.id.ap_adview);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         lista = (Lista) getIntent().getExtras().getSerializable("lista");
         produto = (Produto) getIntent().getExtras().getSerializable("produto");

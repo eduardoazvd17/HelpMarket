@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.math.BigInteger;
@@ -46,6 +48,9 @@ public class MinhaContaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
+        final AdView adView = findViewById(R.id.mc_adview);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         nome = findViewById(R.id.mc_nome);
         email = findViewById(R.id.mc_email);

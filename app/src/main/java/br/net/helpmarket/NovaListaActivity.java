@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +43,9 @@ public class NovaListaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         MobileAds.initialize(this, "ca-app-pub-6093298333256656~3639487257");
+        final AdView adView = findViewById(R.id.nl_adview);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         nome = findViewById(R.id.nl_nome);
         gastoMaximo = findViewById(R.id.nl_gastoMaximo);
