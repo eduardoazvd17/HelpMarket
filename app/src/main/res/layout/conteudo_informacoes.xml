@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/layout_info"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
@@ -26,27 +27,222 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="16dp"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+                android:text="Precisa de ajuda? Preencha o formulário abaixo para solucionar uma dúvida ou relatar um problema:"/>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/layout2_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome"/>
+
+                    <EditText
+                        android:id="@+id/info_nome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="255"
+                        android:maxLines="1"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorBlack"
+                        android:imeOptions="actionDone"
+                        android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm. áàâãèéêìíîóòôõúùû"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="E-mail"/>
+
+                    <EditText
+                        android:id="@+id/info_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="255"
+                        android:maxLines="1"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/colorBlack"
+                        android:imeOptions="actionDone"
+                        android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Motivo"/>
+
+                    <Spinner
+                        android:id="@+id/info_motivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"></Spinner>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Título"/>
+
+                    <EditText
+                        android:id="@+id/info_titulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="255"
+                        android:textColor="@color/colorBlack"
+                        android:imeOptions="actionDone"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mensagem"/>
+
+                    <EditText
+                        android:id="@+id/info_msg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|top"
+                        android:lines="5"
+                        android:maxLength="2000"
+                        android:inputType="textMultiLine"
+                        android:scrollbars="vertical"
+                        android:textColor="@color/colorBlack"
+                        android:imeOptions="actionDone"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+            </ScrollView>
 
         </LinearLayout>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/info_adview"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="end|bottom"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6093298333256656/1943262206">
-        </com.google.android.gms.ads.AdView>
+            android:layout_height="50dp"></LinearLayout>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/enviarMensagem"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/send"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="66dp"
+        android:layout_gravity="bottom|end"/>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/info_adview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="end|bottom"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-6093298333256656/1943262206">
+    </com.google.android.gms.ads.AdView>
+
+</android.support.design.widget.CoordinatorLayout>

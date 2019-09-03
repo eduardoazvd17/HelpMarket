@@ -6,4 +6,8 @@
     <string name="esqueciSenha"><u>Esqueci minha senha</u></string>
     <string name="open_drawer">Abrir</string>
     <string name="close_drawer">Fechar</string>
+    <string-array name="motivoContato">
+        <item>Dúvida</item>
+        <item>Problema</item>
+    </string-array>
 </resources>

@@ -54,13 +54,13 @@ public class MailController {
         bm.send();
     }
 
-    public void enviarMensagemSuporte(String email, String titulo, String mensagem) {
+    public void enviarMensagemSuporte(String nome, String email, String motivo, String titulo, String msg) {
         BackgroundMail bm = new BackgroundMail(context);
         bm.setGmailUserName(HOST);
         bm.setGmailPassword(PASS);
-        bm.setMailTo(email);
-        bm.setFormSubject(titulo);
-        bm.setFormBody(mensagem + BOTTOM);
+        bm.setMailTo("duvidas.helpmarket@gmail.com");
+        bm.setFormSubject(motivo + " - " + titulo);
+        bm.setFormBody("Nome: " + nome + "\nE-mail: " + email + "\n\nTitulo: " + titulo + "\nMensagem: " + msg);
         bm.setSendingMessage("Enviando mensagem para o suporte");
         bm.setSendingMessageSuccess("Mensagem enviada com sucesso!");
         bm.setProcessVisibility(true);
