@@ -1,6 +1,7 @@
 package br.net.helpmarket;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +48,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.NumberFormat;
@@ -363,16 +365,39 @@ public class ListaProdutosActivity extends AppCompatActivity {
                                     db.inserirProduto(produto);
                                     conexao.disconnect();
                                 } catch (Exception e) {
-                                    Toast.makeText(getBaseContext(), "Produto não encontrado.", Toast.LENGTH_LONG).show();
                                     progressDialog.dismiss();
+                                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which){
+                                                case DialogInterface.BUTTON_POSITIVE:
+                                                    Intent i = new Intent(ListaProdutosActivity.this, AdicionarProdutoActivity.class);
+                                                    i.putExtra("lista", lista);
+                                                    i.putExtra("produto", new Produto());
+                                                    i.putExtra("codigoBarras", codigo);
+                                                    startActivity(i);
+                                                    dialog.dismiss();
+                                                    break;
+
+                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                    dialog.dismiss();
+                                                    break;
+                                            }
+                                        }
+                                    };
+                                    AlertDialog.Builder ab = new AlertDialog.Builder(ListaProdutosActivity.this);
+                                    ab.setMessage("Produto não encontrado. Deseja inserir os dados do produto manualmente?")
+                                            .setNegativeButton("Não", dialogClickListener)
+                                            .setPositiveButton("Sim", dialogClickListener)
+                                            .show();
                                     return;
                                 }
+                                progressDialog.dismiss();
                                 Intent i = new Intent(getBaseContext(), AdicionarProdutoActivity.class);
                                 i.putExtra("lista", lista);
                                 i.putExtra("produto", produto);
                                 startActivity(i);
                             }
-                            progressDialog.dismiss();
                         }
                     });
                 } else {

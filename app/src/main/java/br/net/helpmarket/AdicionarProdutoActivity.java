@@ -70,9 +70,15 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
         quantidade = findViewById(R.id.ap_quantidade);
         preco = findViewById(R.id.ap_preco);
 
-        Picasso.get().load(produto.getUrlImagem()).into(img);
-        codigoBarras.setText(produto.getCodigoBarras().toString());
-        nome.setText(produto.getNome());
+        if (null != produto.getCodigoBarras()) {
+            Picasso.get().load(produto.getUrlImagem()).into(img);
+            codigoBarras.setText(produto.getCodigoBarras().toString());
+            nome.setText(produto.getNome());
+        } else {
+            produto = null;
+            Picasso.get().load("https://cdn.iset.io/assets/51664/produtos/1192/produto-sem-imagem-1000x1000.jpg").into(img);
+            codigoBarras.setText(getIntent().getExtras().getString("codigoBarras"));
+        }
 
         FloatingActionButton salvarProduto = findViewById(R.id.salvarProduto);
         salvarProduto.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +93,10 @@ public class AdicionarProdutoActivity extends AppCompatActivity {
                     progressDialog.setIndeterminate(true);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
+
+                    if (null == produto) {
+                        produto = new Produto(Long.parseLong(codigoBarras.getText().toString()), nome.getText().toString(), null);
+                    }
 
                     final FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("compras")
