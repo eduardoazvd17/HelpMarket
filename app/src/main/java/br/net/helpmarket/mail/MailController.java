@@ -60,9 +60,9 @@ public class MailController {
         bm.setGmailPassword(PASS);
         bm.setMailTo("duvidas.helpmarket@gmail.com");
         bm.setFormSubject(motivo + " - " + titulo);
-        bm.setFormBody("Nome: " + nome + "\nE-mail: " + email + "\n\nTitulo: " + titulo + "\nMensagem: " + msg);
+        bm.setFormBody("Nome: " + nome + "\nE-mail: " + email + "\n\nMotivo: " + motivo + "\n\nTitulo: " + titulo + "\nMensagem: " + msg);
         bm.setSendingMessage("Enviando mensagem para o suporte");
-        bm.setSendingMessageSuccess("Mensagem enviada com sucesso!");
+        bm.setSendingMessageSuccess("Enviado!");
         bm.setProcessVisibility(true);
         //Enviar anexo: bm.setAttachment(Environment.getExternalStorageDirectory().getPath()+File.pathSeparator+"somefile.txt");
         bm.send();

@@ -1,8 +1,10 @@
 package br.net.helpmarket;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -11,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -116,15 +119,43 @@ public class InformacoesActivity extends AppCompatActivity implements Navigation
         FloatingActionButton enviar = findViewById(R.id.enviarMensagem);
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 ocultarTeclado();
                 if (verificarPreenchimento()) {
                     MailController mc = new MailController(view.getContext());
                     mc.enviarMensagemSuporte(nome.getText().toString(), email.getText().toString(), motivo.getSelectedItem().toString(), titulo.getText().toString(), mensagem.getText().toString());
-                    Intent intent = new Intent(view.getContext(), MainActivity.class);
-                    intent.putExtra("usuario", usuario);
-                    startActivity(intent);
-                    finish();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which){
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            titulo.setText("");
+                                            mensagem.setText("");
+                                            titulo.requestFocus();
+                                            dialog.dismiss();
+                                            break;
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            Intent intent = new Intent(view.getContext(), MainActivity.class);
+                                            intent.putExtra("usuario", usuario);
+                                            startActivity(intent);
+                                            finish();
+                                            dialog.dismiss();
+                                            break;
+                                    }
+                                }
+                            };
+                            AlertDialog.Builder ab = new AlertDialog.Builder(view.getContext());
+                            ab.setMessage("Sua mensagem foi enviada com sucesso!\nDeseja enviar uma nova mensagem?")
+                                    .setNegativeButton("Não", dialogClickListener)
+                                    .setPositiveButton("Sim", dialogClickListener)
+                                    .setCancelable(false)
+                                    .show();
+                        }
+                    }, 3000);
                 }
             }
         });
