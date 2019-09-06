@@ -100,6 +100,7 @@
                         android:id="@+id/mc_nome"
                         android:inputType="textPersonName"
                         android:maxLength="255"
+                        android:singleLine="true"
                         android:imeOptions="actionDone"
                         android:textColor="@color/colorBlack"
                         android:layout_width="match_parent"
@@ -213,7 +214,8 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:maxEms="255"
-                            android:imeOptions="actionDone"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:hint="Senha Atual..."/>
 
@@ -223,7 +225,8 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:maxEms="255"
-                            android:imeOptions="actionDone"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:hint="Nova Senha..."/>
 
@@ -233,6 +236,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorBlack"
                             android:maxEms="255"
+                            android:singleLine="true"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:hint="Confirmação de Nova Senha..."/>

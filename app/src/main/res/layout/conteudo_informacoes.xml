@@ -76,7 +76,8 @@
                         android:maxLines="1"
                         android:inputType="textPersonName"
                         android:textColor="@color/colorBlack"
-                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
                         android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm. áàâãèéêìíîóòôõúùû"/>
 
                 </LinearLayout>
@@ -110,7 +111,8 @@
                         android:maxLines="1"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/colorBlack"
-                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
                         android:digits="QWERTYUIOPASDFGHJKLÇZXCVBNMqwertyuiopasdfghjklçzxcvbnm0123456789@._"/>
 
                 </LinearLayout>
@@ -169,8 +171,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="255"
-                        android:textColor="@color/colorBlack"
-                        android:imeOptions="actionDone"/>
+                        android:singleLine="true"
+                        android:imeOptions="actionNext"
+                        android:textColor="@color/colorBlack" />
 
                 </LinearLayout>
 
