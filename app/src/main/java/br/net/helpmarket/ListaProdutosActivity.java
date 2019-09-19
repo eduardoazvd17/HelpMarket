@@ -3,9 +3,13 @@ package br.net.helpmarket;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -297,6 +301,29 @@ public class ListaProdutosActivity extends AppCompatActivity {
             Toast.makeText(this, "Não foi possivel efetuar a leitura deste codigo de barras", Toast.LENGTH_LONG).show();
             return;
         }
+
+        if (!verificarConexao()) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                            wifiManager.setWifiEnabled(true);
+                            dialog.dismiss();
+                            Toast.makeText(getBaseContext(), "WI-FI Ativado. Tente novamente após se conectar com a internet.", Toast.LENGTH_LONG).show();
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder ab = new AlertDialog.Builder(ListaProdutosActivity.this);
+            ab.setTitle("Sem conexão com a internet");
+            ab.setMessage("Uma conexão com a internet é necessária para a busca por código de barras.")
+                    .setPositiveButton("Fechar", dialogClickListener)
+                    .show();
+            return;
+        }
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Buscando Produto");
         progressDialog.setMessage("Carregando...");
@@ -530,6 +557,17 @@ public class ListaProdutosActivity extends AppCompatActivity {
                 totalEconomizado.setTextColor(Color.BLACK);
                 totalEconomizado.setError(null);
             }
+        }
+    }
+
+    public boolean verificarConexao() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        Boolean cell = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED;
+        Boolean wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
+        if (cell || wifi) {
+            return true;
+        } else {
+            return false;
         }
     }
 
