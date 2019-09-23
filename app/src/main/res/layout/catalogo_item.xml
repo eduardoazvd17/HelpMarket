@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/catalogo_imagem"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:layout_gravity="center"/>
